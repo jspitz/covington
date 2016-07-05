@@ -2,15 +2,22 @@
 % Documentation for covington.sty
 
 \documentclass{article}
+
 \usepackage{covington}
-\title{\bf Typing Linguistics with {\tt covington.sty}}
+\usepackage{url}
+\def\pversion{Version 1.1}
+\def\pdate{July 5, 2016}
+
+\title{\textbf{Typing Linguistics with \texttt{covington.sty}}}
 \author{Michael A. Covington \\
         \small Artificial Intelligence Center \\
         \small The University of Georgia \\
-        \small Athens, Georgia 30602 \sc u.s.a.\\
+        \small Athens, Georgia 30602 \textsc{u.s.a.}\\
         mcovingt@ai.uga.edu\\
-	http://www.ai.uga.edu/$\sim$mc}
-\date{2001 March 27}
+        \url{http://www.ai.uga.edu/~mc}}
+
+\date{\pversion, \pdate\thanks{Current maintainer: J\"urgen Spitzm\"uller.
+      Please report issues via \protect\url{https://github.com/jspitz/covington/issues}}}
 
 \begin{document}
 \maketitle
@@ -19,14 +26,23 @@
 
 \section*{New in This Version}
 \begin{itemize}
+\item The package now uses PSNFSS font commands if available (fallback for \LaTeX\ 2.09 is still provided)
+\item License has been changed to LPPL (in agreement with M. Covington)
+\item New maintainer: J. Spitzm\"uller
+\item Introduce version numbers. Arbitrarily, we start with 1.1
+\end{itemize}
+
+\section*{New in Preceding Versions}
+\subsection*{2001 March 27}
+\begin{itemize}
 \item It is no longer necessary to type \verb"\it" to get proper italic type in feature structures.
 \item Instructions have been rewritten with \LaTeXe\ users in mind.
 \end{itemize}
 
-\section*{New in Preceding Versions}
+\subsection*{Older versions}
 \begin{itemize}
 \item Multiple accents on a single letter (e.g., \emph{\acm{a}}) are supported.
-\item This package is now called {\tt covington} (with the o)
+\item This package is now called \texttt{covington} (with the o)
 and is compatible with \LaTeXe\ and NFSS as well as \LaTeX\ 2.09.
 \item The vertical placement of labeled feature structures has 
 been changed
@@ -35,15 +51,15 @@ the structures.
 \end{itemize}
 
 \section*{Introduction}
-This file, {\tt covington.tex}, is the documentation for the 
-March 2001 version of {\tt covington.sty}, which is a \LaTeX\ style 
+This file, \texttt{covington.tex}, is the documentation for \pversion\
+of \texttt{covington.sty} (\pdate), which is a \LaTeX\ style 
 option for typing many of the special notations common in linguistics.
 
 {\footnotesize 
-In em\TeX\ under MS-DOS, {\tt covington.sty} is called {\tt covingto.sty}.
+In em\TeX\ under MS-DOS, \texttt{covington.sty} is called \texttt{covingto.sty}.
 The missing $n$ has no effect.}
 
-To use {\tt covington.sty}, you should have a copy of it in either your
+To use \texttt{covington.sty}, you should have a copy of it in either your
 current directory or the directory where \LaTeX\ styles are kept on your 
 system.
 
@@ -54,21 +70,21 @@ after your \verb"\documentclass" command.
 
 {\footnotesize
 In \LaTeX\ 2.09,
-include {\tt covington} among the optional parameters of 
+include \texttt{covington} among the optional parameters of 
 \verb"\documentstyle", like this: \hfill\\
 {\tt
 \verb"\documentstyle[12pt,"\underline{covington}\verb"]{article}"
 }\hfill\\
-Note the spelling {\tt covington} (9 letters).
+Note the spelling \texttt{covington} (9 letters).
 }
 
 In what follows I presume that you know how to use \LaTeX\ and have 
-access to the \LaTeX\ manual. Note that {\tt covington.sty} does not 
+access to the \LaTeX\ manual. Note that \texttt{covington.sty} does not 
 provide any special fonts or character sets.  However, it can be used in 
 combination with other style sheets that do.
 
-If you are using {\tt covington.sty} and {\tt uga.sty} (UGa thesis style) 
-together, you should mention {\tt uga} before {\tt covington}.
+If you are using \texttt{covington.sty} and \texttt{uga.sty} (UGa thesis style) 
+together, you should mention \texttt{uga} before \texttt{covington}.
 
  
 \section{Accents}
@@ -92,7 +108,7 @@ which are typed as:
 \end{verbatim}
 
 But by itself, \LaTeX\ doesn't give you a convenient way to put two
-accents on the same letter.  To fill this gap, {\tt covington.sty} provides
+accents on the same letter.  To fill this gap, \texttt{covington.sty} provides
 the following macros:
 \begin{flushleft}
 \verb,\twoacc[...|...], \quad to combine any 2 accents, e.g.,
@@ -110,8 +126,8 @@ square brackets, not curly brackets, and are separated by \verb.|..
 The first argument is the upper accent (only) and the second argument
 is the letter with the lower accent indicated.
 
-Note also that not all accents work in the {\tt tabbing} environment.
-Use {\tt tabular} or see the \LaTeX\ manual for workarounds.
+Note also that not all accents work in the \texttt{tabbing} environment.
+Use \texttt{tabular} or see the \LaTeX\ manual for workarounds.
 
 \section{Example numbers}
 
@@ -135,12 +151,12 @@ access the number without changing it, use \verb"\theequation".
 
 Also, you can use \verb"\label" and \verb"\ref" with example numbers in 
 exactly the same way as with equation numbers.  See the \LaTeX\ manual for
-details. This applies to the {\tt example} and {\tt examples} 
+details. This applies to the \texttt{example} and \texttt{examples} 
 environments, described next, as well as to \verb"\exampleno" itself.
 
-\section{The {\tt example} environment}
+\section{The \texttt{example} environment}
 
-The {\tt example} environment displays a single example
+The \texttt{example} environment displays a single example
 with a generated example number to the left of it.
 If you type
 \begin{verbatim}
@@ -152,12 +168,12 @@ you get:
 \begin{example}
 This is a sentence.
 \end{example}
-The {\tt example} environment is a lot like {\tt flushleft}. The example
+The \texttt{example} environment is a lot like \texttt{flushleft}. The example
 can be of any length; it can consist of many lines (separated by \verb"\\"),
 or even whole paragraphs.
 
-One way to number sub--examples is to use {\tt itemize} or {\tt 
-enumerate} within an example, like this:
+One way to number sub--examples is to use \texttt{itemize} or \texttt{enumerate}
+within an example, like this:
 \begin{verbatim}
 \begin{example}
 \begin{itemize}
@@ -173,13 +189,13 @@ This prints as:
 \item[(b)] This is the second sentence.
 \end{itemize}
 \end{example}
-However, the {\tt examples} environment, described next, is usually more 
+However, the \texttt{examples} environment, described next, is usually more 
 convenient.
 
-\section{The {\tt examples} environment}
+\section{The \texttt{examples} environment}
 
 To display a series of examples together, each with its own example 
-number, use {\tt examples} instead of {\tt example}.  The only 
+number, use \texttt{examples} instead of \texttt{example}.  The only 
 difference is that there can be more than one example, and each of them 
 has to be introduced by \verb"\item", like this:
 \begin{verbatim}
@@ -202,7 +218,7 @@ sentence in a foreign language is followed by a word--for--word
 translation (with the words lined up vertically) and then a smooth 
 translation (not lined up), like this:%
 \footnote{The macros for handling glosses are adapted with permission 
-from {\tt gloss.tex}, by Marcel R. van der Goot.}
+from \texttt{gloss.tex}, by Marcel R. van der Goot.}
 \gll Dit is een Nederlands voorbeeld. 
      This is a Dutch example. 
 \glt `This is an example in Dutch.'
@@ -229,20 +245,20 @@ you would type:
 \glt `This is a little example in Dutch.'
 \glend
 \end{verbatim}
-All together, {\tt covington.sty} gives you five macros for dealing with
+All together, \texttt{covington.sty} gives you five macros for dealing with
 glosses:
 \begin{itemize}
 \item \verb"\gll" introduces two lines of words vertically aligned, and 
-activates an environment very similar to {\tt flushleft}.
-\item \verb"\glll" is like \verb"gll" except that it introduces {\em 
-three} lines of lined--up words (useful for cited forms, morphology,
+activates an environment very similar to \texttt{flushleft}.
+\item \verb"\glll" is like \verb"gll" except that it introduces
+\emph{three} lines of lined--up words (useful for cited forms, morphology,
 and translation).
 \item \verb"\glt" ends the set of lined--up lines and introduces a line 
 (or more) of translation.
 \item \verb"\gln" is like \verb"\glt" but does not start a new line 
 (useful when no translation follows but you want to put a number on the 
 right).
-\item \verb"\glend" ends the special {\tt flushleft}--like environment.
+\item \verb"\glend" ends the special \texttt{flushleft}--like environment.
 \end{itemize}
 Here are several examples.  First, a sentence with three lines aligned, 
 instead of just two:
@@ -272,7 +288,7 @@ That one was typed as:
 \gln  \hfill (\exampleno)
 \glend
 \end{verbatim}
-Finally we'll put a glossed sentence inside the {\tt example} 
+Finally we'll put a glossed sentence inside the \texttt{example} 
 environment, which is a very common way of using it:
 \begin{example}
 \gll  Hoc habet numerum praepositum.
@@ -303,7 +319,6 @@ To print the phrase structure rule \psr{S}{NP~VP} you can type
 
 To print a feature structure such as:
 \begin{flushleft}
-%\fs{\it case:nom \\ \it person:P}
 \fs{case:nom}
 \end{flushleft}
 you can type:
@@ -312,7 +327,7 @@ you can type:
 \end{verbatim}
 
 The feature structure can appear anywhere --- in continuous text, in a
-displayed environment such as {\tt flushleft}, or inside a
+displayed environment such as \texttt{flushleft}, or inside a
 phrase--structure rule, or even inside another feature structure.
 
 To put a category label at the top of the feature structure, like this,
@@ -339,13 +354,13 @@ which was of course typed as:
 
 \section{Discourse representation structures}
 
-Several macros in {\tt covington.sty} facilitate display of discourse 
-repsesentation structures (DRSes) in the box notation originally used by 
+Several macros in \texttt{covington.sty} facilitate display of discourse 
+representation structures (DRSes) in the box notation originally used by 
 Hans Kamp.  The simplest is \verb"\drs", which takes two arguments:
 a list of discourse variables joined by \verb"~", and a list of DRS 
 conditions separated by \verb"\\".  Nesting is permitted.  Note that the 
 \verb"\drs" macro itself does not give you a displayed environment; you 
-must use {\tt flushleft} or the like to display the DRS.
+must use \texttt{flushleft} or the like to display the DRS.
 Here are some examples:
 \begin{verbatim}
 \drs{X}{donkey(X)\\green(X)}
@@ -401,7 +416,7 @@ inside a DRS, you may prefer to use \verb"\alifdrs", which is just like
 
 \section{Exercises}
 
-The {\tt exercise} environment generates an exercise numbered according 
+The \texttt{exercise} environment generates an exercise numbered according 
 to chapter, section, and subsection (suitable for use in a large book; 
 in this example, the subsection number is going to come out as 0).
 \begin{exercise}[Project]
@@ -418,8 +433,8 @@ go there).
 
 \section{Reference Lists}
 
-To type an LSA--style hanging--indented reference list, use the {\tt 
-reflist} environment.  ({\em Note:\/} {\tt reflist} is not presently
+To type an LSA--style hanging--indented reference list, use the \texttt{reflist}
+environment.  (\emph{Note:} \texttt{reflist} is not presently
 integrated with Bib\TeX\ in any way.)  For example,
 \begin{verbatim}
 \begin{reflist}
@@ -455,7 +470,7 @@ people's initials.
 \section{Displayed sentences}
 
 The macro \verb"\sentence" displays an italicized sentence (it is a 
-combination of {\tt flushleft} and \verb"\em").  If you type
+combination of \texttt{flushleft} and \verb"\itshape").  If you type
 \begin{verbatim}
 \sentence{This is a sentence.}
 \end{verbatim}
@@ -475,7 +490,7 @@ within a sentence or PS--rule:
 \end{flushleft}
 
 That's all there is.
-Suggestions for improving {\tt covington.sty} are welcome, and bug
+Suggestions for improving \texttt{covington.sty} are welcome, and bug
 reports are actively solicited.  Please note, however, that this is free
 software, and the author makes no commitment to do any further work on 
 it.
