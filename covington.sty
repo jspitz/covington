@@ -13,9 +13,13 @@
 %%
 %% Robin Fairbairns: patched setting of \textfloatsep to use
 %% \setlength rather than \renewcommand; also converted to un*x line endings
+%%
+%% Juergen Spitzmueller: patch to use NFSS font commands instead of deprecated
+%% LaTeX 2.09 commands if NFSS is available
 
 \typeout{* covington.sty : Covington's linguistic macros, 2001 March 27 *}
 %% patched 2014-05-16 (rf10@cl.cam.ac.uk)
+%% patched 2016-07-05 (juergen@spitzmueller.org)
 
 %%%
 %%% Preferences about how text is laid out
@@ -166,15 +170,15 @@
 % baselinestretch.
 
 \@ifundefined{new@fontshape}%
-   {\def\@selfnt{\ifx\@currsize\normalsize\@normalsize\else\@currsize\fi}}
-   {\def\@selfnt{\selectfont}}
+   {\def\cov@selfnt{\ifx\@currsize\normalsize\@normalsize\else\@currsize\fi}}
+   {\def\cov@selfnt{\selectfont}}
    % Thanks to Hans-Peter Kolb for this macro.
 
 \def\gll                 % Introduces 2-line text-and-gloss.
    {\begin{flushleft}
 \vskip\baselineskip%      % Added 1992 Nov 8 to force single spacing
 \def\baselinestretch{1}%
-\@selfnt%
+\cov@selfnt%
 \vskip-\baselineskip%
     \bgroup
     \catcode`\^^M=12
@@ -185,7 +189,7 @@
    {\begin{flushleft}
 \vskip\baselineskip%      % Added 1992 Nov 8 to force single spacing
 \def\baselinestretch{1}%
-\@selfnt%
+\cov@selfnt%
 \vskip-\baselineskip%
     \bgroup
     \catcode`\^^M=12
@@ -222,9 +226,18 @@
 \glossglue = 5pt plus 2pt minus 1pt % allow stretch/shrink between words
 \newif\ifnotdone
 
-\let\eachwordone=\it
-\let\eachwordtwo=\rm
-\let\eachwordthree=\rm
+% Add semantic markup (with latex 2.09 backwards support)
+\@ifundefined{selectfont}{%
+  \def\cov@emphasized{\it}%
+  \def\cov@normalfont{\rm}%
+}{%
+  \def\cov@emphasized{\normalfont\itshape}%
+  \def\cov@normalfont{\normalfont\rmfamily}%
+}
+
+\let\eachwordone=\cov@emphasized
+\let\eachwordtwo=\cov@normalfont
+\let\eachwordthree=\cov@normalfont
 
 \def\lastword#1#2#3% #1 = \each, #2 = line box, #3 = word box
    {\setbox#2=\vbox{\unvbox#2%
@@ -311,7 +324,7 @@
 
 % \psr         To print S -> NP VP, use: \psr{S}{NP~VP}
 
-\newcommand{\psr}[2]{\mbox{\it #1 $\rightarrow$ #2}}
+\newcommand{\psr}[2]{\mbox{\cov@emphasized #1 $\rightarrow$ #2}}
 
 
 %%%
@@ -331,7 +344,7 @@
 {
     \mbox{\small 
           $
-          \it 
+          \cov@emphasized 
           \left[
           \!\!
           \begin{array}{l}
@@ -346,14 +359,14 @@
 \newcommand{\lfs}[2]
    {
      \mbox{$
-           \it
+           \cov@emphasized
            \!\!
            \begin{array}[t]{c}
            #1
            \\
            \mbox{\small%
                  $
-                 \it
+                 \cov@emphasized
                  \left[
                  \!\!
                  \begin{array}{l}
@@ -411,7 +424,7 @@
 \newcommand{\drs}[2]
 {
     {
-    \it
+    \cov@emphasized
     \begin{tabular}{|l|}
     \hline
     ~ \vspace{-2ex} \\
@@ -430,7 +443,7 @@
 
 \newcommand{\sdrs}[3]
 {\begin{tabular}{l}
-\mbox{\it #1} \\
+\mbox{\cov@emphasized #1} \\
 ~ \\
 \drs{#2}{#3}
 \end{tabular}}
@@ -496,7 +509,7 @@
 % defined.  Permits using uga.sty with covingtn.sty.
 
 \newcommand{\sentence}[1]
-     {\begin{flushleft}{\it #1}\end{flushleft}}
+     {\begin{flushleft}{\cov@emphasized #1}\end{flushleft}}
 
 \newcommand{\either}[2]
 {
