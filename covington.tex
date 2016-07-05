@@ -1,0 +1,484 @@
+% File: covington.tex  (in LaTeX2e)
+% Documentation for covington.sty
+
+\documentclass{article}
+\usepackage{covington}
+\title{\bf Typing Linguistics with {\tt covington.sty}}
+\author{Michael A. Covington \\
+        \small Artificial Intelligence Center \\
+        \small The University of Georgia \\
+        \small Athens, Georgia 30602 \sc u.s.a.\\
+        mcovingt@ai.uga.edu\\
+	http://www.ai.uga.edu/$\sim$mc}
+\date{2001 March 27}
+
+\begin{document}
+\maketitle
+{\footnotesize \tableofcontents}
+\typeout{Run LaTeX twice to get a correct table of contents.}
+
+\section*{New in This Version}
+\begin{itemize}
+\item It is no longer necessary to type \verb"\it" to get proper italic type in feature structures.
+\item Instructions have been rewritten with \LaTeXe\ users in mind.
+\end{itemize}
+
+\section*{New in Preceding Versions}
+\begin{itemize}
+\item Multiple accents on a single letter (e.g., \emph{\acm{a}}) are supported.
+\item This package is now called {\tt covington} (with the o)
+and is compatible with \LaTeXe\ and NFSS as well as \LaTeX\ 2.09.
+\item The vertical placement of labeled feature structures has 
+been changed
+so that the category labels line up regardless of the size of
+the structures.
+\end{itemize}
+
+\section*{Introduction}
+This file, {\tt covington.tex}, is the documentation for the 
+March 2001 version of {\tt covington.sty}, which is a \LaTeX\ style 
+option for typing many of the special notations common in linguistics.
+
+{\footnotesize 
+In em\TeX\ under MS-DOS, {\tt covington.sty} is called {\tt covingto.sty}.
+The missing $n$ has no effect.}
+
+To use {\tt covington.sty}, you should have a copy of it in either your
+current directory or the directory where \LaTeX\ styles are kept on your 
+system.
+
+Then, under \LaTeXe,
+include the command
+\verb"\usepackage{covington}"
+after your \verb"\documentclass" command.
+
+{\footnotesize
+In \LaTeX\ 2.09,
+include {\tt covington} among the optional parameters of 
+\verb"\documentstyle", like this: \hfill\\
+{\tt
+\verb"\documentstyle[12pt,"\underline{covington}\verb"]{article}"
+}\hfill\\
+Note the spelling {\tt covington} (9 letters).
+}
+
+In what follows I presume that you know how to use \LaTeX\ and have 
+access to the \LaTeX\ manual. Note that {\tt covington.sty} does not 
+provide any special fonts or character sets.  However, it can be used in 
+combination with other style sheets that do.
+
+If you are using {\tt covington.sty} and {\tt uga.sty} (UGa thesis style) 
+together, you should mention {\tt uga} before {\tt covington}.
+
+ 
+\section{Accents}
+
+\LaTeX\ provides a generous range of accents that can be placed on any
+letter, such as:
+\begin{flushleft}
+\`{x} \'{x} \^{x} \"{x} \~{x} \={x} \H{x} \t{xx} \c{x} \d{x} \b{x}
+\end{flushleft}
+which are typed, respectively, as:
+\begin{verbatim}
+\`{x} \'{x} \^{x} \"{x} \~{x} \={x} \H{x} \t{xx} \c{x} \d{x} \b{x}
+\end{verbatim}
+\LaTeX also provides the foreign characters
+\begin{flushleft}\obeyspaces
+\i \j \ae \AE \oe \OE \aa \AA \o \O \l \L \ss ?` !`
+\end{flushleft}
+which are typed as:
+\begin{verbatim}
+\i \j \ae \AE \oe \OE \aa \AA \o \O \l \L \ss ?` !`
+\end{verbatim}
+
+But by itself, \LaTeX\ doesn't give you a convenient way to put two
+accents on the same letter.  To fill this gap, {\tt covington.sty} provides
+the following macros:
+\begin{flushleft}
+\verb,\twoacc[...|...], \quad to combine any 2 accents, e.g.,
+               \verb.\twoacc[\~|\={a}]. = \twoacc[\~|\={a}]\\[6pt]
+\verb,\acm{...}, \quad for acute over macron, e.g., \verb.\acm{a}. = \acm{a}\\
+\verb,\grm{...}, \quad for grave over macron, e.g., \verb.\grm{a}. = \grm{a}\\
+\verb,\cim{...}, \quad for circumflex over macron, e.g., \verb.\cim{a}. = \cim{a}
+\end{flushleft}
+The first of these is the general case and the latter three are special
+cases that occur often in transcribing Greek.  Now you can type
+\emph{Koin\acm{e}} with both accents in place.
+
+Note the peculiar syntax of \verb.\twoacc. --- its arguments are in
+square brackets, not curly brackets, and are separated by \verb.|..
+The first argument is the upper accent (only) and the second argument
+is the letter with the lower accent indicated.
+
+Note also that not all accents work in the {\tt tabbing} environment.
+Use {\tt tabular} or see the \LaTeX\ manual for workarounds.
+
+\section{Example numbers}
+
+Linguistics papers often include numbered examples.
+The macro \verb"\exampleno" generates a new example number and can be 
+used anywhere you want the number to appear.  For example, to display a 
+sentence with a number at the extreme right, do this:
+\begin{verbatim}
+\begin{flushleft}
+This is a sentence. \hfill (\exampleno)
+\end{flushleft}
+\end{verbatim}
+Here's what you get:
+\begin{flushleft}
+This is a sentence. \hfill (\exampleno)
+\end{flushleft}
+The example counter is actually the same as \LaTeX's equation counter, 
+so that if you use equations and numbered examples in the same
+paper, you get a single continuous series of numbers. If you want to 
+access the number without changing it, use \verb"\theequation".
+
+Also, you can use \verb"\label" and \verb"\ref" with example numbers in 
+exactly the same way as with equation numbers.  See the \LaTeX\ manual for
+details. This applies to the {\tt example} and {\tt examples} 
+environments, described next, as well as to \verb"\exampleno" itself.
+
+\section{The {\tt example} environment}
+
+The {\tt example} environment displays a single example
+with a generated example number to the left of it.
+If you type
+\begin{verbatim}
+\begin{example}
+This is a sentence.
+\end{example}
+\end{verbatim}
+you get:
+\begin{example}
+This is a sentence.
+\end{example}
+The {\tt example} environment is a lot like {\tt flushleft}. The example
+can be of any length; it can consist of many lines (separated by \verb"\\"),
+or even whole paragraphs.
+
+One way to number sub--examples is to use {\tt itemize} or {\tt 
+enumerate} within an example, like this:
+\begin{verbatim}
+\begin{example}
+\begin{itemize}
+\item[(a)] This is the first sentence.
+\item[(b)] This is the second sentence.
+\end{itemize}
+\end{example}
+\end{verbatim}
+This prints as:
+\begin{example}
+\begin{itemize}
+\item[(a)] This is the first sentence.
+\item[(b)] This is the second sentence.
+\end{itemize}
+\end{example}
+However, the {\tt examples} environment, described next, is usually more 
+convenient.
+
+\section{The {\tt examples} environment}
+
+To display a series of examples together, each with its own example 
+number, use {\tt examples} instead of {\tt example}.  The only 
+difference is that there can be more than one example, and each of them 
+has to be introduced by \verb"\item", like this:
+\begin{verbatim}
+\begin{examples}
+\item This is the first sentence.
+\item This is the second sentence.
+\end{examples}
+\end{verbatim}
+This prints as:
+\begin{examples}
+\item This is the first sentence.
+\item This is the second sentence.
+\end{examples}
+
+
+\section{Glossing sentences word--by--word}
+
+To gloss a sentence is to annotate it word--by--word.  Most commonly, a 
+sentence in a foreign language is followed by a word--for--word 
+translation (with the words lined up vertically) and then a smooth 
+translation (not lined up), like this:%
+\footnote{The macros for handling glosses are adapted with permission 
+from {\tt gloss.tex}, by Marcel R. van der Goot.}
+\gll Dit is een Nederlands voorbeeld. 
+     This is a Dutch example. 
+\glt `This is an example in Dutch.'
+\glend
+That particular example would be typed as:
+\begin{verbatim}
+\gll Dit is een Nederlands voorbeeld. 
+     This is a Dutch example. 
+\glt `This is an example in Dutch.'
+\glend
+\end{verbatim}
+Notice that the words do not have to be typed lining up; instead, \TeX\ 
+counts them.  If the words in the two languages do not correspond 
+one--to--one, you can use curly brackets to show the intended grouping.
+For example, to print
+\gll Dit is een voorbeeldje     in het Nederlands.
+     This is a {little example} in {}  Dutch.
+\glt `This is a little example in Dutch.'
+\glend
+you would type:
+\begin{verbatim}
+\gll Dit is een voorbeeldje     in het Nederlands.
+     This is a {little example} in {}  Dutch.
+\glt `This is a little example in Dutch.'
+\glend
+\end{verbatim}
+All together, {\tt covington.sty} gives you five macros for dealing with
+glosses:
+\begin{itemize}
+\item \verb"\gll" introduces two lines of words vertically aligned, and 
+activates an environment very similar to {\tt flushleft}.
+\item \verb"\glll" is like \verb"gll" except that it introduces {\em 
+three} lines of lined--up words (useful for cited forms, morphology,
+and translation).
+\item \verb"\glt" ends the set of lined--up lines and introduces a line 
+(or more) of translation.
+\item \verb"\gln" is like \verb"\glt" but does not start a new line 
+(useful when no translation follows but you want to put a number on the 
+right).
+\item \verb"\glend" ends the special {\tt flushleft}--like environment.
+\end{itemize}
+Here are several examples.  First, a sentence with three lines aligned, 
+instead of just two:
+\glll  Hoc est aliud exemplum.
+       n.sg.nom 3.sg n.sg.nom n.sg.nom
+       This is another example.
+\glt   `This is another example.'
+\glend
+This is typed as:
+\begin{verbatim}
+\glll  Hoc est aliud exemplum.
+       n.sg.nom 3.sg n.sg.nom n.sg.nom
+       This is another example.
+\glt   `This is another example.'
+\glend
+\end{verbatim}
+Next, an example with a gloss but no translation, with an example number 
+at the right:
+\gll  Hoc habet numerum.
+      This has number
+\gln  \hfill (\exampleno)
+\glend
+That one was typed as:
+\begin{verbatim}
+\gll  Hoc habet numerum.
+      This has number
+\gln  \hfill (\exampleno)
+\glend
+\end{verbatim}
+Finally we'll put a glossed sentence inside the {\tt example} 
+environment, which is a very common way of using it:
+\begin{example}
+\gll  Hoc habet numerum praepositum.
+      This has number preposed
+\glt  `This one has a number in front of it.'
+\glend
+\end{example}
+This last example was, of course, typed as:
+\begin{verbatim}
+\begin{example}
+\gll  Hoc habet numerum praepositum.
+      This has number preposed
+\glt  `This one has a number in front of it.'
+\glend
+\end{example}
+\end{verbatim}
+Notice that every glossed sentence begins with either \verb"\gll" or 
+\verb"\glll", then contains either \verb"\glt" or \verb"\gln", and ends 
+with \verb"\glend".  Layout is critical in the part preceding 
+\verb"\glt" or \verb"\gln", and fairly free afterward.
+
+\section{Phrase structure rules}
+
+To print the phrase structure rule \psr{S}{NP~VP} you can type
+\verb"\psr{S}{NP~VP}", and likewise for other phrase structure rules.
+
+\section{Feature structures}
+
+To print a feature structure such as:
+\begin{flushleft}
+%\fs{\it case:nom \\ \it person:P}
+\fs{case:nom}
+\end{flushleft}
+you can type:
+\begin{verbatim}
+\fs{case:nom \\ person:P}
+\end{verbatim}
+
+The feature structure can appear anywhere --- in continuous text, in a
+displayed environment such as {\tt flushleft}, or inside a
+phrase--structure rule, or even inside another feature structure.
+
+To put a category label at the top of the feature structure, like this,
+\begin{flushleft}
+\lfs{N}{case:nom \\ person:P}
+\end{flushleft}
+here's what you type:
+\begin{verbatim}
+\lfs{N}{case:nom \\ person:P}
+\end{verbatim}
+And here is an example of a PS--rule made of labeled feature structures:
+\begin{flushleft}
+\psr{\lfs{S}{tense:T}}
+    {\lfs{NP}{case:nom \\  number:N}
+     \lfs{VP}{tense:T \\ number:N} }
+\end{flushleft}
+which was of course typed as:
+\begin{verbatim}
+\psr{\lfs{S}{tense:T}}
+    {\lfs{NP}{case:nom \\  number:N}
+     \lfs{VP}{tense:T \\ number:N} }
+\end{verbatim}
+
+
+\section{Discourse representation structures}
+
+Several macros in {\tt covington.sty} facilitate display of discourse 
+repsesentation structures (DRSes) in the box notation originally used by 
+Hans Kamp.  The simplest is \verb"\drs", which takes two arguments:
+a list of discourse variables joined by \verb"~", and a list of DRS 
+conditions separated by \verb"\\".  Nesting is permitted.  Note that the 
+\verb"\drs" macro itself does not give you a displayed environment; you 
+must use {\tt flushleft} or the like to display the DRS.
+Here are some examples:
+\begin{verbatim}
+\drs{X}{donkey(X)\\green(X)}
+\end{verbatim}
+\begin{flushleft}
+\drs{X}{donkey(X)\\green(X)}
+\end{flushleft}
+\begin{verbatim}
+\drs{X}
+{named(X,`Pedro') \\
+\drs{Y}{donkey(Y)\\owns(X,Y)}~~
+       {\large $\Rightarrow$}~
+        \drs{~}{feeds(X,Y)}
+}
+\end{verbatim}
+\begin{flushleft}
+\drs{X}
+{named(X,`Pedro') \\
+\drs{Y}{donkey(Y)\\owns(X,Y)}~~
+       {\large $\Rightarrow$}~
+        \drs{~}{feeds(X,Y)}
+}
+\end{flushleft}
+To display a sentence above the DRS, use \verb"\sdrs", like this:
+\begin{verbatim}
+\sdrs{A donkey is green.}{X}{donkey(X)\\green(X)}
+\end{verbatim}
+\begin{flushleft}
+\sdrs{A donkey is green.}{X}{donkey(X)\\green(X)}
+\end{flushleft}
+Some DRS connectives are also provided (normally for forming
+DRSes that are to be nested within other DRSes).
+The macro \verb"\negdrs" forms a DRS preceded by a negation symbol:
+\begin{verbatim}
+\negdrs{X}{donkey(X)\\green(X)}
+\end{verbatim}
+\begin{flushleft}
+\negdrs{X}{donkey(X)\\green(X)}
+\end{flushleft}
+Finally, \verb"\ifdrs" forms a pair of DRSes joined by a big arrow,
+like this:
+\begin{verbatim}
+\ifdrs{X}{donkey(X)\\hungry(X)}
+      {~}{feeds(Pedro,X)}
+\end{verbatim}
+\begin{flushleft}
+\ifdrs{X}{donkey(X)\\hungry(X)}
+      {~}{feeds(Pedro,X)}
+\end{flushleft}
+If you have an ``if''--structure appearing among ordinary predicates 
+inside a DRS, you may prefer to use \verb"\alifdrs", which is just like 
+\verb"\ifdrs" but shifted slightly to the left for better alignment.
+
+\section{Exercises}
+
+The {\tt exercise} environment generates an exercise numbered according 
+to chapter, section, and subsection (suitable for use in a large book; 
+in this example, the subsection number is going to come out as 0).
+\begin{exercise}[Project]
+Prove that the above assertion is true.
+\end{exercise}
+This was typed as
+\begin{verbatim}
+\begin{exercise}[Project]
+Prove that the above assertion is true.
+\end{exercise}
+\end{verbatim}
+and the argument \verb"[Project]" is optional (actually, any word could 
+go there).
+
+\section{Reference Lists}
+
+To type an LSA--style hanging--indented reference list, use the {\tt 
+reflist} environment.  ({\em Note:\/} {\tt reflist} is not presently
+integrated with Bib\TeX\ in any way.)  For example,
+\begin{verbatim}
+\begin{reflist}
+Barton, G. Edward; Berwick, Robert C.; and Ristad, Eric Sven.  1987.
+Computational complexity and natural language.  Cambridge, 
+Massachusetts: MIT Press.
+
+Chomsky, Noam.  1965.  Aspects of the theory of syntax.  Cambridge,
+Massachusetts: MIT Press.
+
+Covington, Michael.  1993.  Natural language processing for Prolog
+programmers.  Englewood Cliffs, New Jersey: Prentice--Hall.
+\end{reflist}
+\end{verbatim}
+prints as:
+\begin{reflist}
+Barton, G. Edward; Berwick, Robert C.; and Ristad, Eric Sven.  1987.
+Computational complexity and natural language.  Cambridge, 
+Massachusetts: MIT Press.
+
+Chomsky, Noam.  1965.  Aspects of the theory of syntax.  Cambridge,
+Massachusetts: MIT Press.
+
+Covington, Michael A.  1993.  Natural--language processing for Prolog 
+programmers.  Englewood Cliffs, New Jersey: Prentice--Hall.
+\end{reflist}
+Notice that within the reference list, ``French spacing'' is in effect 
+--- that is, spaces after periods are no wider than normal spaces. Thus 
+you do not have to do anything special to avoid excessive space after 
+people's initials.
+
+
+\section{Displayed sentences}
+
+The macro \verb"\sentence" displays an italicized sentence (it is a 
+combination of {\tt flushleft} and \verb"\em").  If you type
+\begin{verbatim}
+\sentence{This is a sentence.}
+\end{verbatim}
+you get:
+\sentence{This is a sentence.}
+
+
+\section{Big curly brackets (disjunctions)}
+
+Last of all, the 2--argument macro \verb"\either" expresses alternatives
+within a sentence or PS--rule:
+\begin{flushleft}
+\verb"the \either{big}{large} dog" $=$ the \either{big}{large} dog \\
+\end{flushleft}
+\begin{flushleft}
+\verb"\psr{A}{B~\either{C}{D}~E} " $=$ \psr{A}{B~\either{C}{D}~E}
+\end{flushleft}
+
+That's all there is.
+Suggestions for improving {\tt covington.sty} are welcome, and bug
+reports are actively solicited.  Please note, however, that this is free
+software, and the author makes no commitment to do any further work on 
+it.
+
+\end{document}
+

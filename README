@@ -1,0 +1,36 @@
+=========================================================================
+The covington package
+
+Numer­ous mi­nor LaTeX en­hance­ments for lin­guis­tics, in­clud­ing mul­ti­ple
+ac­cents on the same let­ter, in­ter­line glosses (word-by-word trans­la­tions),
+Dis­course Rep­re­sen­ta­tion Struc­tures, and ex­am­ple num­ber­ing.
+
+Copyright 2001--2016 Michael A. Covington
+                     Robin Fairbairns
+                     Jürgen Spitzmüller
+
+Current Maintainer: Jürgen Spitzmüller
+E-mail: juergen (at) spitzmueller (dot) org
+
+Released under the LaTeX Project Public License v1.3 or later
+See http://www.latex-project.org/lppl.txt
+=========================================================================
+
+== PURPOSE ==
+
+This package, initially a collection of Michael Covinton's private macros, provides
+numer­ous mi­nor LATEX en­hance­ments for lin­guis­tics, in­clud­ing mul­ti­ple ac­cents on the
+same let­ter, in­ter­line glosses (word-by-word trans­la­tions), Dis­course Rep­re­sen­ta­tion
+Struc­tures, and ex­am­ple num­ber­ing.
+
+The package works both with LaTeX 2.09 and LaTeX2e.
+
+
+== CONTENTS ==
+
+The package consists of the following files:
+
+* covington.sty: the actual package
+* covington.tex: the documentation
+* README (this file)
+
