@@ -374,9 +374,8 @@
 %    Modified 2001 Mar 27 so that italics are used without the user typing \it.
 \newcommand{\fs}[1]
 {
-    \mbox{\small 
+    \mbox{\small\cov@emphasized
           $
-          \cov@emphasized 
           \left[
           \!\!
           \begin{array}{l}
@@ -390,15 +389,14 @@
 %     Modified 1990 Dec 5 so that features are left aligned.
 \newcommand{\lfs}[2]
    {
-     \mbox{$
-           \cov@emphasized
+     \mbox{\cov@emphasized
+           $
            \!\!
            \begin{array}[t]{c}
            #1
            \\
            \mbox{\small%
                  $
-                 \cov@emphasized
                  \left[
                  \!\!
                  \begin{array}{l}
