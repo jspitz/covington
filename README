@@ -18,7 +18,7 @@ See http://www.latex-project.org/lppl.txt
 
 == PURPOSE ==
 
-This package, initially a collection of Michael Covinton's private macros, provides
+This package, initially a collection of Michael Covington's private macros, provides
 numer­ous mi­nor LATEX en­hance­ments for lin­guis­tics, in­clud­ing mul­ti­ple ac­cents on the
 same let­ter, in­ter­line glosses (word-by-word trans­la­tions), Dis­course Rep­re­sen­ta­tion
 Struc­tures, and ex­am­ple num­ber­ing.

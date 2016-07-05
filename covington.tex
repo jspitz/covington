@@ -21,18 +21,28 @@
 
 \begin{document}
 \maketitle
+
+\begin{abstract}
+\noindent This package, initially a collection of Michael Covington's private macros, provides
+numer­ous mi­nor \LaTeX\ en­hance­ments for lin­guis­tics, in­clud­ing mul­ti­ple ac­cents on the
+same let­ter, in­ter­line glosses (word-by-word trans­la­tions), Dis­course Rep­re­sen­ta­tion
+Struc­tures, and ex­am­ple num­ber­ing.
+
+The package works both with \LaTeX\ 2.09 and \LaTeXe.
+\end{abstract}
+
 {\footnotesize \tableofcontents}
 \typeout{Run LaTeX twice to get a correct table of contents.}
 
-\section*{New in This Version}
+\section*{New in this version}
 \begin{itemize}
 \item The package now uses PSNFSS font commands if available (fallback for \LaTeX\ 2.09 is still provided)
-\item License has been changed to LPPL (in agreement with M. Covington)
 \item New maintainer: J. Spitzm\"uller
+\item License has been changed to LPPL (in agreement with M. Covington)
 \item Introduce version numbers. Arbitrarily, we start with 1.1
 \end{itemize}
 
-\section*{New in Preceding Versions}
+\section*{New in preceding versions}
 \subsection*{2001 March 27}
 \begin{itemize}
 \item It is no longer necessary to type \verb"\it" to get proper italic type in feature structures.
@@ -52,23 +62,21 @@ the structures.
 
 \section*{Introduction}
 This file, \texttt{covington.tex}, is the documentation for \pversion\
-of \texttt{covington.sty} (\pdate), which is a \LaTeX\ style 
-option for typing many of the special notations common in linguistics.
-
-{\footnotesize 
-In em\TeX\ under MS-DOS, \texttt{covington.sty} is called \texttt{covingto.sty}.
+of \texttt{covington.sty} (\pdate), which is a \LaTeX\ package providing macros
+for typing many of the special notations common in linguistics.%
+\footnote{In em\TeX\ under MS-DOS, \texttt{covington.sty} is called \texttt{covingto.sty}.
 The missing $n$ has no effect.}
 
 To use \texttt{covington.sty}, you should have a copy of it in either your
 current directory or the directory where \LaTeX\ styles are kept on your 
 system.
 
-Then, under \LaTeXe,
-include the command
+Then, under \LaTeXe, include the command
 \verb"\usepackage{covington}"
 after your \verb"\documentclass" command.
 
-{\footnotesize
+\begin{quote}
+\footnotesize
 In \LaTeX\ 2.09,
 include \texttt{covington} among the optional parameters of 
 \verb"\documentstyle", like this: \hfill\\
@@ -76,7 +84,7 @@ include \texttt{covington} among the optional parameters of
 \verb"\documentstyle[12pt,"\underline{covington}\verb"]{article}"
 }\hfill\\
 Note the spelling \texttt{covington} (9 letters).
-}
+\end{quote}
 
 In what follows I presume that you know how to use \LaTeX\ and have 
 access to the \LaTeX\ manual. Note that \texttt{covington.sty} does not 
@@ -84,7 +92,7 @@ provide any special fonts or character sets.  However, it can be used in
 combination with other style sheets that do.
 
 If you are using \texttt{covington.sty} and \texttt{uga.sty} (UGa thesis style) 
-together, you should mention \texttt{uga} before \texttt{covington}.
+together, you should load \texttt{uga} before \texttt{covington}.
 
  
 \section{Accents}
@@ -98,7 +106,7 @@ which are typed, respectively, as:
 \begin{verbatim}
 \`{x} \'{x} \^{x} \"{x} \~{x} \={x} \H{x} \t{xx} \c{x} \d{x} \b{x}
 \end{verbatim}
-\LaTeX also provides the foreign characters
+\LaTeX\ also provides the characters
 \begin{flushleft}\obeyspaces
 \i \j \ae \AE \oe \OE \aa \AA \o \O \l \L \ss ?` !`
 \end{flushleft}
@@ -127,7 +135,7 @@ The first argument is the upper accent (only) and the second argument
 is the letter with the lower accent indicated.
 
 Note also that not all accents work in the \texttt{tabbing} environment.
-Use \texttt{tabular} or see the \LaTeX\ manual for workarounds.
+Use \texttt{tabular} or refer to the \LaTeX\ manual for workarounds.
 
 \section{Example numbers}
 
