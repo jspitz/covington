@@ -1,25 +1,57 @@
-%%% File covington.sty
-%%%
-%%% Michael A. Covington
-%%% Artificial Intelligence Programs
-%%% The University of Georgia
-%%% Athens, Georgia 30602-7415 USA
-%%% mcovingt@aisun1.ai.uga.edu
-%%%
-%%% You may copy and distribute this file freely.
-%%% (If you modify it, please change its name and add your own comments.)
-%%%
-%%% See covington.tex for documentation.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% File covington.sty
 %%
-%% Robin Fairbairns: patched setting of \textfloatsep to use
-%% \setlength rather than \renewcommand; also converted to un*x line endings
+%% Some macros useful for linguistics
 %%
-%% Juergen Spitzmueller: patch to use NFSS font commands instead of deprecated
-%% LaTeX 2.09 commands if NFSS is available
+%% Original author:
+%% ================
+%% Michael A. Covington
+%% Artificial Intelligence Programs
+%% The University of Georgia
+%% Athens, Georgia 30602-7415 USA
+%% mcovingt@aisun1.ai.uga.edu
+%%
+%% Contributors:
+%% =============
+%% Robin Fairbairns <rf10@cl.cam.ac.uk> 2014-05-16: patched setting of \textfloatsep
+%% to use \setlength rather than \renewcommand; also converted to un*x line endings
+%%
+%% Current maintainer:
+%% ===================
+%% Juergen Spitzmueller <juergen@spitzmueller.org>
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2003/12/01 or later.
+%%
+%% This work has the LPPL maintenance status "maintained".
+%% 
+%% The Current Maintainer of this work is Juergen Spitzmueller.
+%%
+%% Code repository and issue tracker: https://github.com/jspitz/covington
+%%
+%% See covington.tex for documentation.
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\typeout{* covington.sty : Covington's linguistic macros, 2001 March 27 *}
-%% patched 2014-05-16 (rf10@cl.cam.ac.uk)
-%% patched 2016-07-05 (juergen@spitzmueller.org)
+%%%
+%%% Metadata
+%%%
+
+\def\filedate{2016/07/05}
+\def\fileversion{1.1}
+\def\filename{covington.sty}
+
+\@ifundefined{ProvidesPackage}{%
+\typeout{* covington.sty : Covington's linguistic macros, \fileversion\ \filedate *}
+}{%
+\ProvidesPackage{covington}
+	[\filedate\space v\fileversion\space Covington's linguistic macros]
+}
 
 %%%
 %%% Preferences about how text is laid out
