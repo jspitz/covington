@@ -38,20 +38,23 @@ The package consists of the following files:
 
 * Version 1.1 (2016-07-06):
 
-	- The package now uses PSNFSS font commands if available (fallback for LaTeX 2.09 is still provided).
+	- The package now uses PSNFSS font commands if available (fallback for LaTeX 2.09
+	  is still provided).
 
-	- Work around clash with classes/packages that define their own example and examples environments
-	  (most notably the beamer class) as well as execise environments. The covington package no longer
-	  blindly attempts to define these environments. By default, it does not define them if they are
-	  already defined (covington's own environments, however, are still available via aliases).
+	- Work around clash with classes/packages that define their own example and
+	  examples environments (most notably the beamer class) as well as execise
+	  environments. The covington package no longer blindly attempts to define
+	  these environments. By default, it does not define them if they are already
+	  defined (covington's own environments, however, are still available via aliases).
 	  By means of a new package option, a redefinition can also be forced.
 
-	- New length \twoaccsep allows for the adjustment of the distance between stacked accents.
+	- New length \twoaccsep allows for the adjustment of the distance between stacked
+	  accents.
 
 	- Update manual.
 
 	- New maintainer: J. Spitzmüller.
 
-	- License has been changed to LPPL (in agreement with M. Covington)
+	- License has been changed to LPPL (in agreement with M. Covington).
 
 	- Introduce version numbers. Arbitrarily, we start with 1.1.
