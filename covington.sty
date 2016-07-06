@@ -42,15 +42,29 @@
 %%% Metadata
 %%%
 
-\def\filedate{2016/07/05}
+\def\filedate{2016/07/06}
 \def\fileversion{1.1}
 \def\filename{covington.sty}
+
+% Force redefinition of environments?
+\newif\ifforceredef\forceredeffalse
 
 \@ifundefined{ProvidesPackage}{%
 \typeout{* covington.sty : Covington's linguistic macros, \fileversion\ \filedate *}
 }{%
 \ProvidesPackage{covington}
 	[\filedate\space v\fileversion\space Covington's linguistic macros]
+\DeclareOption{force}{\forceredeftrue}
+\ProcessOptions
+}
+
+% Macro to issue warnings
+\newcommand\cov@warning[1]{%
+   \@ifundefined{PackageWarning}{%
+      \typeout{* covington warning : #1 *}
+   }{%
+      \PackageWarning{covington}{#1}%
+   }
 }
 
 %%%
@@ -67,10 +81,15 @@
 % This is adapted from the \diatop macro in wsuipa.sty, which was
 % originally designed by Jean-Pierre Paillet.
 
+% Length to adjust accent distance
+% Introduced 2016-07-06 JSP. 
+\newlength\twoaccsep
+\setlength{\twoaccsep}{-0.8ex}
+
 \def\twoacc[#1|#2]{\leavevmode{\setbox1=\hbox{{#1{}}}%
                      \setbox2=\hbox{{#2{}}}%
                      \dimen0=\ifdim\wd1>\wd2\wd1\else\wd2\fi%
-                     \dimen1=\ht2\advance\dimen1by-0.8ex%
+                     \dimen1=\ht2\advance\dimen1by\twoaccsep%
                      \setbox1=\hbox to1\dimen0{\hss#1\hss}%
                      \rlap{\raise1\dimen1\box1}%
                      \hbox to1\dimen0{\hss#2\hss}}}%
@@ -124,8 +143,29 @@
 %              \item[(b)] This is the second example.
 %              \end{itemize}
 %             \end{example}
+%
+% New in 1.1 (2016-07-06):
+%            We provide a covexample environment and only (re)define
+%            example if it does not yet exist or if redefinition is
+%            forced by the "forced" option. This prevents clashes
+%            with packages/classes that roll their own example environment
+%            (such as beamer).
 
-\newenvironment{example}{\begin{examples}\item}{\end{examples}}
+\newenvironment{covexample}{\begin{covexamples}\item}{\end{covexamples}}
+
+\@ifundefined{example}{%
+  \newenvironment{example}{\begin{covexamples}\item}{\end{covexamples}}
+}{%
+\ifforceredef
+  \renewenvironment{example}{\begin{covexamples}\item}{\end{covexamples}}
+  \cov@warning{The example environment was already defined. Redefining it.}
+\else
+  \cov@warning{The example environment was already defined.^^J
+               Covington does not touch it.^^J
+               Use covexample if you want to access covington's^^J
+               version, or use the force package option.}
+\fi
+}
 
 %%%
 %%% The 'examples' environment
@@ -141,10 +181,17 @@
 %
 % Thanks to Darrel Hankerson of Auburn University, and numerous others
 % across the net, for help with this macro.
+%
+% New in 1.1 (2016-07-06):
+%            We provide a covexamples environment and only (re)define
+%            examples if it does not yet exist or if redefinition is
+%            forced by the "forced" option. This prevents clashes
+%            with packages/classes that roll their own examples environment
+%            (such as beamer).
 
 \newcounter{equationsave}          % used in trick with equation number
 
-\newenvironment{examples}%         % define "example" environment
+\newenvironment{covexamples}%         % define "example" environment
 {%
 \begin{list}{(\theequation)}%
 {%
@@ -156,6 +203,20 @@
 }%
 \raggedright}%                     % text is flushleft, not justified
 {\end{list}}
+
+\@ifundefined{examples}{%
+  \newenvironment{examples}{\begin{covexamples}}{\end{covexamples}}
+}{%
+\ifforceredef
+  \renewenvironment{examples}{\begin{covexamples}}{\end{covexamples}}
+  \cov@warning{The examples environment was already defined. Redefining it.}
+\else
+  \cov@warning{The examples environment was already defined.^^J
+               Covington does not touch it.^^J
+               Use covexamples if you want to access covington's^^J
+               version, or use the force package option.}
+\fi
+}
 
 %%%
 %%% Sentences with word-by-word glosses
@@ -501,9 +562,15 @@
 % exercise    Environment for exercises, numbered by subsection.
 %             Optional argument for describing the exercise
 %             ("Project" or the like).
+%
+% New in 1.1 (2016-07-06):
+%            We provide a covexercise environment and only (re)define
+%            example if it does not yet exist or if redefinition is
+%            forced by the "forced" option. This prevents clashes
+%            with packages/classes that roll their own exercise environment.
 
-% \bx         Abbreviation for \begin{exercise}
-% \ex         Abbreviation for \end{exercise}
+% \bx         Abbreviation for \begin{covexercise}
+% \ex         Abbreviation for \end{covexercise}
 
 % reflist     Environment for hanging-indented list
 %             (suitable for LSA-style reference list).
@@ -515,16 +582,30 @@
 %             large curly brackets.  Good for alternatives
 %             within sentences or PS-rules.
 
-\newtheorem{exercise}{Exercise}[subsection]
+\newtheorem{covexercise}{Exercise}[subsection]
 
 % Exercise numbering resets to 0 not only at the start of
 % a subsection, but also at the start of a section or chapter
 % even if it is not divided into subsections.
-\@addtoreset{exercise}{section}
-\@addtoreset{exercise}{chapter}
+\@addtoreset{covexercise}{section}
+\@addtoreset{covexercise}{chapter}
 
-\newcommand{\bx}{\begin{exercise}}
-\newcommand{\ex}{\end{exercise}}
+\newcommand{\bx}{\begin{covexercise}}
+\newcommand{\ex}{\end{covexercise}}
+
+\@ifundefined{exercise}{%
+  \newenvironment{exercise}{\begin{covexercise}}{\end{covexercise}}
+}{%
+\ifforceredef
+  \renewenvironment{exercise}{\begin{covexercise}}{\end{covexercise}}
+  \cov@warning{The exercise environment was already defined. Redefining it.}
+\else
+  \cov@warning{The exercise environment was already defined.^^J
+               Covington does not touch it.^^J
+               Use covexercise if you want to access covington's^^J
+               version, or use the force package option.}
+\fi
+}
 
 \@ifundefined{reflist}{
 \newenvironment{reflist}{\begin{list}{}%
