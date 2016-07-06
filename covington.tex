@@ -1,93 +1,165 @@
-% File: covington.tex  (in LaTeX2e)
-% Documentation for covington.sty
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% File covington.tex
+%%
+%% Documentation of covington.sty
+%%
+%% This file is part of the covington LaTeX package
+%%
+%% Original author:
+%% ================
+%% Michael A. Covington
+%% Artificial Intelligence Programs
+%% The University of Georgia
+%% Athens, Georgia 30602-7415 USA
+%% mcovingt@aisun1.ai.uga.edu
+%%
+%% Current maintainer:
+%% ===================
+%% Juergen Spitzmueller <juergen@spitzmueller.org>
+%%
+%% This work may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+%% The latest version of this license is in
+%%   http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2003/12/01 or later.
+%%
+%% This work has the LPPL maintenance status "maintained".
+%% 
+%% The Current Maintainer of this work is Juergen Spitzmueller.
+%%
+%% Code repository and issue tracker: https://github.com/jspitz/covington
+%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\documentclass{article}
+\documentclass[english]{article}
+
+\usepackage[libertine]{newtxmath}
+\usepackage[osf]{libertine}
+\usepackage[scaled=0.75]{beramono}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
 
 \usepackage{covington}
+
 \usepackage{url}
+\usepackage{microtype}
+\usepackage{babel}
+
+\usepackage{listings}
+\lstset{language={[LaTeX]TeX},
+	basicstyle={\small\ttfamily},
+	frame=single}
+
+% markup
+\newcommand*\jmacro[1]{\textbf{\texttt{#1}}}
+\newcommand*\jenv[1]{\textbf{\texttt{#1}}}
+\newcommand*\jcsmacro[1]{\jmacro{\textbackslash{#1}}}
+\newcommand*\joption[1]{\textbf{\texttt{#1}}}
+\newcommand*\jfmacro[1]{\texttt{#1}}
+\newcommand*\jfenv[1]{\texttt{#1}}
+\newcommand*\jfcsmacro[1]{\jfmacro{\textbackslash{#1}}}
+
 \def\pversion{Version 1.1}
-\def\pdate{July 5, 2016}
+\def\pdate{July 6, 2016}
 
 \title{\textbf{Typing Linguistics with \texttt{covington.sty}}}
 \author{Michael A. Covington \\
         \small Artificial Intelligence Center \\
         \small The University of Georgia \\
-        \small Athens, Georgia 30602 \textsc{u.s.a.}\\
+        \small Athens, Georgia 30602 \textsc{u.\,s.\,a.}\\
         mcovingt@ai.uga.edu\\
         \url{http://www.ai.uga.edu/~mc}}
 
 \date{\pversion, \pdate\thanks{Current maintainer: J\"urgen Spitzm\"uller.
-      Please report issues via \protect\url{https://github.com/jspitz/covington/issues}}}
+      Please report issues via \protect\url{https://github.com/jspitz/covington}}}
 
 \begin{document}
+
 \maketitle
 
 \begin{abstract}
 \noindent This package, initially a collection of Michael Covington's private macros, provides
-numerÂ­ous miÂ­nor \LaTeX\ enÂ­hanceÂ­ments for linÂ­guisÂ­tics, inÂ­cludÂ­ing mulÂ­tiÂ­ple acÂ­cents on the
-same letÂ­ter, inÂ­terÂ­line glosses (word-by-word transÂ­laÂ­tions), DisÂ­course RepÂ­reÂ­senÂ­taÂ­tion
-StrucÂ­tures, and exÂ­amÂ­ple numÂ­berÂ­ing.
-
-The package works both with \LaTeX\ 2.09 and \LaTeXe.
+numer­ous mi­nor \LaTeX\ en­hance­ments for lin­guis­tics, in­clud­ing mul­ti­ple ac­cents on the
+same let­ter, in­ter­line glosses (word-by-word trans­la­tions), Dis­course Rep­re­sen­ta­tion
+Struc­tures, and ex­am­ple num­ber­ing. The package works both with \LaTeX\ 2.09 and \LaTeXe.
 \end{abstract}
 
 {\footnotesize \tableofcontents}
 \typeout{Run LaTeX twice to get a correct table of contents.}
 
+
 \section*{New in this version}
+
 \begin{itemize}
-\item The package now uses PSNFSS font commands if available (fallback for \LaTeX\ 2.09 is still provided)
-\item New maintainer: J. Spitzm\"uller
-\item License has been changed to LPPL (in agreement with M. Covington)
-\item Introduce version numbers. Arbitrarily, we start with 1.1
+\item The package now uses \textsc{psnfss} font commands if available (fallback for \LaTeX\ 2.09 is still provided).
+\item Work around clash with classes\slash packages that define their own \jenv{example} and \jenv{examples} environments (most notably the \texttt{beamer} class) as well as \jenv{execise} environments. The \texttt{covington} package no longer blindly attempts to define these environments. By default, it does not define them if they are already defined (\texttt{covington's} own environments, however, are still available via aliases). By means of a new package option, a redefinition can also be forced.  See sec.~\ref{sec:ex} and \ref{sec:exs}
+for details.
+\item New length \jcsmacro{twoaccsep} allows for the adjustment of the distance between stacked accents (see sec.~\ref{sec:accents}).
+\item Update manual.
+\item New maintainer: J. Spitzm\"uller.
+\item License has been changed to \textsc{lppl} (in agreement with M. Covington)
+\item Introduce version numbers. Arbitrarily, we start with 1.1.
 \end{itemize}
 
+
 \section*{New in preceding versions}
-\subsection*{2001 March 27}
+
+\subsection*{2014 May 16}
+
 \begin{itemize}
-\item It is no longer necessary to type \verb"\it" to get proper italic type in feature structures.
+	\item Patches by Robin Fairbairns:
+	\begin{itemize}
+	    \item Setting of \jfcsmacro{textfloatsep} uses \jfcsmacro{setlength} rather than \jfcsmacro{renewcommand}
+	    \item Style file converted to un*x line endings
+    \end{itemize}
+\end{itemize}
+
+\subsection*{2001 March 27}
+
+\begin{itemize}
+\item It is no longer necessary to type \jfcsmacro{it} to get proper italic type in feature structures.
 \item Instructions have been rewritten with \LaTeXe\ users in mind.
 \end{itemize}
 
 \subsection*{Older versions}
+
 \begin{itemize}
-\item Multiple accents on a single letter (e.g., \emph{\acm{a}}) are supported.
+\item Multiple accents on a single letter (e.\,g., \emph{\acm{a}}) are supported.
 \item This package is now called \texttt{covington} (with the o)
-and is compatible with \LaTeXe\ and NFSS as well as \LaTeX\ 2.09.
+and is compatible with \LaTeXe\ and \textsc{nfss} as well as \LaTeX\ 2.09.
 \item The vertical placement of labeled feature structures has 
 been changed
 so that the category labels line up regardless of the size of
 the structures.
 \end{itemize}
 
+
 \section*{Introduction}
-This file, \texttt{covington.tex}, is the documentation for \pversion\
+
+This file, \texttt{covington.tex}, is the documentation for \MakeLowercase{\pversion}
 of \texttt{covington.sty} (\pdate), which is a \LaTeX\ package providing macros
-for typing many of the special notations common in linguistics.%
-\footnote{In em\TeX\ under MS-DOS, \texttt{covington.sty} is called \texttt{covingto.sty}.
-The missing $n$ has no effect.}
+for typing some special notations common in linguistics.%
+\footnote{The package has a long history. It started off as a collection of private macros back in the \LaTeX\ 2.09 days and was initially released as \texttt{covingtn.sty} (following the old 8.3 \textsc{fat} file name limit). In em\TeX\ under \textsc{ms-dos}, the file was distributed as \texttt{covingto.sty}. Eventually, it has been renamed to \texttt{covington.sty} and adapted to \LaTeXe. Its \LaTeX\ 2.09 traces are however still visible, and the style should actually still work with \LaTeX\ 2.09 (if not, drop us a note).}
 
-To use \texttt{covington.sty}, you should have a copy of it in either your
-current directory or the directory where \LaTeX\ styles are kept on your 
-system.
-
-Then, under \LaTeXe, include the command
-\verb"\usepackage{covington}"
-after your \verb"\documentclass" command.
+To use \texttt{covington.sty} with \LaTeXe, simply add the command
+\lstinline"\usepackage{covington}" to your document preamble.
 
 \begin{quote}
-\footnotesize
-In \LaTeX\ 2.09,
-include \texttt{covington} among the optional parameters of 
-\verb"\documentstyle", like this: \hfill\\
-{\tt
-\verb"\documentstyle[12pt,"\underline{covington}\verb"]{article}"
-}\hfill\\
-Note the spelling \texttt{covington} (9 letters).
+	\footnotesize
+	In \LaTeX\ 2.09,
+	include \texttt{covington} among the optional parameters of 
+	\lstinline"\documentstyle", as in:\\
+		\lstinline"\documentstyle[12pt,"\underline{covington}\verb"]{article}"
 \end{quote}
+The package has the following options:
+\begin{itemize}
+	\item \joption{force}: Force the redefinition of environments that are already defined. This applies to the \jenv{example}, \jenv{examples} and \jenv{exercise} environments, which are by default not touched if they are already defined before \texttt{covington} is loaded. See sec.~\ref{sec:ex}, \ref{sec:exs} and \ref{sec:exercises} for details.
+\end{itemize}
 
-In what follows I presume that you know how to use \LaTeX\ and have 
-access to the \LaTeX\ manual. Note that \texttt{covington.sty} does not 
+In what follows we presume that you know how to use \LaTeX\ and have 
+access to \LaTeX\ manuals. Note that \texttt{covington.sty} does not 
 provide any special fonts or character sets.  However, it can be used in 
 combination with other style sheets that do.
 
@@ -95,7 +167,7 @@ If you are using \texttt{covington.sty} and \texttt{uga.sty} (UGa thesis style)
 together, you should load \texttt{uga} before \texttt{covington}.
 
  
-\section{Accents}
+\section{Stacked accents}\label{sec:accents}
 
 \LaTeX\ provides a generous range of accents that can be placed on any
 letter, such as:
@@ -103,51 +175,65 @@ letter, such as:
 \`{x} \'{x} \^{x} \"{x} \~{x} \={x} \H{x} \t{xx} \c{x} \d{x} \b{x}
 \end{flushleft}
 which are typed, respectively, as:
-\begin{verbatim}
+\begin{lstlisting}
 \`{x} \'{x} \^{x} \"{x} \~{x} \={x} \H{x} \t{xx} \c{x} \d{x} \b{x}
-\end{verbatim}
-\LaTeX\ also provides the characters
+\end{lstlisting}
+\LaTeX\ also provides support for many non-\textsc{ascii} characters, such as\footnote{Please refer to \cite{pakin} for a comprehensive list of special characters and symbols.}:
 \begin{flushleft}\obeyspaces
 \i \j \ae \AE \oe \OE \aa \AA \o \O \l \L \ss ?` !`
 \end{flushleft}
-which are typed as:
-\begin{verbatim}
+via the macros:
+\begin{lstlisting}
 \i \j \ae \AE \oe \OE \aa \AA \o \O \l \L \ss ?` !`
-\end{verbatim}
+\end{lstlisting}
 
-But by itself, \LaTeX\ doesn't give you a convenient way to put two
+But out of the box, \LaTeX\ doesn't give you a convenient way to put \emph{two}
 accents on the same letter.  To fill this gap, \texttt{covington.sty} provides
 the following macros:
 \begin{flushleft}
-\verb,\twoacc[...|...], \quad to combine any 2 accents, e.g.,
-               \verb.\twoacc[\~|\={a}]. = \twoacc[\~|\={a}]\\[6pt]
-\verb,\acm{...}, \quad for acute over macron, e.g., \verb.\acm{a}. = \acm{a}\\
-\verb,\grm{...}, \quad for grave over macron, e.g., \verb.\grm{a}. = \grm{a}\\
-\verb,\cim{...}, \quad for circumflex over macron, e.g., \verb.\cim{a}. = \cim{a}
+	\jcsmacro{twoacc[\ldots|\ldots]} \quad to combine any two accents, e.\,g.,
+	               \lstinline[moretexcs={twoacc}].\twoacc[\~|\={a}]. = \twoacc[\~|\={a}]\\[6pt]
+	\jcsmacro{acm\{\ldots\}} \quad for acute over macron, e.\,g., \lstinline[moretexcs={acm}].\acm{a}. = \acm{a}\\
+	\jcsmacro{grm\{\ldots\}} \quad for grave over macron, e.\,g., \lstinline[moretexcs={grm}].\grm{a}. = \grm{a}\\
+	\jcsmacro{cim\{\ldots\}} \quad for circumflex over macron, e.\,g., \lstinline[moretexcs={cim}].\cim{a}. = \cim{a}
 \end{flushleft}
 The first of these is the general case and the latter three are special
-cases that occur often in transcribing Greek.  Now you can type
+cases that are often used in Greek transcription. Now you can type
 \emph{Koin\acm{e}} with both accents in place.
 
-Note the peculiar syntax of \verb.\twoacc. --- its arguments are in
+The distance between the two accents can be adjusted via the length
+\verb"\twoaccsep", which is preset to \texttt{-0.8ex}.
+For instance, if you use \verb"\setlength{\twoaccsep}{-1.05ex}", the above examples will come out as
+
+\setlength{\twoaccsep}{-1.05ex}
+\begin{flushleft}
+	\jcsmacro{twoacc[\ldots|\ldots]} \quad to combine any two accents, e.\,g.,
+	\lstinline[moretexcs={twoacc}].\twoacc[\~|\={a}]. = \twoacc[\~|\={a}]\\[6pt]
+	\jcsmacro{acm\{\ldots\}} \quad for acute over macron, e.\,g., \lstinline[moretexcs={acm}].\acm{a}. = \acm{a}\\
+	\jcsmacro{grm\{\ldots\}} \quad for grave over macron, e.\,g., \lstinline[moretexcs={grm}].\grm{a}. = \grm{a}\\
+	\jcsmacro{cim\{\ldots\}} \quad for circumflex over macron, e.\,g., \lstinline[moretexcs={cim}].\cim{a}. = \cim{a}
+\end{flushleft}
+with a slightly better matching distance for the font used here.
+
+Note the peculiar syntax of \jcsmacro{twoacc} --- its arguments are in
 square brackets, not curly brackets, and are separated by \verb.|..
 The first argument is the upper accent (only) and the second argument
 is the letter with the lower accent indicated.
 
-Note also that not all accents work in the \texttt{tabbing} environment.
-Use \texttt{tabular} or refer to the \LaTeX\ manual for workarounds.
+Note also that not all accents work in the \jfenv{tabbing} environment.
+Use \jfenv{tabular} or refer to \cite{pakin} for alternative solutions.
 
 \section{Example numbers}
 
 Linguistics papers often include numbered examples.
-The macro \verb"\exampleno" generates a new example number and can be 
+The macro \jcsmacro{exampleno} generates a new example number and can be 
 used anywhere you want the number to appear.  For example, to display a 
 sentence with a number at the extreme right, do this:
-\begin{verbatim}
+\begin{lstlisting}[moretexcs={exampleno}]
 \begin{flushleft}
 This is a sentence. \hfill (\exampleno)
 \end{flushleft}
-\end{verbatim}
+\end{lstlisting}
 Here's what you get:
 \begin{flushleft}
 This is a sentence. \hfill (\exampleno)
@@ -155,41 +241,48 @@ This is a sentence. \hfill (\exampleno)
 The example counter is actually the same as \LaTeX's equation counter, 
 so that if you use equations and numbered examples in the same
 paper, you get a single continuous series of numbers. If you want to 
-access the number without changing it, use \verb"\theequation".
+access the number without changing it, use \jfcsmacro{theequation}.
 
-Also, you can use \verb"\label" and \verb"\ref" with example numbers in 
-exactly the same way as with equation numbers.  See the \LaTeX\ manual for
-details. This applies to the \texttt{example} and \texttt{examples} 
-environments, described next, as well as to \verb"\exampleno" itself.
+Also, you can use \jfcsmacro{label} and \jfcsmacro{ref} with example numbers in 
+exactly the same way as with equation numbers.  Refer to your \LaTeX\ manual for
+details. This applies to the \jenv{example} and \jenv{examples} 
+environments, described next, as well as to \jcsmacro{exampleno} itself.
 
-\section{The \texttt{example} environment}
+\section{The \jenv{example} environment}\label{sec:ex}
 
-The \texttt{example} environment displays a single example
+The \jenv{example} environment (alias \jenv{covexample}) displays a single example
 with a generated example number to the left of it.
 If you type
-\begin{verbatim}
+\begin{lstlisting}
 \begin{example}
 This is a sentence.
 \end{example}
-\end{verbatim}
+\end{lstlisting}
+or
+\begin{lstlisting}
+\begin{covexample}
+This is a sentence.
+\end{covexample}
+\end{lstlisting}
 you get:
 \begin{example}
 This is a sentence.
 \end{example}
-The \texttt{example} environment is a lot like \texttt{flushleft}. The example
-can be of any length; it can consist of many lines (separated by \verb"\\"),
-or even whole paragraphs.
+The example can be of any length; it can consist of many lines (separated by \verb"\\"), or even whole paragraphs.
 
-One way to number sub--examples is to use \texttt{itemize} or \texttt{enumerate}
+Note that, as of version 1.1, \texttt{covington} checks if there is already an \jenv{example} environment defined (e.\,g., by the class). If so, \texttt{covington} does not
+define its own one. However, there is always the alias environment \jenv{covexample} which can be used in order to produce \texttt{covington's} example. If you use the package option \joption{force}, \texttt{covington} will override existing \jenv{example} environments. In any case, the package will issue a warning if \jenv{example} is already defined (this is the case, for instance, if you use \texttt{covington} with the \texttt{beamer} class).
+
+One way to number sub-examples is to use \jfenv{itemize} or \jfenv{enumerate}
 within an example, like this:
-\begin{verbatim}
+\begin{lstlisting}
 \begin{example}
 \begin{itemize}
 \item[(a)] This is the first sentence.
 \item[(b)] This is the second sentence.
 \end{itemize}
 \end{example}
-\end{verbatim}
+\end{lstlisting}
 This prints as:
 \begin{example}
 \begin{itemize}
@@ -197,32 +290,40 @@ This prints as:
 \item[(b)] This is the second sentence.
 \end{itemize}
 \end{example}
-However, the \texttt{examples} environment, described next, is usually more 
+However, the \jenv{examples} environment, described next, is usually more 
 convenient.
 
-\section{The \texttt{examples} environment}
+\section{The \jenv{examples} environment}\label{sec:exs}
 
 To display a series of examples together, each with its own example 
-number, use \texttt{examples} instead of \texttt{example}.  The only 
+number, use \jenv{examples} (or \jenv{covexamples}) instead of \jenv{example} or \jenv{covexample}.  The only 
 difference is that there can be more than one example, and each of them 
-has to be introduced by \verb"\item", like this:
-\begin{verbatim}
+has to be introduced by \jfcsmacro{item}, like this:
+\begin{lstlisting}
 \begin{examples}
 \item This is the first sentence.
 \item This is the second sentence.
 \end{examples}
-\end{verbatim}
+\end{lstlisting}
+or, respectively:
+\begin{lstlisting}
+\begin{covexamples}
+\item This is the first sentence.
+\item This is the second sentence.
+\end{covexamples}
+\end{lstlisting}
 This prints as:
 \begin{examples}
 \item This is the first sentence.
 \item This is the second sentence.
 \end{examples}
+As for \jenv{example}, \texttt{covington} checks if there is already an \jenv{examples} environment defined, and if this is the case, \texttt{covington} does not define its own one. The alias environment \jenv{covexamples} is always available as a fallback. If you use the package option \joption{force}, \texttt{covington} will override existing \jenv{examples} environments. The package will issue a warning if \jenv{examples} is already defined (this is the case, for instance, if you use \texttt{covington} with the \texttt{beamer} class), telling you how it has dealt with the situation.
 
 
-\section{Glossing sentences word--by--word}
+\section{Glossing sentences word-by-word}
 
-To gloss a sentence is to annotate it word--by--word.  Most commonly, a 
-sentence in a foreign language is followed by a word--for--word 
+To gloss a sentence is to annotate it word-by-word.  Most commonly, a 
+sentence in a foreign language is followed by a word-for-word 
 translation (with the words lined up vertically) and then a smooth 
 translation (not lined up), like this:%
 \footnote{The macros for handling glosses are adapted with permission 
@@ -232,41 +333,41 @@ from \texttt{gloss.tex}, by Marcel R. van der Goot.}
 \glt `This is an example in Dutch.'
 \glend
 That particular example would be typed as:
-\begin{verbatim}
+\begin{lstlisting}[moretexcs={gll,glt,glend}]
 \gll Dit is een Nederlands voorbeeld. 
      This is a Dutch example. 
 \glt `This is an example in Dutch.'
 \glend
-\end{verbatim}
+\end{lstlisting}
 Notice that the words do not have to be typed lining up; instead, \TeX\ 
 counts them.  If the words in the two languages do not correspond 
-one--to--one, you can use curly brackets to show the intended grouping.
+one-to-one, you can use curly brackets to group words.
 For example, to print
 \gll Dit is een voorbeeldje     in het Nederlands.
      This is a {little example} in {}  Dutch.
 \glt `This is a little example in Dutch.'
 \glend
 you would type:
-\begin{verbatim}
+\begin{lstlisting}[moretexcs={gll,glt,glend}]
 \gll Dit is een voorbeeldje     in het Nederlands.
      This is a {little example} in {}  Dutch.
 \glt `This is a little example in Dutch.'
 \glend
-\end{verbatim}
-All together, \texttt{covington.sty} gives you five macros for dealing with
+\end{lstlisting}
+All together, \texttt{covington.sty} provides five macros for dealing with
 glosses:
 \begin{itemize}
-\item \verb"\gll" introduces two lines of words vertically aligned, and 
-activates an environment very similar to \texttt{flushleft}.
-\item \verb"\glll" is like \verb"gll" except that it introduces
-\emph{three} lines of lined--up words (useful for cited forms, morphology,
+\item \jcsmacro{gll} introduces two lines of words vertically aligned, and 
+activates an environment very similar to \jfenv{flushleft}.
+\item \jcsmacro{glll} is like \jcsmacro{gll} except that it introduces
+\emph{three} lines of lined-up words (useful for cited forms, morphology,
 and translation).
-\item \verb"\glt" ends the set of lined--up lines and introduces a line 
+\item \jcsmacro{glt} ends the set of lined-up lines and introduces a line 
 (or more) of translation.
-\item \verb"\gln" is like \verb"\glt" but does not start a new line 
+\item \jcsmacro{gln} is like \jcsmacro{glt} but does not start a new line 
 (useful when no translation follows but you want to put a number on the 
 right).
-\item \verb"\glend" ends the special \texttt{flushleft}--like environment.
+\item \jcsmacro{glend} ends the special \jfenv{flushleft}-like environment.
 \end{itemize}
 Here are several examples.  First, a sentence with three lines aligned, 
 instead of just two:
@@ -276,13 +377,13 @@ instead of just two:
 \glt   `This is another example.'
 \glend
 This is typed as:
-\begin{verbatim}
+\begin{lstlisting}[moretexcs={glll,glt,glend}]
 \glll  Hoc est aliud exemplum.
        n.sg.nom 3.sg n.sg.nom n.sg.nom
        This is another example.
 \glt   `This is another example.'
 \glend
-\end{verbatim}
+\end{lstlisting}
 Next, an example with a gloss but no translation, with an example number 
 at the right:
 \gll  Hoc habet numerum.
@@ -290,12 +391,12 @@ at the right:
 \gln  \hfill (\exampleno)
 \glend
 That one was typed as:
-\begin{verbatim}
+\begin{lstlisting}[moretexcs={gll,gln,glend,exampleno}]
 \gll  Hoc habet numerum.
       This has number
 \gln  \hfill (\exampleno)
 \glend
-\end{verbatim}
+\end{lstlisting}
 Finally we'll put a glossed sentence inside the \texttt{example} 
 environment, which is a very common way of using it:
 \begin{example}
@@ -305,146 +406,173 @@ environment, which is a very common way of using it:
 \glend
 \end{example}
 This last example was, of course, typed as:
-\begin{verbatim}
+\begin{lstlisting}[moretexcs={gll,glt,glend}]
 \begin{example}
 \gll  Hoc habet numerum praepositum.
       This has number preposed
 \glt  `This one has a number in front of it.'
 \glend
 \end{example}
-\end{verbatim}
-Notice that every glossed sentence begins with either \verb"\gll" or 
-\verb"\glll", then contains either \verb"\glt" or \verb"\gln", and ends 
-with \verb"\glend".  Layout is critical in the part preceding 
-\verb"\glt" or \verb"\gln", and fairly free afterward.
+\end{lstlisting}
+Notice that every glossed sentence begins with either \jcsmacro{gll} or 
+\jcsmacro{glll}, then contains either \jcsmacro{glt} or \jcsmacro{gln}, and ends 
+with \jcsmacro{glend}.  Layout is critical in the part preceding 
+\jcsmacro{glt} or \jcsmacro{gln}, and fairly free afterward.
 
 \section{Phrase structure rules}
 
-To print the phrase structure rule \psr{S}{NP~VP} you can type
-\verb"\psr{S}{NP~VP}", and likewise for other phrase structure rules.
+To print phrase structure rules such as \psr{S}{NP~VP} you can use \texttt{covington's} macro
+\lstinline[moretexcs={psr}]"\psr{<constituent>}{<sub-constituents>}" (for the given example,
+\lstinline[moretexcs={psr}]"\psr{S}{NP~VP}").
 
 \section{Feature structures}
 
-To print a feature structure such as:
+To print a feature structure such as
 \begin{flushleft}
-\fs{case:nom}
+\fs{case:nom \\ person:P}
 \end{flushleft}
 you can type:
-\begin{verbatim}
+\begin{lstlisting}[moretexcs={fs}]
 \fs{case:nom \\ person:P}
-\end{verbatim}
+\end{lstlisting}
 
 The feature structure can appear anywhere --- in continuous text, in a
-displayed environment such as \texttt{flushleft}, or inside a
-phrase--structure rule, or even inside another feature structure.
+displayed environment such as \jfenv{flushleft}, or inside a
+phrase-structure rule, or even inside another feature structure.
 
 To put a category label at the top of the feature structure, like this,
 \begin{flushleft}
 \lfs{N}{case:nom \\ person:P}
 \end{flushleft}
 here's what you type:
-\begin{verbatim}
+\begin{lstlisting}[moretexcs={lfs}]
 \lfs{N}{case:nom \\ person:P}
-\end{verbatim}
-And here is an example of a PS--rule made of labeled feature structures:
+\end{lstlisting}
+And here is an example of a \textsc{ps}-rule made of labeled feature structures:
 \begin{flushleft}
 \psr{\lfs{S}{tense:T}}
     {\lfs{NP}{case:nom \\  number:N}
      \lfs{VP}{tense:T \\ number:N} }
 \end{flushleft}
-which was of course typed as:
-\begin{verbatim}
+which was obviously coded as:
+\begin{lstlisting}[moretexcs={lfs,psr}]
 \psr{\lfs{S}{tense:T}}
     {\lfs{NP}{case:nom \\  number:N}
      \lfs{VP}{tense:T \\ number:N} }
-\end{verbatim}
+\end{lstlisting}
 
 
-\section{Discourse representation structures}
+\section{Discourse Representation Structures}
 
 Several macros in \texttt{covington.sty} facilitate display of discourse 
-representation structures (DRSes) in the box notation originally used by 
-Hans Kamp.  The simplest is \verb"\drs", which takes two arguments:
-a list of discourse variables joined by \verb"~", and a list of DRS 
+Representation Structures (\textsc{drs}es) in the box notation introduced by 
+Hans Kamp.  The simplest one is \jcsmacro{drs}, which takes two arguments:
+a list of discourse variables joined by \verb"~", and a list of \textsc{drs} 
 conditions separated by \verb"\\".  Nesting is permitted.  Note that the 
-\verb"\drs" macro itself does not give you a displayed environment; you 
-must use \texttt{flushleft} or the like to display the DRS.
+\jcsmacro{drs} macro itself does not give you a displayed environment; you 
+must use \jfenv{flushleft} or the like to display the \textsc{drs}.
 Here are some examples:
-\begin{verbatim}
-\drs{X}{donkey(X)\\green(X)}
-\end{verbatim}
+
+\begin{minipage}{.5\textwidth}
+\begin{lstlisting}[moretexcs={drs}]
+\begin{flushleft}
+  \drs{X}{donkey(X)\\green(X)}
+\end{flushleft}
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}{.4\textwidth}
 \begin{flushleft}
 \drs{X}{donkey(X)\\green(X)}
 \end{flushleft}
-\begin{verbatim}
-\drs{X}
-{named(X,`Pedro') \\
-\drs{Y}{donkey(Y)\\owns(X,Y)}~~
-       {\large $\Rightarrow$}~
-        \drs{~}{feeds(X,Y)}
-}
-\end{verbatim}
+\end{minipage}
+
+\medskip
+
+\begin{minipage}{.5\textwidth}
+\begin{lstlisting}[moretexcs={drs}]
 \begin{flushleft}
-\drs{X}
-{named(X,`Pedro') \\
-\drs{Y}{donkey(Y)\\owns(X,Y)}~~
-       {\large $\Rightarrow$}~
-        \drs{~}{feeds(X,Y)}
-}
+  \drs{X}
+  {named(X,`Pedro') \\
+    \drs{Y}{donkey(Y)\\owns(X,Y)}~~
+    {\large $\Rightarrow$}~
+    \drs{~}{feeds(X,Y)}
+  }
 \end{flushleft}
-To display a sentence above the DRS, use \verb"\sdrs", like this:
-\begin{verbatim}
-\sdrs{A donkey is green.}{X}{donkey(X)\\green(X)}
-\end{verbatim}
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}{.4\textwidth}
+	\begin{flushleft}
+		\drs{X}
+		{named(X,`Pedro') \\
+			\drs{Y}{donkey(Y)\\owns(X,Y)}~~
+			{\large $\Rightarrow$}~
+			\drs{~}{feeds(X,Y)}
+		}
+	\end{flushleft}
+\end{minipage}
+
+\medskip
+
+\noindent To display a sentence above the \textsc{drs}, use \jcsmacro{sdrs}, as in:
+
+\begin{lstlisting}[moretexcs={sdrs}]
 \begin{flushleft}
-\sdrs{A donkey is green.}{X}{donkey(X)\\green(X)}
+  \sdrs{A donkey is green.}{X}{donkey(X)\\green(X)}
 \end{flushleft}
-Some DRS connectives are also provided (normally for forming
-DRSes that are to be nested within other DRSes).
-The macro \verb"\negdrs" forms a DRS preceded by a negation symbol:
-\begin{verbatim}
+\end{lstlisting}
+which prints as:
+
+\begin{flushleft}
+		\sdrs{A donkey is green.}{X}{donkey(X)\\green(X)}
+\end{flushleft}
+
+Some \textsc{drs} connectives are also provided (normally for forming
+\textsc{drs}es that are to be nested within other \textsc{drs}es).
+The macro \jcsmacro{negdrs} forms a \textsc{drs} preceded by a negation symbol:
+\begin{lstlisting}[moretexcs={negdrs}]
 \negdrs{X}{donkey(X)\\green(X)}
-\end{verbatim}
+\end{lstlisting}
 \begin{flushleft}
 \negdrs{X}{donkey(X)\\green(X)}
 \end{flushleft}
-Finally, \verb"\ifdrs" forms a pair of DRSes joined by a big arrow,
+Finally, \jcsmacro{ifdrs} forms a pair of \textsc{drs}es joined by a big arrow,
 like this:
-\begin{verbatim}
+\begin{lstlisting}[moretexcs={ifdrs}]
 \ifdrs{X}{donkey(X)\\hungry(X)}
       {~}{feeds(Pedro,X)}
-\end{verbatim}
+\end{lstlisting}
 \begin{flushleft}
 \ifdrs{X}{donkey(X)\\hungry(X)}
       {~}{feeds(Pedro,X)}
 \end{flushleft}
-If you have an ``if''--structure appearing among ordinary predicates 
-inside a DRS, you may prefer to use \verb"\alifdrs", which is just like 
-\verb"\ifdrs" but shifted slightly to the left for better alignment.
+If you have an ``if''-structure appearing among ordinary predicates 
+inside a \textsc{drs}, you may prefer to use \jcsmacro{alifdrs}, which is just like 
+\jcsmacro{ifdrs} but shifted slightly to the left for better alignment.
 
-\section{Exercises}
+\section{Exercises}\label{sec:exercises}
 
-The \texttt{exercise} environment generates an exercise numbered according 
+The \jenv{exercise} environment (alias \jenv{covexercise}) generates an exercise numbered according 
 to chapter, section, and subsection (suitable for use in a large book; 
-in this example, the subsection number is going to come out as 0).
+in this example, the subsection number is going to come out as 0). Here is an example:
 \begin{exercise}[Project]
 Prove that the above assertion is true.
 \end{exercise}
-This was typed as
-\begin{verbatim}
+This was coded as
+\begin{lstlisting}
 \begin{exercise}[Project]
 Prove that the above assertion is true.
 \end{exercise}
-\end{verbatim}
-and the argument \verb"[Project]" is optional (actually, any word could 
-go there).
+\end{lstlisting}
+The argument (\verb"[Project]" in the example) is optional.
+
+Note that, as of version 1.1, \texttt{covington} checks if there is already an \jenv{exercise} environment defined (e.\,g., by the class). If so, \texttt{covington} does not define its own one. However, there is always the alias environment \jenv{covexercise} which can be used in order to produce \texttt{covington's} exercise. If you use the package option \joption{force}, \texttt{covington} will override existing \jenv{exercise} environments. In any case, the package will issue a warning if \jenv{exercise} is already defined.
 
 \section{Reference Lists}
 
-To type an LSA--style hanging--indented reference list, use the \texttt{reflist}
-environment.  (\emph{Note:} \texttt{reflist} is not presently
+To type a simple \textsc{lsa}-style hanging-indented reference list, you can use the \jenv{reflist}
+environment.  (\emph{Note:} \jenv{reflist} is not presently
 integrated with Bib\TeX\ in any way.)  For example,
-\begin{verbatim}
+\begin{lstlisting}
 \begin{reflist}
 Barton, G. Edward; Berwick, Robert C.; and Ristad, Eric Sven.  1987.
 Computational complexity and natural language.  Cambridge, 
@@ -454,9 +582,9 @@ Chomsky, Noam.  1965.  Aspects of the theory of syntax.  Cambridge,
 Massachusetts: MIT Press.
 
 Covington, Michael.  1993.  Natural language processing for Prolog
-programmers.  Englewood Cliffs, New Jersey: Prentice--Hall.
+programmers.  Englewood Cliffs, New Jersey: Prentice-Hall.
 \end{reflist}
-\end{verbatim}
+\end{lstlisting}
 prints as:
 \begin{reflist}
 Barton, G. Edward; Berwick, Robert C.; and Ristad, Eric Sven.  1987.
@@ -467,7 +595,7 @@ Chomsky, Noam.  1965.  Aspects of the theory of syntax.  Cambridge,
 Massachusetts: MIT Press.
 
 Covington, Michael A.  1993.  Natural--language processing for Prolog 
-programmers.  Englewood Cliffs, New Jersey: Prentice--Hall.
+programmers.  Englewood Cliffs, New Jersey: Prentice-Hall.
 \end{reflist}
 Notice that within the reference list, ``French spacing'' is in effect 
 --- that is, spaces after periods are no wider than normal spaces. Thus 
@@ -477,31 +605,36 @@ people's initials.
 
 \section{Displayed sentences}
 
-The macro \verb"\sentence" displays an italicized sentence (it is a 
-combination of \texttt{flushleft} and \verb"\itshape").  If you type
-\begin{verbatim}
+The macro \jcsmacro{sentence} displays an italicized sentence (it is a 
+combination of \jfenv{flushleft} and \jfmacro{itshape}).  If you type
+\begin{lstlisting}[moretexcs={sentence}]
 \sentence{This is a sentence.}
-\end{verbatim}
+\end{lstlisting}
 you get:
 \sentence{This is a sentence.}
 
 
 \section{Big curly brackets (disjunctions)}
 
-Last of all, the 2--argument macro \verb"\either" expresses alternatives
-within a sentence or PS--rule:
+Last of all, the two-argument macro \jcsmacro{either} expresses alternatives
+within a sentence or \textsc{ps}-rule:
 \begin{flushleft}
-\verb"the \either{big}{large} dog" $=$ the \either{big}{large} dog \\
+\lstinline[moretexcs={either}]"the \either{big}{large} dog" $=$ the \either{big}{large} dog \\
 \end{flushleft}
 \begin{flushleft}
-\verb"\psr{A}{B~\either{C}{D}~E} " $=$ \psr{A}{B~\either{C}{D}~E}
+\lstinline[moretexcs={either,psr}]"\psr{A}{B~\either{C}{D}~E} " $=$ \psr{A}{B~\either{C}{D}~E}
 \end{flushleft}
 
-That's all there is.
+That's all there is for now.
 Suggestions for improving \texttt{covington.sty} are welcome, and bug
-reports are actively solicited.  Please note, however, that this is free
-software, and the author makes no commitment to do any further work on 
+reports are actively solicited (via \url{https://github.com/jspitz/covington}).  Please note, however, that this is free
+software, and the authors make no commitment to do any further work on 
 it.
+
+\begin{thebibliography}{99}
+	\bibitem{pakin} Pakin, Scott. The Comprehensive \LaTeX\ Symbol List.
+	30 November 2015. \url{http://www.ctan.org/tex-archive/info/symbols/comprehensive}.
+\end{thebibliography}
 
 \end{document}
 

@@ -5,7 +5,7 @@ Numer­ous mi­nor LaTeX en­hance­ments for lin­guis­tics, in­clud­ing mul
 ac­cents on the same let­ter, in­ter­line glosses (word-by-word trans­la­tions),
 Dis­course Rep­re­sen­ta­tion Struc­tures, and ex­am­ple num­ber­ing.
 
-Copyright 2001--2016 Michael A. Covington
+Copyright 1991--2016 Michael A. Covington
                      Robin Fairbairns
                      Jürgen Spitzmüller
 
@@ -34,3 +34,24 @@ The package consists of the following files:
 * covington.tex: the documentation
 * README (this file)
 
+== CHANGES ==
+
+* Version 1.1 (2016-07-06):
+
+	- The package now uses PSNFSS font commands if available (fallback for LaTeX 2.09 is still provided).
+
+	- Work around clash with classes/packages that define their own example and examples environments
+	  (most notably the beamer class) as well as execise environments. The covington package no longer
+	  blindly attempts to define these environments. By default, it does not define them if they are
+	  already defined (covington's own environments, however, are still available via aliases).
+	  By means of a new package option, a redefinition can also be forced.
+
+	- New length \twoaccsep allows for the adjustment of the distance between stacked accents.
+
+	- Update manual.
+
+	- New maintainer: J. Spitzmüller.
+
+	- License has been changed to LPPL (in agreement with M. Covington)
+
+	- Introduce version numbers. Arbitrarily, we start with 1.1.
