@@ -191,10 +191,15 @@
 
 \newcounter{equationsave}          % used in trick with equation number
 
+\newlength\examplenumbersep
+\setlength\examplenumbersep{0pt}
+
 \newenvironment{covexamples}%         % define "example" environment
 {%
 \begin{list}{(\theequation)}%
 {%
+\addtolength{\labelwidth}{\examplenumbersep}%
+\addtolength{\leftmargin}{\examplenumbersep}%
 \setcounter{equationsave}{\arabic{equation}}%
 \usecounter{equation}%                          % sets it to zero, unwantedly
 \setcounter{equation}{\arabic{equationsave}}%   % restores previous value

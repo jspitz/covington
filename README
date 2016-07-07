@@ -35,6 +35,9 @@ The package consists of the following files:
 
 * Version 1.2 (forthcoming):
 
+	- New length \examplenumbersep to adjust (increase) the horizontal space
+	  between example number and example text.
+	
 	- Add some more info about bibliography generation.
 
 * Version 1.1a (2016-07-07):

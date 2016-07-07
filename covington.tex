@@ -256,6 +256,9 @@ This is a sentence.
 \end{example}
 The example can be of any length; it can consist of many lines (separated by \verb"\\"), or even whole paragraphs.
 
+If you need more space between the example number and the text, you can increase it by means of
+the length \jcsmacro{examplenumbersep} (which is preset to zero). Doing \lstinline|\setlength\examplenumbersep{1em}|, for instance, will increase the space by 1\,em.
+
 Note that, as of version 1.1, \texttt{covington} checks if there is already an \jenv{example} environment defined
 (e.\,g., by the class). If so, \texttt{covington} does not
 define its own one. However, there is always the alias environment \jenv{covexample} which can be used in order to
@@ -643,6 +646,8 @@ it.
 \subsection*{1.2 (forthcoming)}
 
 \begin{itemize}
+	\item New length \jcsmacro{examplenumbersep} to adjust (increase) the horizontal space
+	between example number and example text.
 	\item Add some more info about bibliography generation.
 \end{itemize}
 
