@@ -38,7 +38,7 @@ The package consists of the following files:
 
 * Version 1.1 (2016-07-06):
 
-	- The package now uses PSNFSS font commands if available (fallback for LaTeX 2.09
+	- The package now uses NFSS font commands if available (fallback for LaTeX 2.09
 	  is still provided).
 
 	- Work around clash with classes/packages that define their own example and

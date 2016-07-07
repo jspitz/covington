@@ -93,7 +93,7 @@ Struc­tures, and ex­am­ple num­ber­ing. The package works both with \LaTeX\ 2.09
 \section*{New in this version}
 
 \begin{itemize}
-\item The package now uses \textsc{psnfss} font commands if available (fallback for \LaTeX\ 2.09 is still provided).
+\item The package now uses \textsc{nfss} font commands if available (fallback for \LaTeX\ 2.09 is still provided).
 \item Work around clash with classes\slash packages that define their own \jenv{example} and \jenv{examples} environments (most notably the \texttt{beamer} class) as well as \jenv{execise} environments. The \texttt{covington} package no longer blindly attempts to define these environments. By default, it does not define them if they are already defined (\texttt{covington's} own environments, however, are still available via aliases). By means of a new package option, a redefinition can also be forced.  See sec.~\ref{sec:ex} and \ref{sec:exs}
 for details.
 \item New length \jcsmacro{twoaccsep} allows for the adjustment of the distance between stacked accents (see sec.~\ref{sec:accents}).
