@@ -33,6 +33,10 @@ The package consists of the following files:
 
 == CHANGES ==
 
+* Version 1.1a (2016-07-07):
+
+	- Fix encoding problem in documentation and some typos. No change in functionality.
+
 * Version 1.1 (2016-07-06):
 
 	- The package now uses NFSS font commands if available (fallback for LaTeX 2.09
