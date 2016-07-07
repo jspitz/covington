@@ -154,10 +154,10 @@
 \newenvironment{covexample}{\begin{covexamples}\item}{\end{covexamples}}
 
 \@ifundefined{example}{%
-  \newenvironment{example}{\begin{covexamples}\item}{\end{covexamples}}
+  \newenvironment{example}{\begin{covexample}}{\end{covexample}}
 }{%
 \ifforceredef
-  \renewenvironment{example}{\begin{covexamples}\item}{\end{covexamples}}
+  \renewenvironment{example}{\begin{covexample}}{\end{covexample}}
   \cov@warning{The example environment was already defined. Redefining it.}
 \else
   \cov@warning{The example environment was already defined.^^J
