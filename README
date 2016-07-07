@@ -1,9 +1,7 @@
 =========================================================================
 The covington package
 
-Numer­ous mi­nor LaTeX en­hance­ments for lin­guis­tics, in­clud­ing mul­ti­ple
-ac­cents on the same let­ter, in­ter­line glosses (word-by-word trans­la­tions),
-Dis­course Rep­re­sen­ta­tion Struc­tures, and ex­am­ple num­ber­ing.
+LaTeX macros for Linguistics
 
 Copyright 1991--2016 Michael A. Covington
                      Robin Fairbairns
@@ -19,12 +17,11 @@ See http://www.latex-project.org/lppl.txt
 == PURPOSE ==
 
 This package, initially a collection of Michael Covington's private macros, provides
-numer­ous mi­nor LATEX en­hance­ments for lin­guis­tics, in­clud­ing mul­ti­ple ac­cents on the
-same let­ter, in­ter­line glosses (word-by-word trans­la­tions), Dis­course Rep­re­sen­ta­tion
-Struc­tures, and ex­am­ple num­ber­ing.
+numerous minor LaTeX enhancements for linguistics, including multiple accents on the
+same letter, interlinear glosses (word-by-word translations), Discourse Represenation
+Structures, and example numbering.
 
-The package works both with LaTeX 2.09 and LaTeX2e.
-
+The package works both with \LaTeX\ 2.09 and \LaTeXe.
 
 == CONTENTS ==
 
