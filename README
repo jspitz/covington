@@ -33,6 +33,10 @@ The package consists of the following files:
 
 == CHANGES ==
 
+* Version 1.2 (forthcoming):
+
+	- Add some more info about bibliography generation.
+
 * Version 1.1a (2016-07-07):
 
 	- Fix encoding problem in documentation and some typos. No change in functionality.
