@@ -21,7 +21,7 @@ numerous minor LaTeX enhancements for linguistics, including multiple accents on
 same letter, interlinear glosses (word-by-word translations), Discourse Represenation
 Structures, and example numbering.
 
-The package works both with \LaTeX\ 2.09 and \LaTeXe.
+The package works both with LaTeX 2.09 and LaTeX 2e.
 
 == CONTENTS ==
 
