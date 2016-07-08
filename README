@@ -5,9 +5,9 @@ LaTeX macros for Linguistics
 
 Copyright 1991--2016 Michael A. Covington
                      Robin Fairbairns
-                     Jürgen Spitzmüller
+                     Juergen Spitzmueller
 
-Current Maintainer: Jürgen Spitzmüller
+Current Maintainer: Juergen Spitzmueller
 E-mail: juergen (at) spitzmueller (dot) org
 
 Released under the LaTeX Project Public License v1.3 or later
@@ -61,7 +61,7 @@ The package consists of the following files:
 
 	- Update manual.
 
-	- New maintainer: J. Spitzmüller.
+	- New maintainer: J. Spitzmueller.
 
 	- License has been changed to LPPL (in agreement with M. Covington).
 
