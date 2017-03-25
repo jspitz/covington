@@ -570,7 +570,7 @@ the alias environment \jenv{covexercise} which can be used in order to produce \
 If you use the package option \joption{force}, \texttt{covington} will override existing \jenv{exercise}
 environments. In any case, the package will issue a warning if \jenv{exercise} is already defined.
 
-\section{Reference Lists}
+\section{Reference Lists}\label{sec:reflists}
 
 To type a simple \textsc{lsa}-style hanging-indented reference list, you can use the \jenv{reflist}
 environment.  (\emph{Note:} \jenv{reflist} is not integrated with Bib\TeX\ in any way.%
@@ -608,6 +608,13 @@ Massachusetts: MIT Press.
 Covington, Michael A.  1993.  Natural language processing for Prolog 
 programmers.  Englewood Cliffs, New Jersey: Prentice-Hall.
 \end{reflist}
+By default, the references have a hanging indentation of 3\,em. This can
+be changed by re-setting the length \jcsmacro{reflistindent}.
+Doing \lstinline|\setlength\reflistindent{1.5em}|, for instance,
+will shorten the indentation by half. Likewise, the length \jcsmacro{reflistsep}
+(6\,pt by default) can be adjusted to alter the vertical separation of reference
+entries.
+
 Notice that within the reference list, ``French spacing'' is in effect 
 --- that is, spaces after periods are no wider than normal spaces. Thus 
 you do not have to do anything special to avoid excessive space after 
@@ -643,6 +650,14 @@ software, and the authors make no commitment to do any further work on
 it.
 
 \section{Release history}
+
+\subsection*{1.3 (forthcoming)}
+
+\begin{itemize}
+	\item New lengths \jcsmacro{reflistindent} and \jcsmacro{reflistsep}
+	      to adjust the indentation or vertical space, respectively, of reflist items.
+	      See sec.~\ref{sec:reflists} for details.
+\end{itemize}
 
 \subsection*{1.2 (2016 August 26)}
 

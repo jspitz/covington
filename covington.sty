@@ -42,8 +42,8 @@
 %%% Metadata
 %%%
 
-\def\filedate{2016/08/26}
-\def\fileversion{1.2}
+\def\filedate{2017/03/25}
+\def\fileversion{1.3dev}
 \def\filename{covington.sty}
 
 % Force redefinition of environments?
@@ -612,14 +612,18 @@
 \fi
 }
 
+\newlength\reflistindent
+\setlength\reflistindent{3em}
+\newlength\reflistsep
+\setlength\reflistsep{6pt}
 \@ifundefined{reflist}{
 \newenvironment{reflist}{\begin{list}{}%
 {\setlength{\labelwidth}{0pt}
  \setlength{\labelsep}{0pt}
- \setlength{\leftmargin}{3em}
- \setlength{\itemindent}{-3em}
- \setlength{\listparindent}{-3em}
- \setlength{\itemsep}{6pt}}\item}{\end{list}}
+ \setlength{\leftmargin}{\reflistindent}
+ \setlength{\itemindent}{-\reflistindent}
+ \setlength{\listparindent}{-\reflistindent}
+ \setlength{\itemsep}{\reflistsep}}\item}{\end{list}}
 }
 % Modified 1992 Nov 8 to skip defining reflist if reflist is already
 % defined.  Permits using uga.sty with covingtn.sty.

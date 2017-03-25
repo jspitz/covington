@@ -33,6 +33,11 @@ The package consists of the following files:
 
 == CHANGES ==
 
+* Version 1.3 (forthcoming):
+
+	- Provide way to alter indentation and vertical distance of reflists
+          (new lengths \reflistindent and \reflistsep).
+
 * Version 1.2 (2016-08-26):
 
 	- New length \examplenumbersep to adjust (increase) the horizontal space
