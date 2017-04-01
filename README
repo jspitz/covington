@@ -35,6 +35,9 @@ The package consists of the following files:
 
 * Version 1.3 (forthcoming):
 
+        - Gloss variants \xgll and \xglll that work inside macros (such as footnotes)
+          but require explicit gloss line end markers (\xgle).
+
 	- Provide way to alter indentation and vertical distance of reflists
           (new lengths \reflistindent and \reflistsep).
 

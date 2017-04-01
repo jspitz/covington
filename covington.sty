@@ -42,7 +42,7 @@
 %%% Metadata
 %%%
 
-\def\filedate{2017/03/25}
+\def\filedate{2017/04/01}
 \def\fileversion{1.3dev}
 \def\filename{covington.sty}
 
@@ -227,7 +227,7 @@
 %%% Sentences with word-by-word glosses
 %%%
 
-% See covingtn.tex for full documentation.  Some examples:
+% See covington.tex for full documentation.  Some examples:
 %
 % Displayed sentence with gloss and translation:
 %
@@ -292,6 +292,33 @@
     \bgroup
     \catcode`\^^M=12
     \threesent
+   }
+
+
+% The following two \x.. versions introduce special forms of glossing
+% macros that do not activate the newline char. The latter does not
+% work inside arguments (see http://tex.stackexchange.com/questions/169740)
+% Inspired by this post of David Carlisle to the mentioned stackexchange thread:
+% http://tex.stackexchange.com/a/169744/19291
+% These macros require the gloss lines to be ended explicitly with \xgle
+\def\xgll                 % Introduces 2-line text-and-gloss.
+   {\begin{flushleft}
+\vskip\baselineskip%      % Added 1992 Nov 8 to force single spacing
+\def\baselinestretch{1}%
+\cov@selfnt%
+\vskip-\baselineskip%
+    \bgroup
+    \ignorespaces\xtwosent
+   }
+
+\def\xglll                 % Introduces 3-line text-and-gloss.
+   {\begin{flushleft}
+\vskip\baselineskip%      % Added 1992 Nov 8 to force single spacing
+\def\baselinestretch{1}%
+\cov@selfnt%
+\vskip-\baselineskip%
+    \bgroup
+    \ignorespaces\xthreesent
    }
 
 \def\glt{{\hskip -\glossglue}\unhbox\gline\smallskip\newline}  % \newline was \\
@@ -408,6 +435,63 @@
     \egroup % matches \bgroup in \gloss
    }
 } % restore \catcode`\^^M
+
+% An explicit gloss line ending (for \xgll and \xglll variants=
+\gdef\xgle{}
+% Special versions of \getwords, \donewords, \twosent and \threesent for the \x..
+% variants of gloss introducers (using \xgle as separator instead of active newline)
+\gdef\xgetwords(#1,#2)#3 #4\xgle% #1=linebox, #2=\each, #3=1st word, #4=remainder
+   {\setbox#1=\vbox{\hbox{#2\strut#3 }% adds space
+                    \unvbox#1%
+                   }%
+    \def\more{#4}%
+    \ifx\more\empty\let\more=\xdonewords
+    \else\let\more=\xgetwords
+    \fi
+    \more(#1,#2)#4\xgle%
+   }
+
+\gdef\xdonewords(#1,#2)\xgle{}%
+
+\gdef\xtwosent#1\xgle#2\xgle% #1 = first line, #2 = second line
+   {\xgetwords(\lineone,\eachwordone)#1 \xgle%
+    \xgetwords(\linetwo,\eachwordtwo)#2 \xgle%
+    \loop\lastword{\eachwordone}{\lineone}{\wordone}%
+         \lastword{\eachwordtwo}{\linetwo}{\wordtwo}%
+         \global\setbox\gline=\hbox{\unhbox\gline
+                                    \hskip\glossglue
+                                    \vtop{\box\wordone   % vtop was vbox
+                                          \nointerlineskip
+                                          \box\wordtwo
+                                         }%
+                                   }%
+         \testdone
+         \ifnotdone
+    \repeat
+    \egroup % matches \bgroup in \gloss
+   }
+
+\gdef\xthreesent#1\xgle#2\xgle#3\xgle% #1 = first line, #2 = second line, #3 = third
+   {\xgetwords(\lineone,\eachwordone)#1 \xgle%
+    \xgetwords(\linetwo,\eachwordtwo)#2 \xgle%
+    \xgetwords(\linethree,\eachwordthree)#3 \xgle%
+    \loop\lastword{\eachwordone}{\lineone}{\wordone}%
+         \lastword{\eachwordtwo}{\linetwo}{\wordtwo}%
+         \lastword{\eachwordthree}{\linethree}{\wordthree}%
+         \global\setbox\gline=\hbox{\unhbox\gline
+                                    \hskip\glossglue
+                                    \vtop{\box\wordone   % vtop was vbox
+                                          \nointerlineskip
+                                          \box\wordtwo
+                                          \nointerlineskip
+                                          \box\wordthree
+                                         }%
+                                   }%
+         \testdone
+         \ifnotdone
+    \repeat
+    \egroup % matches \bgroup in \gloss
+   }
 
 %\def\gloss   % raw TeX macro for 2 aligned lines
 %   {\bgroup

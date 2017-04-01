@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% File covington.tex
 %%
-%% Documentation of covington.sty
+%% Documentation of covington
 %%
 %% This file is part of the covington LaTeX package
 %%
@@ -53,7 +53,7 @@
 			colorlinks=false
 ]{hyperref}
 \hypersetup{%
-	pdftitle={The covington.sty manual},
+	pdftitle={The covington manual},
 	pdfauthor={Jürgen Spitzmüller},
 	pdfkeywords={latex,linguistics}
 }
@@ -86,10 +86,10 @@
 %
 % Titling
 %
-\def\pversion{Version 1.2}
-\def\pdate{August 26, 2016}
+\def\pversion{Version 1.3}
+\def\pdate{April 1, 2017}
 
-\title{\textbf{Typing Linguistics with \texttt{covington.sty}}}
+\title{\textbf{Typing Linguistics with \texttt{covington}}}
 \author{Michael A. Covington \\
         \small Artificial Intelligence Center \\
         \small The University of Georgia \\
@@ -116,16 +116,16 @@ and example numbering. The package works both with \LaTeX\ 2.09 and \LaTeXe.
 
 \section{Introduction}
 
-This file, \texttt{covington.tex}, is the documentation for \MakeLowercase{\pversion}
-of \texttt{covington.sty} (\pdate), which is a \LaTeX\ package providing macros
+This file is the documentation for \MakeLowercase{\pversion}
+of \texttt{covington} (\pdate), which is a \LaTeX\ package providing macros
 for typing some special notations common in linguistics.%
 \footnote{The package has a long history. It started off as a collection of private macros back in the
 \LaTeX\ 2.09 days and was initially released as \texttt{covingtn.sty} (following the old 8.3 \textsc{fat}
 file name limit). In em\TeX\ under \textsc{ms-dos}, the file was distributed as \texttt{covingto.sty}.
-Eventually, it has been renamed to \texttt{covington.sty} and adapted to \LaTeXe. Its \LaTeX\ 2.09 traces
+Eventually, it has been renamed to \texttt{covington} and adapted to \LaTeXe. Its \LaTeX\ 2.09 traces
 are however still visible, and the style should actually still work with \LaTeX\ 2.09 (if not, drop us a note).}
 
-To use \texttt{covington.sty} with \LaTeXe, simply add the command
+To use \texttt{covington} with \LaTeXe, simply add the command
 \lstinline"\usepackage{covington}" to your document preamble.
 
 \begin{quote}
@@ -144,11 +144,11 @@ for details.
 \end{itemize}
 
 In what follows we presume that you know how to use \LaTeX\ and have 
-access to \LaTeX\ manuals. Note that \texttt{covington.sty} does not 
+access to \LaTeX\ manuals. Note that \texttt{covington} does not 
 provide any special fonts or character sets.  However, it can be used in 
 combination with other style sheets that do.
 
-If you are using \texttt{covington.sty} and \texttt{uga.sty} (UGa thesis style) 
+If you are using \texttt{covington} and \texttt{uga.sty} (UGa thesis style) 
 together, you should load \texttt{uga} before \texttt{covington}.
 
  
@@ -174,7 +174,7 @@ via the macros:
 \end{lstlisting}
 
 But out of the box, \LaTeX\ doesn't give you a convenient way to put \emph{two}
-accents on the same letter.  To fill this gap, \texttt{covington.sty} provides
+accents on the same letter.  To fill this gap, \texttt{covington} provides
 the following macros:
 \begin{flushleft}
 	\jcsmacro{twoacc[\ldots|\ldots]} \quad to combine any two accents, e.\,g.,
@@ -319,7 +319,7 @@ existing \jenv{examples} environments. The package will issue a warning if \jenv
 how it has dealt with the situation.
 
 
-\section{Glossing sentences word-by-word}
+\section{Glossing sentences word-by-word}\label{sec:gloss}
 
 To gloss a sentence is to annotate it word-by-word.  Most commonly, a 
 sentence in a foreign language is followed by a word-for-word 
@@ -353,14 +353,25 @@ you would type:
 \glt `This is a little example in Dutch.'
 \glend
 \end{lstlisting}
-All together, \texttt{covington.sty} provides five macros for dealing with
+Note that \texttt{covington} locally activates the end of line in glosses in order to identify the different lines of the gloss. This does not work inside macros (e.\,g., if the gloss is in a footnote). To workaround this, a special version of the \jcsmacro{gll} macro is provided that does without the character activation: \jcsmacro{xgll}. This can also be used in macro arguments; however, the end of each gloss line need to be explicitly specified by the \jcsmacro{xgle} macro in this case. If you want to put the above gloss in a footnote, thus, you would type:
+\begin{lstlisting}[moretexcs={xgll,xgle,glt,glend}]
+\xgll Dit is een voorbeeldje     in het Nederlands.\xgle
+      This is a {little example} in {}  Dutch.\xgle
+\glt `This is a little example in Dutch.'
+\glend
+\end{lstlisting}
+
+All together, \texttt{covington} provides eight macros for dealing with
 glosses:
 \begin{itemize}
 \item \jcsmacro{gll} introduces two lines of words vertically aligned, and 
-activates an environment very similar to \jfenv{flushleft}.
+activates an environment very similar to \jfenv{flushleft}. The two lines are separated by a normal line break (carriage return).
 \item \jcsmacro{glll} is like \jcsmacro{gll} except that it introduces
 \emph{three} lines of lined-up words (useful for cited forms, morphology,
 and translation).
+\item \jcsmacro{xgll} is similar to \jcsmacro{gll} except that it does not make the line ending active. It thus works inside macros such as footnotes but requires explicit gloss line termination via \jcsmacro{xgle}.
+\item \jcsmacro{xglll} is similar to \jcsmacro{glll} except that it does not make the line ending active. It thus works inside macros such as footnotes but requires explicit gloss line termination via \jcsmacro{xgle}.
+\item \jcsmacro{xgle} is a gloss line ending marker to be used with \jcsmacro{xgll} and \jcsmacro{xglll}.
 \item \jcsmacro{glt} ends the set of lined-up lines and introduces a line 
 (or more) of translation.
 \item \jcsmacro{gln} is like \jcsmacro{glt} but does not start a new line 
@@ -463,7 +474,7 @@ which was obviously coded as:
 
 \section{Discourse Representation Structures}
 
-Several macros in \texttt{covington.sty} facilitate display of discourse 
+Several macros in \texttt{covington} facilitate display of discourse 
 Representation Structures (\textsc{drs}es) in the box notation introduced by 
 Hans Kamp.  The simplest one is \jcsmacro{drs}, which takes two arguments:
 a list of discourse variables joined by \verb"~", and a list of \textsc{drs} 
@@ -644,7 +655,7 @@ within a sentence or \textsc{ps}-rule:
 \end{flushleft}
 
 That's all there is for now.
-Suggestions for improving \texttt{covington.sty} are welcome, and bug
+Suggestions for improving \texttt{covington} are welcome, and bug
 reports are actively solicited (via \url{https://github.com/jspitz/covington}).  Please note, however, that this is free
 software, and the authors make no commitment to do any further work on 
 it.
@@ -654,6 +665,9 @@ it.
 \subsection*{1.3 (forthcoming)}
 
 \begin{itemize}
+	\item Gloss variants \jcsmacro{xgll} and \jcsmacro{xglll} that work
+	      inside macros (such as footnotes) but require explicit gloss
+	      line end markers (\jcsmacro{xgle}). See sec.~\ref{sec:gloss} for details.
 	\item New lengths \jcsmacro{reflistindent} and \jcsmacro{reflistsep}
 	      to adjust the indentation or vertical space, respectively, of reflist items.
 	      See sec.~\ref{sec:reflists} for details.
