@@ -83,29 +83,27 @@
 \newcommand*\jfenv[1]{\texttt{#1}}
 \newcommand*\jfcsmacro[1]{\jfmacro{\textbackslash{#1}}}
 
+% Strings
+\newcommand*{\cvt}{\textsf{covington}}
+
 %
 % Titling
 %
 \def\pversion{Version 1.3}
-\def\pdate{April 1, 2017}
+\def\pdate{April 2, 2017}
 
-\title{\textbf{Typing Linguistics with \texttt{covington}}}
-\author{Michael A. Covington \\
-        \small Artificial Intelligence Center \\
-        \small The University of Georgia \\
-        \small Athens, Georgia 30602 \textsc{u.\,s.\,a.}\\
-        mcovingt@ai.uga.edu\\
-        \url{http://www.ai.uga.edu/~mc}}
+\title{\textbf{The \cvt\ Package\\Macros for Linguistics}}
+\author{Michael A. Covington \and J\"urgen Spitzm\"uller\thanks{Current maintainer.
+		Please report issues via \protect\url{https://github.com/jspitz/covington}}}
 
-\date{\pversion, \pdate\thanks{Current maintainer: J\"urgen Spitzm\"uller.
-      Please report issues via \protect\url{https://github.com/jspitz/covington}}}
+\date{\pversion, \pdate}
 
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
-\noindent This package, initially a collection of Michael Covington's private macros, provides
+\noindent This package, initially a collection of Michael A. Covington's private macros, provides
 numerous minor \LaTeX\ enhancements for linguistics, including multiple accents on the
 same letter, interlinear glosses (word-by-word translations), Discourse Represenation Structures,
 and example numbering. The package works both with \LaTeX\ 2.09 and \LaTeXe.
@@ -117,21 +115,21 @@ and example numbering. The package works both with \LaTeX\ 2.09 and \LaTeXe.
 \section{Introduction}
 
 This file is the documentation for \MakeLowercase{\pversion}
-of \texttt{covington} (\pdate), which is a \LaTeX\ package providing macros
+of \cvt\ (\pdate), which is a \LaTeX\ package providing macros
 for typing some special notations common in linguistics.%
 \footnote{The package has a long history. It started off as a collection of private macros back in the
 \LaTeX\ 2.09 days and was initially released as \texttt{covingtn.sty} (following the old 8.3 \textsc{fat}
 file name limit). In em\TeX\ under \textsc{ms-dos}, the file was distributed as \texttt{covingto.sty}.
-Eventually, it has been renamed to \texttt{covington} and adapted to \LaTeXe. Its \LaTeX\ 2.09 traces
+Eventually, it has been renamed to \cvt\ and adapted to \LaTeXe. Its \LaTeX\ 2.09 traces
 are however still visible, and the style should actually still work with \LaTeX\ 2.09 (if not, drop us a note).}
 
-To use \texttt{covington} with \LaTeXe, simply add the command
+To use \cvt\ with \LaTeXe, simply add the command
 \lstinline"\usepackage{covington}" to your document preamble.
 
 \begin{quote}
 	\footnotesize
 	In \LaTeX\ 2.09,
-	include \texttt{covington} among the optional parameters of 
+	include \cvt\ among the optional parameters of 
 	\lstinline"\documentstyle", as in:\\
 		\lstinline"\documentstyle[12pt,"\underline{covington}\verb"]{article}"
 \end{quote}
@@ -139,17 +137,17 @@ The package has the following options:
 \begin{itemize}
 	\item \joption{force}: Force the redefinition of environments that are already defined. This applies to
 the \jenv{example}, \jenv{examples} and \jenv{exercise} environments, which are by default not touched if they
-are already defined before \texttt{covington} is loaded. See sec.~\ref{sec:ex}, \ref{sec:exs} and \ref{sec:exercises}
+are already defined before \cvt\ is loaded. See sec.~\ref{sec:ex}, \ref{sec:exs} and \ref{sec:exercises}
 for details.
 \end{itemize}
-
+%
 In what follows we presume that you know how to use \LaTeX\ and have 
-access to \LaTeX\ manuals. Note that \texttt{covington} does not 
+access to \LaTeX\ manuals. Note that \cvt\ does not 
 provide any special fonts or character sets.  However, it can be used in 
 combination with other style sheets that do.
 
-If you are using \texttt{covington} and \texttt{uga.sty} (UGa thesis style) 
-together, you should load \texttt{uga} before \texttt{covington}.
+If you are using \cvt\ and \texttt{uga.sty} (UGa thesis style) 
+together, you should load \texttt{uga} before \cvt.
 
  
 \section{Stacked accents}\label{sec:accents}
@@ -174,7 +172,7 @@ via the macros:
 \end{lstlisting}
 
 But out of the box, \LaTeX\ doesn't give you a convenient way to put \emph{two}
-accents on the same letter.  To fill this gap, \texttt{covington} provides
+accents on the same letter.  To fill this gap, \cvt\ provides
 the following macros:
 \begin{flushleft}
 	\jcsmacro{twoacc[\ldots|\ldots]} \quad to combine any two accents, e.\,g.,
@@ -260,12 +258,12 @@ If you need more space between the example number and the text, you can increase
 the length \jcsmacro{examplenumbersep} (which is preset to \texttt{0pt}). Doing \lstinline|\setlength\examplenumbersep{1em}|,
 for instance, will increase the space by 1\,em.
 
-Note that, as of version 1.1, \texttt{covington} checks if there is already an \jenv{example} environment defined
-(e.\,g., by the class). If so, \texttt{covington} does not
+Note that, as of version 1.1, \cvt\ checks if there is already an \jenv{example} environment defined
+(e.\,g., by the class). If so, \cvt\ does not
 define its own one. However, there is always the alias environment \jenv{covexample} which can be used in order to
-produce \texttt{covington's} example. If you use the package option \joption{force}, \texttt{covington} will override
+produce \texttt{covington's} example. If you use the package option \joption{force}, \cvt\ will override
 existing \jenv{example} environments. In any case, the package will issue a warning if \jenv{example} is already defined
-(this is the case, for instance, if you use \texttt{covington} with the \texttt{beamer} class).
+(this is the case, for instance, if you use \cvt\ with the \texttt{beamer} class).
 
 One way to number sub-examples is to use \jfenv{itemize} or \jfenv{enumerate}
 within an example, like this:
@@ -311,11 +309,11 @@ This prints as:
 \item This is the first sentence.
 \item This is the second sentence.
 \end{examples}
-As for \jenv{example}, \texttt{covington} checks if there is already an \jenv{examples} environment defined,
-and if this is the case, \texttt{covington} does not define its own one. The alias environment \jenv{covexamples}
-is always available as a fallback. If you use the package option \joption{force}, \texttt{covington} will override
+As for \jenv{example}, \cvt\ checks if there is already an \jenv{examples} environment defined,
+and if this is the case, \cvt\ does not define its own one. The alias environment \jenv{covexamples}
+is always available as a fallback. If you use the package option \joption{force}, \cvt\ will override
 existing \jenv{examples} environments. The package will issue a warning if \jenv{examples} is already defined
-(this is the case, for instance, if you use \texttt{covington} with the \texttt{beamer} class), telling you
+(this is the case, for instance, if you use \cvt\ with the \texttt{beamer} class), telling you
 how it has dealt with the situation.
 
 
@@ -353,15 +351,15 @@ you would type:
 \glt `This is a little example in Dutch.'
 \glend
 \end{lstlisting}
-Note that \texttt{covington} locally activates the end of line in glosses in order to identify the different lines of the gloss (via category code change). This does not work inside macros (e.\,g., if the gloss is in a footnote). To work around this, a special version of the \jcsmacro{gll} macro is provided that does without the character activation: \jcsmacro{xgll}. This can also be used in macro arguments; however, the end of each gloss line needs to be explicitly specified by the \jcsmacro{xgle} macro in this case. If you want to put the above gloss in a footnote, thus, you would type:
+Note that \cvt\ locally activates the end of line in glosses in order to identify the different lines of the gloss (via category code change). This does not work inside macros (e.\,g., if the gloss is in a footnote). To work around this, a special version of the \jcsmacro{gll} macro is provided that does without the character activation: \jcsmacro{xgll}. This can also be used in macro arguments; however, the end of each gloss line needs to be explicitly specified by the \jcsmacro{xgle} macro in this case. If you want to put the above gloss in a footnote, thus, you would type:
 \begin{lstlisting}[moretexcs={xgll,xgle,glt,glend}]
 \xgll Dit is een voorbeeldje     in het Nederlands.\xgle
       This is a {little example} in {}  Dutch.\xgle
 \glt `This is a little example in Dutch.'
 \glend
 \end{lstlisting}
-
-All together, \texttt{covington} provides eight macros for dealing with
+%
+All together, \cvt\ provides eight macros for dealing with
 glosses:
 \begin{itemize}
 \item \jcsmacro{gll} introduces two lines of words vertically aligned, and 
@@ -474,7 +472,7 @@ which was obviously coded as:
 
 \section{Discourse Representation Structures}
 
-Several macros in \texttt{covington} facilitate display of discourse 
+Several macros in \cvt\ facilitate display of discourse 
 Representation Structures (\textsc{drs}es) in the box notation introduced by 
 Hans Kamp.  The simplest one is \jcsmacro{drs}, which takes two arguments:
 a list of discourse variables joined by \verb"~", and a list of \textsc{drs} 
@@ -575,10 +573,10 @@ Prove that the above assertion is true.
 \end{lstlisting}
 The argument (\verb"[Project]" in the example) is optional.
 
-Note that, as of version 1.1, \texttt{covington} checks if there is already an \jenv{exercise} environment
-defined (e.\,g., by the class). If so, \texttt{covington} does not define its own one. However, there is always
+Note that, as of version 1.1, \cvt\ checks if there is already an \jenv{exercise} environment
+defined (e.\,g., by the class). If so, \cvt\ does not define its own one. However, there is always
 the alias environment \jenv{covexercise} which can be used in order to produce \texttt{covington's} exercise.
-If you use the package option \joption{force}, \texttt{covington} will override existing \jenv{exercise}
+If you use the package option \joption{force}, \cvt\ will override existing \jenv{exercise}
 environments. In any case, the package will issue a warning if \jenv{exercise} is already defined.
 
 \section{Reference Lists}\label{sec:reflists}
@@ -655,7 +653,7 @@ within a sentence or \textsc{ps}-rule:
 \end{flushleft}
 
 That's all there is for now.
-Suggestions for improving \texttt{covington} are welcome, and bug
+Suggestions for improving \cvt\ are welcome, and bug
 reports are actively solicited (via \url{https://github.com/jspitz/covington}).  Please note, however, that this is free
 software, and the authors make no commitment to do any further work on 
 it.
@@ -693,7 +691,7 @@ it.
 	\item The package now uses \textsc{nfss} font commands if available (fallback for \LaTeX\ 2.09 is still provided).
 	\item Work around clash with classes\slash packages that define their own \jenv{example} and
                \jenv{examples} environments (most notably the \texttt{beamer} class) as well as \jenv{execise} environments.
-               The \texttt{covington} package no longer blindly attempts to define these environments. By default, it does not
+               The \cvt\ package no longer blindly attempts to define these environments. By default, it does not
                define them if they are already defined (\texttt{covington's} own environments, however, are still available via aliases).
                By means of a new package option, a redefinition can also be forced.  See sec.~\ref{sec:ex} and \ref{sec:exs} for details.
 	\item New length \jcsmacro{twoaccsep} allows for the adjustment of the distance between stacked accents (see sec.~\ref{sec:accents}).
@@ -724,7 +722,7 @@ it.
 
 \begin{itemize}
 	\item Multiple accents on a single letter (e.\,g., \emph{\acm{a}}) are supported.
-	\item This package is now called \texttt{covington} (with the o)
+	\item This package is now called \cvt\ (with the o)
 	and is compatible with \LaTeXe\ and \textsc{nfss} as well as \LaTeX\ 2.09.
 	\item The vertical placement of labeled feature structures has 
 	been changed
