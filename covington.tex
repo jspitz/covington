@@ -353,7 +353,7 @@ you would type:
 \glt `This is a little example in Dutch.'
 \glend
 \end{lstlisting}
-Note that \texttt{covington} locally activates the end of line in glosses in order to identify the different lines of the gloss. This does not work inside macros (e.\,g., if the gloss is in a footnote). To workaround this, a special version of the \jcsmacro{gll} macro is provided that does without the character activation: \jcsmacro{xgll}. This can also be used in macro arguments; however, the end of each gloss line need to be explicitly specified by the \jcsmacro{xgle} macro in this case. If you want to put the above gloss in a footnote, thus, you would type:
+Note that \texttt{covington} locally activates the end of line in glosses in order to identify the different lines of the gloss (via category code change). This does not work inside macros (e.\,g., if the gloss is in a footnote). To work around this, a special version of the \jcsmacro{gll} macro is provided that does without the character activation: \jcsmacro{xgll}. This can also be used in macro arguments; however, the end of each gloss line needs to be explicitly specified by the \jcsmacro{xgle} macro in this case. If you want to put the above gloss in a footnote, thus, you would type:
 \begin{lstlisting}[moretexcs={xgll,xgle,glt,glend}]
 \xgll Dit is een voorbeeldje     in het Nederlands.\xgle
       This is a {little example} in {}  Dutch.\xgle
