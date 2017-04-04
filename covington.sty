@@ -42,7 +42,7 @@
 %%% Metadata
 %%%
 
-\def\filedate{2017/04/01}
+\def\filedate{2017/04/04}
 \def\fileversion{1.3dev}
 \def\filename{covington.sty}
 
@@ -698,8 +698,10 @@
 
 \newlength\reflistindent
 \setlength\reflistindent{3em}
-\newlength\reflistsep
-\setlength\reflistsep{6pt}
+\newlength\reflistitemsep
+\setlength\reflistitemsep{6pt}
+\newlength\reflistparsep
+\setlength\reflistparsep{\parsep}
 \@ifundefined{reflist}{
 \newenvironment{reflist}{\begin{list}{}%
 {\setlength{\labelwidth}{0pt}
@@ -707,7 +709,8 @@
  \setlength{\leftmargin}{\reflistindent}
  \setlength{\itemindent}{-\reflistindent}
  \setlength{\listparindent}{-\reflistindent}
- \setlength{\itemsep}{\reflistsep}}\item}{\end{list}}
+ \setlength{\itemsep}{\reflistitemsep}
+ \setlength{\parsep}{\reflistparsep}}\item}{\end{list}}
 }
 % Modified 1992 Nov 8 to skip defining reflist if reflist is already
 % defined.  Permits using uga.sty with covingtn.sty.
