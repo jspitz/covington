@@ -42,8 +42,8 @@
 %%% Metadata
 %%%
 
-\def\filedate{2017/04/04}
-\def\fileversion{1.3dev}
+\def\filedate{2017/05/21}
+\def\fileversion{1.4dev}
 \def\filename{covington.sty}
 
 % Force redefinition of environments?
@@ -95,11 +95,20 @@
                      \hbox to1\dimen0{\hss#2\hss}}}%
 
 % Example of usage: \twoacc[\^|\={a}]
-% Special cases:
 
-\def\acm#1{\twoacc[\'|\={#1}]}   % acute over macron
-\def\grm#1{\twoacc[\`|\={#1}]}   % grave over macron
-\def\cim#1{\twoacc[\^|\={#1}]}   % circumflex over macron
+% 2017-05-21: Introduce a less odd syntax: \twodias{\^}{\=}{a}
+\newcommand*\twodias[3]{\leavevmode{\setbox1=\hbox{{#1{}}}%
+                     \setbox2=\hbox{{#2{#3}}}%
+                     \dimen0=\ifdim\wd1>\wd2\wd1\else\wd2\fi%
+                     \dimen1=\ht2\advance\dimen1by\twoaccsep%
+                     \setbox1=\hbox to1\dimen0{\hss#1\hss}%
+                     \rlap{\raise1\dimen1\box1}%
+                     \hbox to1\dimen0{\hss#2{#3}\hss}}}
+
+% Special cases:
+\def\acm#1{\twodias{\'}{\=}{#1}}   % acute over macron
+\def\grm#1{\twodias{\`}{\=}{#1}}   % grave over macron
+\def\cim#1{\twodias{\^}{\=}{#1}}   % circumflex over macron
 
 %%%
 %%% Example numbering

@@ -3,7 +3,7 @@ The covington package
 
 LaTeX macros for Linguistics
 
-Copyright 1991--2016 Michael A. Covington
+Copyright 1991--2017 Michael A. Covington
                      Robin Fairbairns
                      Juergen Spitzmueller
 
@@ -33,7 +33,12 @@ The package consists of the following files:
 
 == CHANGES ==
 
-* Version 1.3 (forthcoming):
+* Version 1.4 (forthcoming):
+
+	- Introduce a new macro \twodias that supersedes the rather odd \twoacc
+	  (which is kept for backwards compatibility).
+
+* Version 1.3 (2017-04-05):
 
         - Gloss variants \xgll and \xglll that work inside macros (such as footnotes)
           but require explicit gloss line end markers (\xgle).
