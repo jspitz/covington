@@ -188,11 +188,11 @@ The first of these is the general case\footnote{%
 cases that are often used in Greek transcription. Now you can type
 \emph{Koin\acm{e}} with both accents in place.
 
-The distance between the two diacritics can be adjusted via the length
-\verb"\twoaccsep", which is preset to \texttt{-0.8ex}.
-For instance, if you use \verb"\setlength{\twoaccsep}{-1.05ex}", the above examples will come out as
+The vertical distance between the two diacritics can be adjusted via the macro \jcsmacro{SetDiaOffset\{<length>\}}
+which lets you increase or decrease the vertical space that is currently in effect.
+If you'd use \verb"\SetDiaOffset{-0.25ex}", the above examples will come out as
 
-\setlength{\twoaccsep}{-1.05ex}
+\SetDiaOffset{-.25ex}
 \begin{flushleft}
 	\jcsmacro{twodias\{<upper diac.>\}\{<lower diac.>\}\{<char>\}}\\to combine any two diacritics, e.\,g.,
 	\lstinline[moretexcs={twodias}].\twodias{\~}{\=}{a}. = \twodias{\~}{\=}{a}\\[6pt]
@@ -202,8 +202,8 @@ For instance, if you use \verb"\setlength{\twoaccsep}{-1.05ex}", the above examp
 \end{flushleft}
 with a slightly better matching distance for the font used here.
 
-Note that not all accents work in the \jfenv{tabbing} environment.
-Use \jfenv{tabular} or refer to \cite{pakin} for alternative solutions.
+Note that not all accent macros work in the \jfenv{tabbing} environment.
+Use the \jfenv{Tabbing} package or refer to \cite{pakin} for alternative solutions.
 
 \section{Example numbers}
 
@@ -664,6 +664,8 @@ it.
 \begin{itemize}
 	\item Introduce a new macro \jcsmacro{twodias} that supersedes the rather odd \jcsmacro{twoacc}
 	      (which is kept for backwards compatibility). See sec.~\ref{sec:accents} for details.
+	\item Introduce macro \jcsmacro{SetDiaOffset} for more convenient setting of vertical distance
+	      in stacked diacritics. See sec.~\ref{sec:accents} for details.
 \end{itemize}
 
 \subsection*{1.3 (2017 April 5)}

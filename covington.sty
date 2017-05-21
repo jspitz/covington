@@ -85,6 +85,7 @@
 % Introduced 2016-07-06 JSP. 
 \newlength\twoaccsep
 \setlength{\twoaccsep}{-0.8ex}
+\newcommand*\SetDiaOffset[1]{\addtolength{\twoaccsep}{#1}}
 
 \def\twoacc[#1|#2]{\leavevmode{\setbox1=\hbox{{#1{}}}%
                      \setbox2=\hbox{{#2{}}}%
