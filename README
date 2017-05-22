@@ -41,8 +41,8 @@ The package consists of the following files:
 	- Introduce macro \SetDiaOffset for more convenient setting of vertical
 	  distance in stacked diacritics.
 
-	-  LaTeX 2.09 is no longer officially supported (it might continue to work,
-	   but is not tested).
+	- LaTeX 2.09 is no longer officially supported (it might continue to work,
+	  but is not tested).
 
 * Version 1.3 (2017-04-05):
 
