@@ -104,9 +104,9 @@
 
 \begin{abstract}
 \noindent This package, initially a collection of Michael A. Covington's private macros, provides
-numerous minor \LaTeX\ enhancements for linguistics, including multiple accents on the
-same letter, interlinear glosses (word-by-word translations), Discourse Represenation Structures,
-and example numbering. The package works both with \LaTeX\ 2.09 and \LaTeXe.
+numerous minor \LaTeX\ enhancements for linguistics, including multiple diacritics on the
+same letter, interlinear glosses (word-by-word translations), Discourse Representation Structures,
+and example numbering.
 \end{abstract}
 
 \tableofcontents
@@ -121,25 +121,19 @@ for typing some special notations common in linguistics.%
 \LaTeX\ 2.09 days and was initially released as \texttt{covingtn.sty} (following the old 8.3 \textsc{fat}
 file name limit). In em\TeX\ under \textsc{ms-dos}, the file was distributed as \texttt{covingto.sty}.
 Eventually, it has been renamed to \cvt\ and adapted to \LaTeXe. Its \LaTeX\ 2.09 traces
-are however still visible, and the style should actually still work with \LaTeX\ 2.09 (if not, drop us a note).}
+are however still visible, and the style might actually still work with \LaTeX\ 2.09 (which is however not guaranteed).}
 
-To use \cvt\ with \LaTeXe, simply add the command
+To use \cvt\ with \LaTeXe, load the package as usual by adding the command
 \lstinline"\usepackage{covington}" to your document preamble.
-
-\begin{quote}
-	\footnotesize
-	In \LaTeX\ 2.09,
-	include \cvt\ among the optional parameters of 
-	\lstinline"\documentstyle", as in:\\
-		\lstinline"\documentstyle[12pt,"\underline{covington}\verb"]{article}"
-\end{quote}
-The package has the following options:
-\begin{itemize}
-	\item \joption{force}: Force the redefinition of environments that are already defined. This applies to
-the \jenv{example}, \jenv{examples} and \jenv{exercise} environments, which are by default not touched if they
-are already defined before \cvt\ is loaded. See sec.~\ref{sec:ex}, \ref{sec:exs} and \ref{sec:exercises}
-for details.
-\end{itemize}
+The package has the following option:
+\begin{description}
+	\item{\joption{force}:} Force the redefinition of environments that have already been
+	defined by other packages or the class.
+	
+	This applies to the \jenv{example}, \jenv{examples} and \jenv{exercise} environments,
+	which are by default not touched if they are already defined before \cvt\ is loaded.
+	See sec.~\ref{sec:ex}, \ref{sec:exs} and \ref{sec:exercises} for details.
+\end{description}
 %
 In what follows we presume that you know how to use \LaTeX\ and have 
 access to \LaTeX\ manuals. Note that \cvt\ does not 
@@ -190,7 +184,7 @@ cases that are often used in Greek transcription. Now you can type
 
 The vertical distance between the two diacritics can be adjusted via the macro \jcsmacro{SetDiaOffset\{<length>\}}
 which lets you increase or decrease the vertical space that is currently in effect.
-If you'd use \verb"\SetDiaOffset{-0.25ex}", the above examples will come out as
+If you'd use \verb"\SetDiaOffset{-0.25ex}", the above examples would come out as
 
 \SetDiaOffset{-.25ex}
 \begin{flushleft}
@@ -666,6 +660,8 @@ it.
 	      (which is kept for backwards compatibility). See sec.~\ref{sec:accents} for details.
 	\item Introduce macro \jcsmacro{SetDiaOffset} for more convenient setting of vertical distance
 	      in stacked diacritics. See sec.~\ref{sec:accents} for details.
+	\item \LaTeX\ 2.09 is no longer officially supported (it might continue to work, but is not
+	      tested).
 \end{itemize}
 
 \subsection*{1.3 (2017 April 5)}
