@@ -85,12 +85,13 @@
 
 % Strings
 \newcommand*{\cvt}{\textsf{covington}}
+\newcommand*{\Cvt}{\textsf{Covington}}
 
 %
 % Titling
 %
-\def\pversion{Version 1.4}
-\def\pdate{May 23, 2017}
+\def\pversion{Version 1.5}
+\def\pdate{August 24, 2018}
 
 \title{\textbf{The \cvt\ Package\\Macros for Linguistics}}
 \author{Michael A. Covington \and J\"urgen Spitzm\"uller\thanks{Current maintainer.
@@ -125,7 +126,7 @@ are however still visible, and the style might actually still work with \LaTeX\ 
 
 To use \cvt\ with \LaTeXe, load the package as usual by adding the command
 \lstinline"\usepackage{covington}" to your document preamble.
-The package has the following option:
+The package has the following options:
 \begin{description}
 	\item{\joption{force}:} Force the redefinition of environments that have already been
 	defined by other packages or the class.
@@ -133,6 +134,12 @@ The package has the following option:
 	This applies to the \jenv{example}, \jenv{examples} and \jenv{exercise} environments,
 	which are by default not touched if they are already defined before \cvt\ is loaded.
 	See sec.~\ref{sec:ex}, \ref{sec:exs} and \ref{sec:exercises} for details.
+	\item{\joption{keeplayout}:} Do not tweak the layout.
+	
+	\Cvt\ sets \jfcsmacro{raggedbottom} and redefines the value of the \jfcsmacro{textfloatsep} length.
+	This just follows the preferences of the original package author and is not necessary
+	for the package's functionality. Yet for backwards compatibility reasons, we cannot change this.
+	Thus, we provide the option described here to opt out this presetting.
 \end{description}
 %
 In what follows we presume that you know how to use \LaTeX\ and have 
@@ -652,6 +659,13 @@ software, and the authors make no commitment to do any further work on
 it.
 
 \section{Release history}
+
+\subsection*{1.5 (2018 August 24)}
+
+\begin{itemize}
+	\item Introduce new option \joption{keeplayout} which allows to opt-out the
+	      layout presettings \cvt\ does (\jfcsmacro{raggedbottom}, \jfcsmacro{textfloatsep}).
+\end{itemize}
 
 \subsection*{1.4 (2017 May 23)}
 

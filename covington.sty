@@ -42,12 +42,14 @@
 %%% Metadata
 %%%
 
-\def\filedate{2017/05/23}
-\def\fileversion{1.4}
+\def\filedate{2018/08/24}
+\def\fileversion{1.5}
 \def\filename{covington.sty}
 
 % Force redefinition of environments?
 \newif\ifforceredef\forceredeffalse
+% Tweak text layout?
+\newif\iftweaklayout\tweaklayouttrue
 
 \@ifundefined{ProvidesPackage}{%
 \typeout{* covington.sty : Covington's linguistic macros, \fileversion\ \filedate *}
@@ -55,6 +57,7 @@
 \ProvidesPackage{covington}
 	[\filedate\space v\fileversion\space Covington's linguistic macros]
 \DeclareOption{force}{\forceredeftrue}
+\DeclareOption{keeplayout}{\tweaklayoutfalse}
 \ProcessOptions
 }
 
@@ -71,8 +74,11 @@
 %%% Preferences about how text is laid out
 %%%
 
+% New 2018-08-24: Option to opt-out these layout tweaks
+\iftweaklayout
 \setlength{\textfloatsep}{0.7in}
 \raggedbottom
+\fi
 
 %%%
 %%% Stacked accents
