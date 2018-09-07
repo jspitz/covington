@@ -90,8 +90,8 @@
 %
 % Titling
 %
-\def\pversion{Version 1.5}
-\def\pdate{August 24, 2018}
+\def\pversion{Version 1.6}
+\def\pdate{September 7, 2018}
 
 \title{\textbf{The \cvt\ Package\\Macros for Linguistics}}
 \author{Michael A. Covington \and J\"urgen Spitzm\"uller\thanks{Current maintainer.
@@ -112,17 +112,17 @@ and example numbering.
 
 \tableofcontents
 
+\clearpage
 
 \section{Introduction}
 
-This file is the documentation for \MakeLowercase{\pversion}
+This is the documentation for \MakeLowercase{\pversion}
 of \cvt\ (\pdate), which is a \LaTeX\ package providing macros
 for typing some special notations common in linguistics.%
 \footnote{The package has a long history. It started off as a collection of private macros back in the
 \LaTeX\ 2.09 days and was initially released as \texttt{covingtn.sty} (following the old 8.3 \textsc{fat}
 file name limit). In em\TeX\ under \textsc{ms-dos}, the file was distributed as \texttt{covingto.sty}.
-Eventually, it has been renamed to \cvt\ and adapted to \LaTeXe. Its \LaTeX\ 2.09 traces
-are however still visible, and the style might actually still work with \LaTeX\ 2.09 (which is however not guaranteed).}
+Eventually, it has been renamed to \cvt\ and adapted to \LaTeXe.}
 
 To use \cvt\ with \LaTeXe, load the package as usual by adding the command
 \lstinline"\usepackage{covington}" to your document preamble.
@@ -131,9 +131,9 @@ The package has the following options:
 	\item{\joption{force}:} Force the redefinition of environments that have already been
 	defined by other packages or the class.
 	
-	This applies to the \jenv{example}, \jenv{examples} and \jenv{exercise} environments,
+	This applies to the \jenv{example}, \jenv{examples}, \jenv{subexamples} and \jenv{exercise} environments,
 	which are by default not touched if they are already defined before \cvt\ is loaded.
-	See sec.~\ref{sec:ex}, \ref{sec:exs} and \ref{sec:exercises} for details.
+	See sec.~\ref{sec:ex}, \ref{sec:exs}, \ref{sec:subexs} and \ref{sec:exercises} for details.
 	\item{\joption{keeplayout}:} Do not tweak the layout.
 	
 	\Cvt\ sets \jfcsmacro{raggedbottom} and redefines the value of the \jfcsmacro{textfloatsep} length.
@@ -227,8 +227,8 @@ paper, you get a single continuous series of numbers. If you want to
 access the number without changing it, use \jfcsmacro{theequation}.
 
 Also, you can use \jfcsmacro{label} and \jfcsmacro{ref} with example numbers in 
-exactly the same way as with equation numbers.  Refer to your \LaTeX\ manual for
-details. This applies to the \jenv{example} and \jenv{examples} 
+exactly the same way as with equation numbers (see sec.~\ref{sec:ref} for
+details). This applies to the \jenv{example}, \jenv{examples} and \jenv{subexamples}
 environments, described next, as well as to \jcsmacro{exampleno} itself.
 
 \section{The \jenv{example} environment}\label{sec:ex}
@@ -249,7 +249,7 @@ This is a sentence.
 \end{lstlisting}
 you get:
 \begin{example}
-This is a sentence.
+This is a sentence.\label{expl}
 \end{example}
 The example can be of any length; it can consist of many lines (separated by \verb"\\"), or even whole paragraphs.
 
@@ -281,7 +281,7 @@ This prints as:
 \item[(b)] This is the second sentence.
 \end{itemize}
 \end{example}
-However, the \jenv{examples} environment, described next, is usually more 
+However, the \jenv{examples} and \jenv{subexamples} environments, described in turn, are usually more 
 convenient.
 
 \section{The \jenv{examples} environment}\label{sec:exs}
@@ -314,6 +314,71 @@ is always available as a fallback. If you use the package option \joption{force}
 existing \jenv{examples} environments. The package will issue a warning if \jenv{examples} is already defined
 (this is the case, for instance, if you use \cvt\ with the \texttt{beamer} class), telling you
 how it has dealt with the situation.
+
+
+\section{The \jenv{subexamples} environment}\label{sec:subexs}
+
+Sometimes a set of (paradigmatic) sub-examples gets only one main example number with alphabetic sub-numbering,
+as in \pxref{sbex}. To achieve this most conveniently, \cvt\ provides the \jenv{subexamples} (or \jenv{covsubexamples})
+environment.  The difference to \jenv{examples}\slash \jenv{covexamples} is the numbering:
+\begin{lstlisting}
+\begin{subexamples}
+\item This is the first sentence.
+\item This is the second sentence.
+\end{subexamples}
+\end{lstlisting}
+or, respectively:
+\begin{lstlisting}
+\begin{covsubexamples}
+\item This is the first sentence.
+\item This is the second sentence.
+\end{covsubexamples}
+\end{lstlisting}
+prints as:
+\begin{subexamples}
+	\item This is the first sentence.\label{sbex}
+	\item This is the second sentence.
+\end{subexamples}
+Again, \cvt\ checks if there is already an \jenv{subexamples} environment defined,
+and if this is the case, \cvt\ does not define its own one. The alias environment \jenv{covsubexamples}
+is always available as a fallback. If you use the package option \joption{force}, \cvt\ will override
+existing \jenv{subexamples} environments. The package will issue a warning if \jenv{subexamples} is already defined.
+
+If you do not want the subexample letter in parentheses, you can redefine (via \jfcsmacro{renewcommand*}) the macro
+\jcsmacro{covsubexnumber} which has the following default definition:
+\begin{lstlisting}
+\newcommand*\covsubexnumber[1]{(#1)}
+\end{lstlisting}
+
+The distance between example number and subnumber (letter) can be changed via the length \jcsmacro{examplenumbersep}
+(which is preset to \texttt{0pt}). The distance between example subnumber and text can be changed  via the length
+\jcsmacro{subexamplenumbersep} (preset to \texttt{0pt} as well).
+Doing 
+\begin{lstlisting}
+\setlength{\examplenumbersep}{-0.2em}
+\setlength{\subexamplenumbersep}{0.5em}
+\end{lstlisting}
+for instance, will come out like this:\footnote{Note, though, that negative shrinking is only possible to a certain degree in the first subitem.}
+
+\bgroup
+\setlength{\examplenumbersep}{-0.2em}
+\setlength{\subexamplenumbersep}{0.5em}
+
+\begin{subexamples}
+	\item This is the first sentence.
+	\item This is the second sentence.
+\end{subexamples}
+\egroup
+
+
+\section{Referring to examples}\label{sec:ref}
+
+References to examples and sub-examples can be made the usual way via the \jcsmacro{ref} command.
+The references do not have parentheses by default, i.\,e., a reference to the example
+in section~\ref{sec:ex} would be printed as \ref{expl}, a reference to the sub-example
+in section~\ref{sec:subexs} as \ref{sbex}.
+For convenience, \cvt\ provides a command \jcsmacro{pxref} that also prints the parentheses,
+as in \pxref{expl} and \pxref{sbex}.
 
 
 \section{Glossing sentences word-by-word}\label{sec:gloss}
@@ -659,6 +724,13 @@ software, and the authors make no commitment to do any further work on
 it.
 
 \section{Release history}
+
+\subsection*{1.6 (2018 September 7)}
+
+\begin{itemize}
+	\item Introduce new environment \jenv{subexamples} (see sec.~\ref{sec:subexs}).
+	\item Introduce new command \jcsmacro{pxref} (see sec.~\ref{sec:ref}).
+\end{itemize}
 
 \subsection*{1.5 (2018 August 24)}
 

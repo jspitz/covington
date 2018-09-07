@@ -31,6 +31,12 @@ The package consists of the following files:
 
 == CHANGES ==
 
+* Version 1.6 (2018-09-07):
+
+	- Introduce new environment subexamples for sub-examples such as 1a.
+	- Introduce new command \pxref that outputs references to examples including
+          parentheses.
+
 * Version 1.5 (2018-08-24):
 
 	- Introduce new option "keeplayout" that allows to opt-out the
