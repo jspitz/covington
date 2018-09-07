@@ -239,6 +239,55 @@
 \fi
 }
 
+
+%%%
+%%% The 'subexamples' environment
+%%%
+
+% New in v1.6 (2018-09-07)
+% subexamples is an environment for displaying a series of examples
+%             that belong together and thus share an example number
+%             (with an alphabetic subcounter).  Usage:
+%
+%             \begin{subexamples}
+%             \item This is the first subexample.
+%             \item This is the second subexample.
+%             \end{subexamples}
+
+\newlength\subexamplenumbersep
+\setlength\subexamplenumbersep{0pt}
+
+\newcommand*\covsubexnumber[1]{(#1)}
+
+\newenvironment{covsubexamples}%         % define "subexamples" environment
+{%
+    \addtolength{\examplenumbersep}{-0.75em}%
+    \begin{covexample}
+    \begin{enumerate}
+    \addtolength{\labelsep}{\subexamplenumbersep}%
+    \renewcommand\theenumi{\alph{enumi}}
+    \renewcommand\labelenumi{\covsubexnumber{\theenumi}}
+    \renewcommand\p@enumi{\theequation\,}%
+}%
+{%
+    \end{enumerate}
+    \end{covexample}
+}
+
+\@ifundefined{subexamples}{%
+  \newenvironment{subexamples}{\begin{covsubexamples}}{\end{covsubexamples}}
+}{%
+\ifforceredef
+  \renewenvironment{subexamples}{\begin{covsubexamples}}{\end{covsubexamples}}
+  \cov@warning{The subexamples environment was already defined. Redefining it.}
+\else
+  \cov@warning{The subexamples environment was already defined.^^J
+               Covington does not touch it.^^J
+               Use covsubexamples if you want to access covington's^^J
+               version, or use the force package option.}
+\fi
+}
+
 %%%
 %%% Sentences with word-by-word glosses
 %%%
