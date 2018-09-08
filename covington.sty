@@ -42,8 +42,8 @@
 %%% Metadata
 %%%
 
-\def\filedate{2018/09/07}
-\def\fileversion{1.6}
+\def\filedate{2018/09/08}
+\def\fileversion{1.7}
 \def\filename{covington.sty}
 
 % Force redefinition of environments?
@@ -261,13 +261,14 @@
 
 \newenvironment{covsubexamples}%         % define "subexamples" environment
 {%
-    \addtolength{\examplenumbersep}{-0.75em}%
     \begin{covexample}
     \begin{enumerate}
     \addtolength{\labelsep}{\subexamplenumbersep}%
     \renewcommand\theenumi{\alph{enumi}}
     \renewcommand\labelenumi{\covsubexnumber{\theenumi}}
     \renewcommand\p@enumi{\theequation\,}%
+    \setlength{\listparindent}{0pt}%
+    \def\makelabel##1{##1\hfil}%       % put labels flushleft in space available
 }%
 {%
     \end{enumerate}
