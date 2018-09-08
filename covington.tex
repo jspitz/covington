@@ -66,6 +66,8 @@
 \renewcommand{\cfttoctitlefont}{\normalsize\bfseries}
 \renewcommand{\cftsecfont}{\footnotesize}
 \renewcommand{\cftsecpagefont}{\footnotesize}
+\renewcommand{\cftsubsecfont}{\footnotesize}
+\renewcommand{\cftsubsecpagefont}{\footnotesize}
 
 \usepackage{babel}
 
@@ -90,8 +92,8 @@
 %
 % Titling
 %
-\def\pversion{Version 1.6}
-\def\pdate{September 7, 2018}
+\def\pversion{Version 1.7}
+\def\pdate{September 8, 2018}
 
 \title{\textbf{The \cvt\ Package\\Macros for Linguistics}}
 \author{Michael A. Covington \and J\"urgen Spitzm\"uller\thanks{Current maintainer.
@@ -162,16 +164,6 @@ which are typed, respectively, as:
 \begin{lstlisting}
 \`{x} \'{x} \^{x} \"{x} \~{x} \={x} \H{x} \t{xx} \c{x} \d{x} \b{x}
 \end{lstlisting}
-\LaTeX\ also provides support for many non-\textsc{ascii} characters, such as%
-\footnote{Please refer to \cite{pakin} for a comprehensive list of special characters and symbols.}:
-\begin{flushleft}\obeyspaces
-\i \j \ae \AE \oe \OE \aa \AA \o \O \l \L \ss ?` !`
-\end{flushleft}
-via the macros:
-\begin{lstlisting}
-\i \j \ae \AE \oe \OE \aa \AA \o \O \l \L \ss ?` !`
-\end{lstlisting}
-%
 Out of the box, however, \LaTeX\ doesn't give you a convenient way to put \emph{two}
 diacritical marks on the same letter.  To fill this gap, \cvt\ provides
 the following macros:
@@ -206,10 +198,19 @@ with a slightly better matching distance for the font used here.
 Note that not all accent macros work in the \jfenv{tabbing} environment.
 Use the \jfenv{Tabbing} package or refer to \cite{pakin} for alternative solutions.
 
-\section{Example numbers}
 
-Linguistics papers often include numbered examples.
-The macro \jcsmacro{exampleno} generates a new example number and can be 
+\section{Numbered examples}
+
+Linguistic papers often include numbered examples. With \cvt, generating those is straightforward.
+In this section, we describe how you can typeset a self-stepping example number (see section~\ref{sec:exno}),
+a single numbered example (sec.~\ref{sec:ex}), a consecutive range of numbered examples (sec.~\ref{sec:exs}),
+and alpha-numerically labeled sub-examples (sec.~\ref{sec:subexs}).
+All numbered examples can be referred to in the text via \jfcsmacro{label} and \jfcsmacro{ref} as usual
+(see sec.~\ref{sec:ref} for details).
+
+\subsection{Example numbers}\label{sec:exno}
+
+The macro \jcsmacro{exampleno} generates a new example number, stepped by 1. It can be 
 used anywhere you want the number to appear.  For example, to display a 
 sentence with a number at the extreme right, do this:
 \begin{lstlisting}[moretexcs={exampleno}]
@@ -224,14 +225,13 @@ This is a sentence. \hfill (\exampleno)
 The example counter is actually the same as \LaTeX's equation counter, 
 so that if you use equations and numbered examples in the same
 paper, you get a single continuous series of numbers. If you want to 
-access the number without changing it, use \jfcsmacro{theequation}.
+output the number without stepping it, use \jfcsmacro{theequation}.
 
-Also, you can use \jfcsmacro{label} and \jfcsmacro{ref} with example numbers in 
-exactly the same way as with equation numbers (see sec.~\ref{sec:ref} for
-details). This applies to the \jenv{example}, \jenv{examples} and \jenv{subexamples}
-environments, described next, as well as to \jcsmacro{exampleno} itself.
+Normally, however, you do not need to manually place \jcsmacro{exampleno} yourselves,
+as in the example above. For the common case where example numbers in parentheses are
+placed left to the example, \cvt\ provides more convenient solutions. These are described in turn.
 
-\section{The \jenv{example} environment}\label{sec:ex}
+\subsection[The \texttt{example} environment]{The \jenv{example} environment}\label{sec:ex}
 
 The \jenv{example} environment (alias \jenv{covexample}) displays a single example
 with a generated example number to the left of it.
@@ -255,7 +255,7 @@ The example can be of any length; it can consist of many lines (separated by \ve
 
 If you need more space between the example number and the text, you can increase it by means of
 the length \jcsmacro{examplenumbersep} (which is preset to \texttt{0pt}). Doing \lstinline|\setlength\examplenumbersep{1em}|,
-for instance, will increase the space by 1\,em.
+for instance, will increase the space by 1\,em (negative values will decrease the space accordingly).
 
 Note that, as of version 1.1, \cvt\ checks if there is already an \jenv{example} environment defined
 (e.\,g., by the class). If so, \cvt\ does not
@@ -282,9 +282,9 @@ This prints as:
 \end{itemize}
 \end{example}
 However, the \jenv{examples} and \jenv{subexamples} environments, described in turn, are usually more 
-convenient.
+convenient for this task.
 
-\section{The \jenv{examples} environment}\label{sec:exs}
+\subsection[The \texttt{examples} environment]{The \jenv{examples} environment}\label{sec:exs}
 
 To display a series of examples together, each with its own example 
 number, use \jenv{examples} (or \jenv{covexamples}) instead of \jenv{example} or \jenv{covexample}.  The only 
@@ -316,7 +316,7 @@ existing \jenv{examples} environments. The package will issue a warning if \jenv
 how it has dealt with the situation.
 
 
-\section{The \jenv{subexamples} environment}\label{sec:subexs}
+\subsection[The \texttt{subexamples} environment]{The \jenv{subexamples} environment}\label{sec:subexs}
 
 Sometimes a set of (paradigmatic) sub-examples gets only one main example number with alphabetic sub-numbering,
 as in \pxref{sbex}. To achieve this most conveniently, \cvt\ provides the \jenv{subexamples} (or \jenv{covsubexamples})
@@ -352,16 +352,17 @@ If you do not want the subexample letter in parentheses, you can redefine (via \
 
 The distance between example number and subnumber (letter) can be changed via the length \jcsmacro{examplenumbersep}
 (which is preset to \texttt{0pt}). The distance between example subnumber and text can be changed  via the length
-\jcsmacro{subexamplenumbersep} (preset to \texttt{0pt} as well).
+\jcsmacro{subexamplenumbersep} (preset to \texttt{0pt} as well). In both cases, a positive value will increase, a negative
+value will decrease the respective distance.
 Doing 
 \begin{lstlisting}
-\setlength{\examplenumbersep}{-0.2em}
+\setlength{\examplenumbersep}{-0.5em}
 \setlength{\subexamplenumbersep}{0.5em}
 \end{lstlisting}
-for instance, will come out like this:\footnote{Note, though, that negative shrinking is only possible to a certain degree in the first subitem.}
+for instance, will come out like this:
 
 \bgroup
-\setlength{\examplenumbersep}{-0.2em}
+\setlength{\examplenumbersep}{-0.5em}
 \setlength{\subexamplenumbersep}{0.5em}
 
 \begin{subexamples}
@@ -371,13 +372,14 @@ for instance, will come out like this:\footnote{Note, though, that negative shri
 \egroup
 
 
-\section{Referring to examples}\label{sec:ref}
+\subsection{Referring to examples}\label{sec:ref}
 
-References to examples and sub-examples can be made the usual way via the \jcsmacro{ref} command.
+References to examples and sub-examples can be made the usual way via the \jcsmacro{ref} command
+(which refers to a \jcsmacro{label} that is placed in the respective example paragraph).
 The references do not have parentheses by default, i.\,e., a reference to the example
 in section~\ref{sec:ex} would be printed as \ref{expl}, a reference to the sub-example
 in section~\ref{sec:subexs} as \ref{sbex}.
-For convenience, \cvt\ provides a command \jcsmacro{pxref} that also prints the parentheses,
+For convenience, though, \cvt\ provides a command \jcsmacro{pxref} that also prints the parentheses,
 as in \pxref{expl} and \pxref{sbex}.
 
 
@@ -423,14 +425,15 @@ Note that \cvt\ locally activates the end of line in glosses in order to identif
 \glend
 \end{lstlisting}
 %
-All together, \cvt\ provides eight macros for dealing with
-glosses:
+Sometimes, an additional fourth line is needed (for instance to gloss cited forms, morphology, or an additional translation). To support this as well,
+\cvt\ provides \jcsmacro{glll} and \jcsmacro{xglll}, each allowing for, and actually requiring, an additional line (see below for an example).
+
+All together, \cvt\ provides eight macros for dealing with glosses:
 \begin{itemize}
 \item \jcsmacro{gll} introduces two lines of words vertically aligned, and 
 activates an environment very similar to \jfenv{flushleft}. The two lines are separated by a normal line break (carriage return).
 \item \jcsmacro{glll} is like \jcsmacro{gll} except that it introduces
-\emph{three} lines of lined-up words (useful for cited forms, morphology,
-and translation).
+\emph{three} lines of lined-up words.
 \item \jcsmacro{xgll} is similar to \jcsmacro{gll} except that it does not make the line ending active. It thus works inside macros such as footnotes but requires explicit gloss line termination via \jcsmacro{xgle}.
 \item \jcsmacro{xglll} is similar to \jcsmacro{glll} except that it does not make the line ending active. It thus works inside macros such as footnotes but requires explicit gloss line termination via \jcsmacro{xgle}.
 \item \jcsmacro{xgle} is a gloss line ending marker to be used with \jcsmacro{xgll} and \jcsmacro{xglll}.
@@ -444,14 +447,14 @@ right).
 Here are several examples.  First, a sentence with three lines aligned, 
 instead of just two:
 \glll  Hoc est aliud exemplum.
-       n.sg.nom 3.sg n.sg.nom n.sg.nom
+       \textsc{n.sg.nom} \textsc{3sg} \textsc{n.sg.nom} \textsc{n.sg.nom}
        This is another example.
 \glt   `This is another example.'
 \glend
 This is typed as:
 \begin{lstlisting}[moretexcs={glll,glt,glend}]
 \glll  Hoc est aliud exemplum.
-       n.sg.nom 3.sg n.sg.nom n.sg.nom
+       \textsc{n.sg.nom} \textsc{3sg} \textsc{n.sg.nom} \textsc{n.sg.nom}
        This is another example.
 \glt   `This is another example.'
 \glend
@@ -486,8 +489,8 @@ This last example was, of course, typed as:
 \glend
 \end{example}
 \end{lstlisting}
-Notice that every glossed sentence begins with either \jcsmacro{gll} or 
-\jcsmacro{glll}, then contains either \jcsmacro{glt} or \jcsmacro{gln}, and ends 
+Notice that every glossed sentence begins with either \jcsmacro{gll}, \jcsmacro{xgll},
+\jcsmacro{glll} or \jcsmacro{xglll}, then contains either \jcsmacro{glt} or \jcsmacro{gln}, and ends 
 with \jcsmacro{glend}.  Layout is critical in the part preceding 
 \jcsmacro{glt} or \jcsmacro{gln}, and fairly free afterward.
 
@@ -655,7 +658,7 @@ The so-called \emph{Unified Style Sheet for Linguistics}, as proposed by the \te
 (\emph{Committee of Editors of Linguistics Journals}), which slightly differs from the \textsc{lsa} style,
 is followed by the style file \texttt{unified.bst} (available at \url{http://celxj.org/downloads/unified.bst}).
 A \texttt{biblatex} style file for the unified style is available at
-\url{https://github.com/semprag/biblatex-sp-unified}.})  For example,
+\url{https://github.com/semprag/biblatex-sp-unified} or on \textsc{ctan} as part of the \textsf{univie-ling} bundle.})  For example,
 \begin{lstlisting}
 \begin{reflist}
 Barton, G. Edward; Berwick, Robert C.; and Ristad, Eric Sven.  1987.
@@ -724,6 +727,13 @@ software, and the authors make no commitment to do any further work on
 it.
 
 \section{Release history}
+
+\subsection*{1.7 (2018 September 8)}
+
+\begin{itemize}
+	\item Fix alignment in \jenv{subexamples}.
+	\item Improve manual.
+\end{itemize}
 
 \subsection*{1.6 (2018 September 7)}
 
