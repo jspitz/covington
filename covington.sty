@@ -440,9 +440,14 @@
   \def\cov@normalfont{\normalfont\upshape}%
 }
 
-\let\eachwordone=\cov@emphasized
-\let\eachwordtwo=\cov@normalfont
-\let\eachwordthree=\cov@normalfont
+% Font settings for gloss lines
+\newcommand*\glosslineone{\cov@emphasized}
+\newcommand*\glosslinetwo{\cov@normalfont}
+\newcommand*\glosslinethree{\cov@normalfont}
+
+\def\eachwordone{\glosslineone}
+\def\eachwordtwo{\glosslinetwo}
+\def\eachwordthree{\glosslinethree}
 
 \def\lastword#1#2#3% #1 = \each, #2 = line box, #3 = word box
    {\setbox#2=\vbox{\unvbox#2%
