@@ -35,7 +35,7 @@ The package consists of the following files:
 
 	- Fix font markup of second gloss line (do not force rm).
 	- Add possibility to customize gloss line font setting.
-	- Add possibility to cutomize example number display.
+	- Add possibility to customize example number display.
 
 * Version 1.7 (2018-09-08):
 
