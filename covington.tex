@@ -92,8 +92,8 @@
 %
 % Titling
 %
-\def\pversion{Version 1.7}
-\def\pdate{September 8, 2018}
+\def\pversion{Version 1.8}
+\def\pdate{December 7, 2018}
 
 \title{\textbf{The \cvt\ Package\\Macros for Linguistics}}
 \author{Michael A. Covington \and J\"urgen Spitzm\"uller\thanks{Current maintainer.
@@ -344,8 +344,17 @@ and if this is the case, \cvt\ does not define its own one. The alias environmen
 is always available as a fallback. If you use the package option \joption{force}, \cvt\ will override
 existing \jenv{subexamples} environments. The package will issue a warning if \jenv{subexamples} is already defined.
 
-If you do not want the subexample letter in parentheses, you can redefine (via \jfcsmacro{renewcommand*}) the macro
-\jcsmacro{covsubexnumber} which has the following default definition:
+
+\subsection{Customizing the numbering}\label{sec:custno}
+
+You can change the display of the example number by redefining (via \jfcsmacro{renewcommand*}) the macro
+\jcsmacro{covexnumber} which has the following default definition:
+\begin{lstlisting}
+\newcommand*\covexnumber[1]{(#1)}
+\end{lstlisting}
+
+In the same vein, you can customize the display of the subexample letter by redefining (also via \jfcsmacro{renewcommand*})
+the macro \jcsmacro{covsubexnumber} which has the following default definition:
 \begin{lstlisting}
 \newcommand*\covsubexnumber[1]{(#1)}
 \end{lstlisting}
@@ -355,7 +364,7 @@ The distance between example number and subnumber (letter) can be changed via th
 \jcsmacro{subexamplenumbersep} (preset to \texttt{0pt} as well). In both cases, a positive value will increase, a negative
 value will decrease the respective distance.
 Doing 
-\begin{lstlisting}
+\begin{lstlisting}[moretexcs={setlength}]
 \setlength{\examplenumbersep}{-0.5em}
 \setlength{\subexamplenumbersep}{0.5em}
 \end{lstlisting}
@@ -380,7 +389,10 @@ The references do not have parentheses by default, i.\,e., a reference to the ex
 in section~\ref{sec:ex} would be printed as \ref{expl}, a reference to the sub-example
 in section~\ref{sec:subexs} as \ref{sbex}.
 For convenience, though, \cvt\ provides a command \jcsmacro{pxref} that also prints the parentheses,
-as in \pxref{expl} and \pxref{sbex}.
+as in \pxref{expl} and \pxref{sbex}. It is defined as followed:
+\begin{lstlisting}[moretexcs={providecommand}]
+\providecommand*\pxref[1]{(\ref{#1})}
+\end{lstlisting}
 
 
 \section{Glossing sentences word-by-word}\label{sec:gloss}
@@ -493,6 +505,15 @@ Notice that every glossed sentence begins with either \jcsmacro{gll}, \jcsmacro{
 \jcsmacro{glll} or \jcsmacro{xglll}, then contains either \jcsmacro{glt} or \jcsmacro{gln}, and ends 
 with \jcsmacro{glend}.  Layout is critical in the part preceding 
 \jcsmacro{glt} or \jcsmacro{gln}, and fairly free afterward.
+
+The font settings of each gloss line can be customized by redefining these macros:
+\begin{lstlisting}
+\newcommand*\glosslineone{\normalfont\itshape}% font settings 1st gloss line
+\newcommand*\glosslinetwo{\normalfont\upshape}% font settings 2nd gloss line
+\newcommand*\glosslinethree{\normalfont\upshape}% font settings 3rd gloss line
+\end{lstlisting}
+The markup of the translation line has to be done manually.
+
 
 \section{Phrase structure rules}
 
@@ -727,6 +748,14 @@ software, and the authors make no commitment to do any further work on
 it.
 
 \section{Release history}
+
+\subsection*{1.8 (2018 December 7)}
+
+\begin{itemize}
+	\item Fix font markup of second gloss line (do not force rm).
+	\item Add possibility to customize gloss line font setting. See sec.~\ref{sec:custno}.
+	\item Add possibility to cutomize example number display. See sec.~\ref{sec:custno}.
+\end{itemize}
 
 \subsection*{1.7 (2018 September 8)}
 

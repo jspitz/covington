@@ -31,6 +31,12 @@ The package consists of the following files:
 
 == CHANGES ==
 
+* Version 1.8 (2018-12-07):
+
+	- Fix font markup of second gloss line (do not force rm).
+	- Add possibility to customize gloss line font setting.
+	- Add possibility to cutomize example number display.
+
 * Version 1.7 (2018-09-08):
 
 	- Fix alignment in subexamples.
