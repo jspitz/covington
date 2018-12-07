@@ -204,15 +204,19 @@
 %            forced by the "force" option. This prevents clashes
 %            with packages/classes that roll their own examples environment
 %            (such as beamer).
+%
+% New in 1.8 (2018-12-07): Allow to redefine label (\covexnumber)
 
 \newcounter{equationsave}          % used in trick with equation number
 
 \newlength\examplenumbersep
 \setlength\examplenumbersep{0pt}
 
+\newcommand*\covexnumber[1]{(#1)}
+
 \newenvironment{covexamples}%         % define "example" environment
 {%
-\begin{list}{(\theequation)}%
+\begin{list}{\covexnumber{\theequation}}%
 {%
 \addtolength{\labelwidth}{\examplenumbersep}%
 \addtolength{\leftmargin}{\examplenumbersep}%
