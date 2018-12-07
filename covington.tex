@@ -389,7 +389,7 @@ The references do not have parentheses by default, i.\,e., a reference to the ex
 in section~\ref{sec:ex} would be printed as \ref{expl}, a reference to the sub-example
 in section~\ref{sec:subexs} as \ref{sbex}.
 For convenience, though, \cvt\ provides a command \jcsmacro{pxref} that also prints the parentheses,
-as in \pxref{expl} and \pxref{sbex}. It is defined as followed:
+as in \pxref{expl} and \pxref{sbex}. It is defined as follows and can be redefined if needed:
 \begin{lstlisting}[moretexcs={providecommand}]
 \providecommand*\pxref[1]{(\ref{#1})}
 \end{lstlisting}
