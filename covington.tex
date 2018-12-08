@@ -92,8 +92,8 @@
 %
 % Titling
 %
-\def\pversion{Version 1.8}
-\def\pdate{December 7, 2018}
+\def\pversion{Version 2.0dev}
+\def\pdate{December 8, 2018}
 
 \title{\textbf{The \cvt\ Package\\Macros for Linguistics}}
 \author{Michael A. Covington \and J\"urgen Spitzm\"uller\thanks{Current maintainer.
@@ -728,6 +728,11 @@ combination of \jfenv{flushleft} and \jfmacro{itshape}).  If you type
 \end{lstlisting}
 you get:
 \sentence{This is a sentence.}
+%
+The font shape can be modified by redefining the following macro:
+\begin{lstlisting}
+\newcommand*\sentencefs{\itshape}
+\end{lstlisting}
 
 
 \section{Big curly brackets (disjunctions)}
@@ -748,6 +753,12 @@ software, and the authors make no commitment to do any further work on
 it.
 
 \section{Release history}
+
+\subsection*{2.0 (forthcoming)}
+
+\begin{itemize}
+	\item Add possibility to customize \jcsmacro{sentence} font setting. See sec.~\ref{sec:markup}.
+\end{itemize}
 
 \subsection*{1.8 (2018 December 7)}
 
