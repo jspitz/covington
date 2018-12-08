@@ -33,6 +33,8 @@ The package consists of the following files:
 
 * Version 2.0 (Forthcoming):
 	- Add possibility to customize \sentence font setting.
+	- Add \lexp, \lcon and \lmean markup macros.
+
 * Version 1.8 (2018-12-07):
 
 	- Fix font markup of second gloss line (do not force rm).

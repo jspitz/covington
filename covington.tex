@@ -718,8 +718,7 @@ Notice that within the reference list, ``French spacing'' is in effect
 you do not have to do anything special to avoid excessive space after 
 people's initials.
 
-
-\section{Displayed sentences}
+\section{Semantik markup}\label{sec:markup}
 
 The macro \jcsmacro{sentence} displays an italicized sentence (it is a 
 combination of \jfenv{flushleft} and \jfmacro{itshape}).  If you type
@@ -733,7 +732,30 @@ The font shape can be modified by redefining the following macro:
 \begin{lstlisting}
 \newcommand*\sentencefs{\itshape}
 \end{lstlisting}
+%
+The following macros provide further markup options common in linguistics:
 
+\begin{itemize}
+	\item \lstinline[moretexcs={lexp}]|\lexp{word}| is used to mark word forms
+	      (italic by default, as in \lexp{word})
+	\item \lstinline[moretexcs={lcon}]|\lcon{concept}| is used to mark concepts
+	       (small caps by default, as in \lcon{concept})
+	\item \lstinline[moretexcs={lmean}]|\lmean{meaning}| is used to mark meaning
+	      (single quotes by default, as in \lmean{meaning})
+\end{itemize}
+%
+Note that for \jcsmacro{lmean}, \cvt\ checks at document begin whether the \textsf{csquotes}
+package is loaded. If so, it uses its language-sensitive \jcsmacro{enquote*} macro for quoting.
+If not, a fallback quotation (using English single quotation marks) is used. The usage of
+\textsf{csquotes} is highly recommended!
+
+Here are the definitions of the macros. They can be redefined via \jcsmacro{renewcommand}:
+\begin{lstlisting}[moretexcs={providecommand}]
+\providecommand*\expression[1]{\textit{#1}}
+\providecommand*\concept[1]{\textsc{#1}}
+\providecommand*\lmean[1]{\covenquote{#1}}
+\end{lstlisting}
+%
 
 \section{Big curly brackets (disjunctions)}
 
@@ -758,6 +780,7 @@ it.
 
 \begin{itemize}
 	\item Add possibility to customize \jcsmacro{sentence} font setting. See sec.~\ref{sec:markup}.
+	\item Add \jcsmacro{lexp}, \jcsmacro{lcon} and \jcsmacro{lmean} markup macros. See sec.~\ref{sec:markup}.
 \end{itemize}
 
 \subsection*{1.8 (2018 December 7)}

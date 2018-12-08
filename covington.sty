@@ -806,6 +806,18 @@
 \newcommand{\sentence}[1]
      {\begin{flushleft}{\sentencefs #1}\end{flushleft}}
 
+% V. 2.0: Further semantic markup
+\providecommand*\lexp[1]{\textit{#1}}
+\providecommand*\lcon[1]{\textsc{#1}}
+\newcommand*\covenquote[1]{\textquoteleft #1\textquoteright}
+\providecommand*\lmean[1]{\covenquote{#1}}
+
+\AtBeginDocument{%
+  \@ifundefined{enquote}{}{%
+    \renewcommand\covenquote[1]{\enquote*{#1}}
+  }
+}
+
 \newcommand{\either}[2]
 {
      $
