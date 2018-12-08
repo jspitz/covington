@@ -397,6 +397,8 @@ as in \pxref{expl} and \pxref{sbex}. It is defined as follows and can be redefin
 
 \section{Glossing sentences word-by-word}\label{sec:gloss}
 
+\subsection{Gloss markup}
+
 To gloss a sentence is to annotate it word-by-word.  Most commonly, a 
 sentence in a foreign language is followed by a word-for-word 
 translation (with the words lined up vertically) and then a smooth 
@@ -456,6 +458,26 @@ activates an environment very similar to \jfenv{flushleft}. The two lines are se
 right).
 \item \jcsmacro{glend} ends the special \jfenv{flushleft}-like environment.
 \end{itemize}
+%
+Notice that every glossed sentence begins with either \jcsmacro{gll}, \jcsmacro{xgll},
+\jcsmacro{glll} or \jcsmacro{xglll}, then contains either \jcsmacro{glt} or \jcsmacro{gln}, and ends 
+with \jcsmacro{glend}.  Layout is critical in the part preceding 
+\jcsmacro{glt} or \jcsmacro{gln}, and fairly free afterward.
+
+
+\subsection{Customization}\label{sec:glossfc}
+
+The font settings of each gloss line can be customized by redefining these macros:
+\begin{lstlisting}
+\newcommand*\glosslineone{\normalfont\itshape}% font settings 1st gloss line
+\newcommand*\glosslinetwo{\normalfont\upshape}% font settings 2nd gloss line
+\newcommand*\glosslinethree{\normalfont\upshape}% font settings 3rd gloss line
+\end{lstlisting}
+The markup of the translation line has to be done manually.
+
+
+\subsection{Examples}
+
 Here are several examples.  First, a sentence with three lines aligned, 
 instead of just two:
 \glll  Hoc est aliud exemplum.
@@ -471,6 +493,19 @@ This is typed as:
 \glt   `This is another example.'
 \glend
 \end{lstlisting}
+or, using the font customization possibilities described in sec.~\ref{sec:glossfc}:
+\begin{lstlisting}[moretexcs={glll,glt,glend}]
+\begingroup
+\renewcommand*\glosslinetwo{\normalfont\scshape}
+\glll  Hoc est aliud exemplum.
+       n.sg.nom 3sg n.sg.nom n.sg.nom
+       This is another example.
+\glt   `This is another example.'
+\glend
+\endgroup
+\end{lstlisting}
+(with \lstinline|\begingroup...\endgroup| to keep the changes local).
+
 Next, an example with a gloss but no translation, with an example number 
 at the right:
 \gll  Hoc habet numerum.
@@ -501,18 +536,6 @@ This last example was, of course, typed as:
 \glend
 \end{example}
 \end{lstlisting}
-Notice that every glossed sentence begins with either \jcsmacro{gll}, \jcsmacro{xgll},
-\jcsmacro{glll} or \jcsmacro{xglll}, then contains either \jcsmacro{glt} or \jcsmacro{gln}, and ends 
-with \jcsmacro{glend}.  Layout is critical in the part preceding 
-\jcsmacro{glt} or \jcsmacro{gln}, and fairly free afterward.
-
-The font settings of each gloss line can be customized by redefining these macros:
-\begin{lstlisting}
-\newcommand*\glosslineone{\normalfont\itshape}% font settings 1st gloss line
-\newcommand*\glosslinetwo{\normalfont\upshape}% font settings 2nd gloss line
-\newcommand*\glosslinethree{\normalfont\upshape}% font settings 3rd gloss line
-\end{lstlisting}
-The markup of the translation line has to be done manually.
 
 
 \section{Phrase structure rules}
