@@ -35,6 +35,7 @@
 
 \documentclass[english]{article}
 
+\usepackage{metre}
 \usepackage[libertine]{newtxmath}
 \usepackage[osf]{libertine}
 \usepackage[scaled=0.75]{beramono}
@@ -84,6 +85,7 @@
 \newcommand*\jfmacro[1]{\texttt{#1}}
 \newcommand*\jfenv[1]{\texttt{#1}}
 \newcommand*\jfcsmacro[1]{\jfmacro{\textbackslash{#1}}}
+\newcommand*\jparam[1]{\angus #1\angud}
 
 % Strings
 \newcommand*{\cvt}{\textsf{covington}}
@@ -93,7 +95,7 @@
 % Titling
 %
 \def\pversion{Version 2.0dev}
-\def\pdate{December 8, 2018}
+\def\pdate{December 9, 2018}
 
 \title{\textbf{The \cvt\ Package\\Macros for Linguistics}}
 \author{Michael A. Covington \and J\"urgen Spitzm\"uller\thanks{Current maintainer.
@@ -349,13 +351,13 @@ existing \jenv{subexamples} environments. The package will issue a warning if \j
 
 You can change the display of the example number by redefining (via \jfcsmacro{renewcommand*}) the macro
 \jcsmacro{covexnumber} which has the following default definition:
-\begin{lstlisting}
+\begin{lstlisting}[moretexcs={covexnumber}]
 \newcommand*\covexnumber[1]{(#1)}
 \end{lstlisting}
 
 In the same vein, you can customize the display of the subexample letter by redefining (also via \jfcsmacro{renewcommand*})
 the macro \jcsmacro{covsubexnumber} which has the following default definition:
-\begin{lstlisting}
+\begin{lstlisting}[moretexcs={covsubexnumber}]
 \newcommand*\covsubexnumber[1]{(#1)}
 \end{lstlisting}
 
@@ -364,7 +366,7 @@ The distance between example number and subnumber (letter) can be changed via th
 \jcsmacro{subexamplenumbersep} (preset to \texttt{0pt} as well). In both cases, a positive value will increase, a negative
 value will decrease the respective distance.
 Doing 
-\begin{lstlisting}[moretexcs={setlength}]
+\begin{lstlisting}[moretexcs={setlength,examplenumbersep,subexamplenumbersep}]
 \setlength{\examplenumbersep}{-0.5em}
 \setlength{\subexamplenumbersep}{0.5em}
 \end{lstlisting}
@@ -390,48 +392,149 @@ in section~\ref{sec:ex} would be printed as \ref{expl}, a reference to the sub-e
 in section~\ref{sec:subexs} as \ref{sbex}.
 For convenience, though, \cvt\ provides a command \jcsmacro{pxref} that also prints the parentheses,
 as in \pxref{expl} and \pxref{sbex}. It is defined as follows and can be redefined if needed:
-\begin{lstlisting}[moretexcs={providecommand}]
+\begin{lstlisting}[moretexcs={providecommand,pxref}]
 \providecommand*\pxref[1]{(\ref{#1})}
 \end{lstlisting}
 
 
 \section{Glossing sentences word-by-word}\label{sec:gloss}
 
-\subsection{Gloss markup}
-
 To gloss a sentence is to annotate it word-by-word.  Most commonly, a 
 sentence in a foreign language is followed by a word-for-word 
 translation (with the words lined up vertically) and then a smooth 
-translation (not lined up), like this:%
-\footnote{The macros for handling glosses are adapted with permission 
-from \texttt{gloss.tex}, by Marcel R. van der Goot.}
-\gll Dit is een Nederlands voorbeeld. 
-     This is a Dutch example. 
-\glt `This is an example in Dutch.'
-\glend
-That particular example would be typed as:
-\begin{lstlisting}[moretexcs={gll,glt,glend}]
-\gll Dit is een Nederlands voorbeeld. 
-     This is a Dutch example. 
-\glt `This is an example in Dutch.'
-\glend
+translation (not lined up), like this:
+\gloss{Dit is een Nederlands voorbeeld}
+      {This is a Dutch example}
+      {This is an example in Dutch.}
+\Cvt\ provides different ways to typeset such glosses. The most convenient
+way is via gloss macros (see sec.~\ref{sec:gmacros}), an alternative (and the
+traditional) way is via a set of commands (see sec.~\ref{sec:glosscmds}).
+Both are described in turn.
+
+\subsection{Gloss macros}\label{sec:gmacros}
+
+\Cvt\ provides two gloss macros, both also with a starred variant:
+\begin{itemize}
+	\item \jcsmacro{gloss\{\jparam{gloss line 1}\}\{\jparam{gloss line 2}\}\{\jparam{free translation}\}}\\
+	       typesets two-line glosses with a translation line
+	\item \jcsmacro{glosss\{\jparam{gloss l.\,1}\}\{\jparam{gloss l.\,2}\}\{\jparam{gloss l.\,3}\}\{\jparam{free translation}\}}\\
+	       typesets three-line\footnote{The additional line can be useful for instance
+	       to gloss cited forms, morphology, or an additional translation.
+	       See sec.~\ref{sec:glossex} for examples.}
+       	   glosses with a translation line
+\end{itemize}
+%
+The starred variants, \jcsmacro{gloss*} and \jcsmacro{glosss*}, do not add
+a linebreak before the translation line. This can be useful when no translation,
+but an aligned number, is to be inserted (please refer to sec.~\ref{sec:glossex}
+for an example). The \jparam{free translation} argument can also be empty.
+In this case, no translation line is added.
+
+Note that the macros automatically markup the lines. By default, the first gloss
+line is in italics, subsequent lines are set upright, and the free translation in single
+quotation marks (using the language-sensitive \textsf{csquotes} \cite{csquotes} macros if
+this package is loaded). This can be customized, though (see sec.~\ref{sec:glossfc}).
+
+The example given above would thus be typed as:
+\begin{lstlisting}[moretexcs={gloss}]
+\gloss{Dit is een Nederlands voorbeeld}
+      {This is a Dutch example}
+      {This is an example in Dutch.}
 \end{lstlisting}
 Notice that the words do not have to be typed lining up; instead, \TeX\ 
 counts them.  If the words in the two languages do not correspond 
 one-to-one, you can use curly brackets to group words.
 For example, to print
-\gll Dit is een voorbeeldje     in het Nederlands.
-     This is a {little example} in {}  Dutch.
-\glt `This is a little example in Dutch.'
-\glend
+\gloss{Dit  is een voorbeeldje      in het Nederlands}
+      {This is a   {little example} in {}  Dutch}
+      {This is a little example in Dutch.}
 you would type:
+\begin{lstlisting}[moretexcs={gloss}]
+\gloss{Dit  is een voorbeeldje      in het Nederlands}
+      {This is a   {little example} in {}  Dutch}
+      {This is a little example in Dutch.}
+\end{lstlisting}
+%
+Please read sec.~\ref{sec:glossex} for more examples.
+
+\subsection{Glossing low-level commands}\label{sec:glosscmds}
+
+The gloss macros described above build on low-level commands\footnote{The commands are adapted
+with permission from \texttt{gloss.tex}, by Marcel R. van der Goot.} which can also
+be used directly (this was actually the only way up to \cvt\ 2.0 which introduced the macros).
+Low-level commands can be useful if you want to do fancy things in a gloss.
+Note, though, that using them also has limitations:
+Some commands cannot be used inside macros (such as footnotes), and the markup is not done automatically
+in all cases (as documented in what follows). Thus, we strongly suggest to use the macros,
+unless you have very good reasons not to do that.
+
+The following is a complete list of all low-level glossing commands:
+\begin{description}\setlength\itemsep{0pt}
+	\item[\jcsmacro{gll}] introduces two lines of words vertically aligned, and 
+	      activates an environment very similar to \jfenv{flushleft}.
+	      The two lines are separated by a normal line break (carriage return).
+	      This is possible since the command makes the line-ending character active.
+	      As a consequence, however, this command does not work inside macros
+	      (such as \jfcsmacro{footnote}).
+	\item[\jcsmacro{glll}] is like \jcsmacro{gll} except that it introduces
+	      \emph{three} lines of lined-up words.
+	\item[\jcsmacro{xgll}] is similar to \jcsmacro{gll} except that it does not make
+	       the line ending active. It thus works inside macros such as footnotes but
+	       requires explicit gloss line termination via \jcsmacro{xgle}.
+	\item[\jcsmacro{xglll}] is similar to \jcsmacro{glll} except that it does not make
+	      the line ending active. It thus works inside macros such as footnotes but
+	      requires explicit gloss line termination via \jcsmacro{xgle}.
+	\item[\jcsmacro{xgle}] is a gloss line ending marker to be used with \jcsmacro{xgll}
+	      and \jcsmacro{xglll}.
+	\item[\jcsmacro{glt}] ends the set of lined-up lines and introduces a line 
+	      (or more) of translation. Note that this command does not markup the translation
+	      line (no automatic enquoting). Also, it outputs an empty line if no text follows.
+	\item[\jcsmacro{gln}] is like \jcsmacro{glt} but does not start a new line 
+	      (useful when no translation follows but you want to put a number on the 
+	       right).
+	\item[\jcsmacro{glot\{\jparam{free translation}\}}] is an alternative to \jcsmacro{glt}
+	     and a smarter way to insert a translation line. Other than \jcsmacro{glt}, it marks up
+	     (by default: enquotes) the translation line. Also, it does not add an empty line if the
+	     translation is empty. This command has been introduced in \cvt\ 2.0.
+	\item[\jcsmacro{glend}] ends the special \jfenv{flushleft}-like environment.
+\end{description}
+%
+Using the low-level commands, the examples given above would be
+coded as follows:
 \begin{lstlisting}[moretexcs={gll,glt,glend}]
-\gll Dit is een voorbeeldje     in het Nederlands.
-     This is a {little example} in {}  Dutch.
+\gll Dit is een Nederlands voorbeeld. 
+     This is a Dutch example. 
+\glt `This is an example in Dutch.'
+\glend
+\end{lstlisting}
+\begin{lstlisting}[moretexcs={gll,glt,glend}]
+\gll Dit is een voorbeeldje     in het Nederlands
+     This is a {little example} in {}  Dutch
 \glt `This is a little example in Dutch.'
 \glend
 \end{lstlisting}
-Note that \cvt\ locally activates the end of line in glosses in order to identify the different lines of the gloss (via category code change). This does not work inside macros (e.\,g., if the gloss is in a footnote). To work around this, a special version of the \jcsmacro{gll} macro is provided that does without the character activation: \jcsmacro{xgll}. This can also be used in macro arguments; however, the end of each gloss line needs to be explicitly specified by the \jcsmacro{xgle} macro in this case. If you want to put the above gloss in a footnote, thus, you would type:
+%
+Observe that you need to markup (i.\,e., enquote) the translation line yourself if you use \jcsmacro{glt}.
+This is not so if you use \jcsmacro{glot}:
+\begin{lstlisting}[moretexcs={gll,glot,glend}]
+\gll Dit is een Nederlands voorbeeld
+     This is a Dutch example
+\glot{This is an example in Dutch.}
+\glend
+\end{lstlisting}
+%
+The advantage of \jcsmacro{glot} is that you can easily customize the translation markup globally.
+Also, \jcsmacro{glot} uses the language-sensitive \textsf{csquotes} \cite{csquotes} macros if
+this package is loaded (see sec.~\ref{sec:glossfc}).
+
+Since \jcsmacro{gll} and \jcsmacro{glll} locally activate the end of line in glosses in order to
+identify the different lines of the gloss (via category code change), they do not work inside macros
+(e.\,g., if the gloss is in a footnote). To work around this, special versions of the \jcsmacro{gll}
+and \jcsmacro{glll} commands are provided that do without the character activation: \jcsmacro{xgll}
+and \jcsmacro{xglll}, respectively.
+These can also be used in macro arguments; however, the end of each gloss line needs to be explicitly
+specified by the \jcsmacro{xgle} command in this case.
+If you want to put the above gloss in a footnote, thus, you would type:
 \begin{lstlisting}[moretexcs={xgll,xgle,glt,glend}]
 \xgll Dit is een voorbeeldje     in het Nederlands.\xgle
       This is a {little example} in {}  Dutch.\xgle
@@ -439,101 +542,88 @@ Note that \cvt\ locally activates the end of line in glosses in order to identif
 \glend
 \end{lstlisting}
 %
-Sometimes, an additional fourth line is needed (for instance to gloss cited forms, morphology, or an additional translation). To support this as well,
-\cvt\ provides \jcsmacro{glll} and \jcsmacro{xglll}, each allowing for, and actually requiring, an additional line (see below for an example).
+Note, again, that the macros described in sec.~\ref{sec:gmacros} do not have this problem.
 
-All together, \cvt\ provides eight macros for dealing with glosses:
-\begin{itemize}
-\item \jcsmacro{gll} introduces two lines of words vertically aligned, and 
-activates an environment very similar to \jfenv{flushleft}. The two lines are separated by a normal line break (carriage return).
-\item \jcsmacro{glll} is like \jcsmacro{gll} except that it introduces
-\emph{three} lines of lined-up words.
-\item \jcsmacro{xgll} is similar to \jcsmacro{gll} except that it does not make the line ending active. It thus works inside macros such as footnotes but requires explicit gloss line termination via \jcsmacro{xgle}.
-\item \jcsmacro{xglll} is similar to \jcsmacro{glll} except that it does not make the line ending active. It thus works inside macros such as footnotes but requires explicit gloss line termination via \jcsmacro{xgle}.
-\item \jcsmacro{xgle} is a gloss line ending marker to be used with \jcsmacro{xgll} and \jcsmacro{xglll}.
-\item \jcsmacro{glt} ends the set of lined-up lines and introduces a line 
-(or more) of translation.
-\item \jcsmacro{gln} is like \jcsmacro{glt} but does not start a new line 
-(useful when no translation follows but you want to put a number on the 
-right).
-\item \jcsmacro{glend} ends the special \jfenv{flushleft}-like environment.
-\end{itemize}
-%
-Notice that every glossed sentence begins with either \jcsmacro{gll}, \jcsmacro{xgll},
-\jcsmacro{glll} or \jcsmacro{xglll}, then contains either \jcsmacro{glt} or \jcsmacro{gln}, and ends 
-with \jcsmacro{glend}.  Layout is critical in the part preceding 
-\jcsmacro{glt} or \jcsmacro{gln}, and fairly free afterward.
+To sum up: With low-level commands, every glossed sentence begins with either \jcsmacro{gll},
+\jcsmacro{xgll}, \jcsmacro{glll} or \jcsmacro{xglll}, then contains either \jcsmacro{glt} or
+\jcsmacro{gln}, and ends with \jcsmacro{glend}.
+Layout is critical in the part preceding \jcsmacro{glt} or \jcsmacro{gln}, and fairly free afterward.
 
 
 \subsection{Customization}\label{sec:glossfc}
 
 The font settings of each gloss line can be customized by redefining these macros:
-\begin{lstlisting}
+\begin{lstlisting}[moretexcs={glosslineone,glosslinetwo,glosslinethree}]
 \newcommand*\glosslineone{\normalfont\itshape}% font settings 1st gloss line
 \newcommand*\glosslinetwo{\normalfont\upshape}% font settings 2nd gloss line
 \newcommand*\glosslinethree{\normalfont\upshape}% font settings 3rd gloss line
 \end{lstlisting}
-The markup of the translation line has to be done manually.
-
-
-\subsection{Examples}
-
-Here are several examples.  First, a sentence with three lines aligned, 
-instead of just two:
-\glll  Hoc est aliud exemplum.
-       \textsc{n.sg.nom} \textsc{3sg} \textsc{n.sg.nom} \textsc{n.sg.nom}
-       This is another example.
-\glt   `This is another example.'
-\glend
-This is typed as:
-\begin{lstlisting}[moretexcs={glll,glt,glend}]
-\glll  Hoc est aliud exemplum.
-       \textsc{n.sg.nom} \textsc{3sg} \textsc{n.sg.nom} \textsc{n.sg.nom}
-       This is another example.
-\glt   `This is another example.'
-\glend
+The markup of the translation line (if the \jcsmacro{gloss} or \jcsmacro{glosss}
+macro or the \jcsmacro{glot} low-level command is used) can be customized by redefining
+the following macro.
+\begin{lstlisting}[moretexcs={glosslinetrans,covenquote}]
+\newcommand*\glosslinetrans[1]{\covenquote{#1}}
 \end{lstlisting}
-or, using the font customization possibilities described in sec.~\ref{sec:glossfc}:
-\begin{lstlisting}[moretexcs={glll,glt,glend}]
+Note that for \jcsmacro{covenquote}, as used in the default definition, \cvt\ checks at
+document begin whether the \textsf{csquotes} \cite{csquotes} package is loaded. If so,
+it uses its language-sensitive \jcsmacro{enquote*} macro for enquoting the translation.
+If not, a fallback quotation (using English single quotation marks) is used. The usage of
+\textsf{csquotes} is highly recommended!
+
+
+\subsection{Examples}\label{sec:glossex}
+
+This section gives some further examples.  First, a sentence with three lines aligned, 
+instead of just two:
+\glosss{Hoc est aliud exemplum}
+       {\textsc{n.sg.nom} \textsc{3sg} \textsc{n.sg.nom} \textsc{n.sg.nom}}
+       {This is another example}
+       {This is another example.}
+This is typed as:
+\begin{lstlisting}[moretexcs={glosss}]
+\glosss{Hoc est aliud exemplum}
+       {\textsc{n.sg.nom} \textsc{3sg} \textsc{n.sg.nom} \textsc{n.sg.nom}}
+       {This is another example}
+       {This is another example.}
+\end{lstlisting}
+or in a more convenient way, using the font customization possibilities described
+in sec.~\ref{sec:glossfc}:
+\begin{lstlisting}[moretexcs={glosss,glosslinetwo}]
 \begingroup
 \renewcommand*\glosslinetwo{\normalfont\scshape}
-\glll  Hoc est aliud exemplum.
-       n.sg.nom 3sg n.sg.nom n.sg.nom
-       This is another example.
-\glt   `This is another example.'
-\glend
+\glosss{Hoc      est aliud    exemplum}
+       {n.sg.nom 3sg n.sg.nom n.sg.nom}
+       {This     is  another  example}
+       {This is another example.}
 \endgroup
 \end{lstlisting}
 (with \lstinline|\begingroup...\endgroup| to keep the changes local).
 
 Next, an example with a gloss but no translation, with an example number 
 at the right:
-\gll  Hoc habet numerum.
-      This has number
-\gln  \hfill (\exampleno)
-\glend
-That one was typed as:
-\begin{lstlisting}[moretexcs={gll,gln,glend,exampleno}]
-\gll  Hoc habet numerum.
-      This has number
-\gln  \hfill (\exampleno)
-\glend
+\gloss*{Hoc habet numerum}
+       {This has number}
+       {\hfill (\exampleno)}
+%
+That one was typed using the starred version of the macro:
+\begin{lstlisting}[moretexcs={gloss,exampleno}]
+\gloss*{Hoc habet numerum}
+       {This has number}
+       {\hfill (\exampleno)}
 \end{lstlisting}
 Finally we'll put a glossed sentence inside the \texttt{example} 
 environment, which is a very common way of using it:
 \begin{example}
-\gll  Hoc habet numerum praepositum.
-      This has number preposed
-\glt  `This one has a number in front of it.'
-\glend
+\gloss{Hoc habet numerum praepositum}
+      {This has number preposed}
+      {This one has a number in front of it.}
 \end{example}
 This last example was, of course, typed as:
-\begin{lstlisting}[moretexcs={gll,glt,glend}]
+\begin{lstlisting}[moretexcs={gloss}]
 \begin{example}
-\gll  Hoc habet numerum praepositum.
-      This has number preposed
-\glt  `This one has a number in front of it.'
-\glend
+\gloss{Hoc habet numerum praepositum}
+      {This has number preposed}
+      {This one has a number in front of it.}
 \end{example}
 \end{lstlisting}
 
@@ -541,7 +631,7 @@ This last example was, of course, typed as:
 \section{Phrase structure rules}
 
 To print phrase structure rules such as \psr{S}{NP~VP} you can use \texttt{covington's} macro
-\lstinline[moretexcs={psr}]"\psr{<constituent>}{<sub-constituents>}" (for the given example,
+\jcsmacro{psr\{\jparam{constituent}\}\{\jparam{sub-constituents}\}} (for the given example,
 \lstinline[moretexcs={psr}]"\psr{S}{NP~VP}").
 
 \section{Feature structures}
@@ -752,7 +842,7 @@ you get:
 \sentence{This is a sentence.}
 %
 The font shape can be modified by redefining the following macro:
-\begin{lstlisting}
+\begin{lstlisting}[moretexcs={sentencefs}]
 \newcommand*\sentencefs{\itshape}
 \end{lstlisting}
 %
@@ -768,14 +858,14 @@ The following macros provide further markup options common in linguistics:
 \end{itemize}
 %
 Note that for \jcsmacro{lmean}, \cvt\ checks at document begin whether the \textsf{csquotes}
-package is loaded. If so, it uses its language-sensitive \jcsmacro{enquote*} macro for quoting.
-If not, a fallback quotation (using English single quotation marks) is used. The usage of
-\textsf{csquotes} is highly recommended!
+\cite{csquotes} package is loaded. If so, it uses its language-sensitive \jcsmacro{enquote*}
+macro for quoting. If not, a fallback quotation (using English single quotation marks) is used.
+The usage of \textsf{csquotes} is highly recommended!
 
 Here are the definitions of the macros. They can be redefined via \jcsmacro{renewcommand}:
-\begin{lstlisting}[moretexcs={providecommand}]
-\providecommand*\expression[1]{\textit{#1}}
-\providecommand*\concept[1]{\textsc{#1}}
+\begin{lstlisting}[moretexcs={providecommand,lexp,lcon,lmean,covenquote}]
+\providecommand*\lexp[1]{\textit{#1}}
+\providecommand*\lcon[1]{\textsc{#1}}
 \providecommand*\lmean[1]{\covenquote{#1}}
 \end{lstlisting}
 %
@@ -802,6 +892,10 @@ it.
 \subsection*{2.0 (forthcoming)}
 
 \begin{itemize}
+	\item Add new gloss macros (\jcsmacro{gloss}, \jcsmacro{gloss*}, \jcsmacro{glosss}, and \jcsmacro{glosss*})
+	      for a more convenient, flexible and robust gloss insertion. See sec.~\ref{sec:gmacros}.
+	\item Add \jcsmacro{glot} command for customizable gloss translation line, together with customization possibilities.
+	      See sec.~\ref{sec:glosscmds}.
 	\item Add possibility to customize \jcsmacro{sentence} font setting. See sec.~\ref{sec:markup}.
 	\item Add \jcsmacro{lexp}, \jcsmacro{lcon} and \jcsmacro{lmean} markup macros. See sec.~\ref{sec:markup}.
 \end{itemize}
@@ -918,8 +1012,11 @@ it.
 \end{itemize}
 
 \begin{thebibliography}{99}
-	\bibitem{pakin} Pakin, Scott. The Comprehensive \LaTeX\ Symbol List.
-	30 November 2015. \url{http://www.ctan.org/pkg/comprehensive}.
+	\bibitem{csquotes} Lehman, Philipp and Joseph Wright:
+	    \emph{csquotes -- Context sensitive quotation facilities}. April 4, 2018.
+	    \url{http://www.ctan.org/pkg/csquotes}.
+	\bibitem{pakin} Pakin, Scott: The Comprehensive \LaTeX\ Symbol List.
+	     November 30, 2015. \url{http://www.ctan.org/pkg/comprehensive}.
 \end{thebibliography}
 
 \end{document}
