@@ -42,7 +42,7 @@
 %%% Metadata
 %%%
 
-\def\filedate{2018/12/08}
+\def\filedate{2018/12/09}
 \def\fileversion{2.0dev}
 \def\filename{covington.sty}
 
@@ -577,6 +577,51 @@
     \repeat
     \egroup % matches \bgroup in \gloss
    }
+
+% V. 2.0: enquotable translation line 
+\newcommand*\glosslinetrans[1]{\covenquote{#1}}
+\newcommand*\glot[1]{%
+  \def\tempx{#1}%
+  \ifx\tempx\empty\gln
+  \else\glt\glosslinetrans{#1}\fi%
+}
+
+% V. 2.0: More convenient gloss macros
+%
+% 1. \gloss{<line 1>}{<line 2>}{<translation>}
+% 2. \gloss*{<line 1>}{<line 2>}{<appendix without linebreak>}
+\newcommand*\gloss{\@ifstar{\@@gloss}{\@gloss}}
+\newcommand*\@gloss[3]{%
+  \xgll #1\xgle
+        #2\xgle
+  \glot{#3}
+  \glend
+}
+\newcommand*\@@gloss[3]{%
+  \xgll #1\xgle
+        #2\xgle
+  \gln #3
+  \glend
+}
+
+% 3. \glosss{<line 1>}{<line 2>}{<line 3>}{<translation>}
+% 4. \glosss*{<line 1>}{<line 2>}{<line 3>}{<appendix without linebreak>}
+\newcommand*\glosss{\@ifstar{\@@glosss}{\@glosss}}
+\newcommand*\@glosss[4]{%
+  \xglll #1\xgle
+         #2\xgle
+         #3\xgle
+  \glot{#4}
+  \glend
+}
+\newcommand*\@@glosss[4]{%
+  \xglll #1\xgle
+         #2\xgle
+         #3\xgle
+  \gln #4
+  \glend
+}
+
 
 %\def\gloss   % raw TeX macro for 2 aligned lines
 %   {\bgroup
