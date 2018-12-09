@@ -32,8 +32,8 @@ The package consists of the following files:
 == CHANGES ==
 
 * Version 2.0 (Forthcoming):
-	- Add new gloss macros \gloss, \gloss*, \glosss, and \glosss*)
-	  for a more convenient, flexible and robust gloss insertion.
+	- Add new gloss macros \gloss and \glosss) for a more convenient,
+	  flexible and robust gloss insertion.
 	- Add \glot command for customizable gloss translation line,
 	  together with customization possibilities.
 	- Add possibility to customize \sentence font setting.

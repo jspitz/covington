@@ -413,35 +413,63 @@ Both are described in turn.
 
 \subsection{Gloss macros}\label{sec:gmacros}
 
-\Cvt\ provides two gloss macros, both also with a starred variant:
+\Cvt\ provides two gloss macros:
 \begin{itemize}
-	\item \jcsmacro{gloss\{\jparam{gloss line 1}\}\{\jparam{gloss line 2}\}\{\jparam{free translation}\}}\\
+	\item \jcsmacro{gloss[\jparam{options}]\{\jparam{gloss line 1}\}\{\jparam{gloss line 2}\}\{\jparam{free translation}\}}\\
 	       typesets two-line glosses with a translation line
-	\item \jcsmacro{glosss\{\jparam{gloss l.\,1}\}\{\jparam{gloss l.\,2}\}\{\jparam{gloss l.\,3}\}\{\jparam{free translation}\}}\\
+	\item \jcsmacro{glosss[\jparam{options}]\{\jparam{gloss l.\,1}\}\{\jparam{gloss l.\,2}\}\{\jparam{gloss l.\,3}\}\{\jparam{free tr.}\}}\\
 	       typesets three-line\footnote{The additional line can be useful for instance
 	       to gloss cited forms, morphology, or an additional translation.
 	       See sec.~\ref{sec:glossex} for examples.}
        	   glosses with a translation line
 \end{itemize}
 %
-The starred variants, \jcsmacro{gloss*} and \jcsmacro{glosss*}, do not add
-a linebreak before the translation line. This can be useful when no translation,
-but an aligned number, is to be inserted (please refer to sec.~\ref{sec:glossex}
-for an example). The \jparam{free translation} argument can also be empty.
-In this case, no translation line is added.
-
-Note that the macros automatically markup the lines. By default, the first gloss
-line is in italics, subsequent lines are set upright, and the free translation in single
-quotation marks (using the language-sensitive \textsf{csquotes} \cite{csquotes} macros if
-this package is loaded). This can be customized, though (see sec.~\ref{sec:glossfc}).
-
 The example given above would thus be typed as:
 \begin{lstlisting}[moretexcs={gloss}]
 \gloss{Dit is een Nederlands voorbeeld}
       {This is a Dutch example}
       {This is an example in Dutch.}
 \end{lstlisting}
-Notice that the words do not have to be typed lining up; instead, \TeX\ 
+%
+Note that:
+\begin{itemize}
+	\item The \jparam{free translation} argument can be left empty. In this case, no translation line is added
+	      (and no extra space taken).
+	\item The macros automatically markup the lines. By default, the first gloss
+          line is in italics, subsequent lines are set upright, and the free translation in single
+          quotation marks (using the language-sensitive \textsf{csquotes} \cite{csquotes} macros if
+          this package is loaded). This can be customized, though, via the macro options or globally
+          (for the latter, see sec.~\ref{sec:glossfc}).
+\end{itemize}
+
+\medskip
+\noindent The following \joption{\jparam{options}} (key-value pairs) are provided for either macro:
+
+\begin{description}
+	\item[\joption{ex=\jparam{true|false}}] Default: \emph{false}. Wraps the gloss in an example environment
+	      (i.\,e., it is numberered).
+	\item[\joption{tlr=\jparam{true|false}}] Default: \emph{false}. If set to true, the translation line (content
+          of the \jparam{free translation} argument) is set right to the gloss lines, rather than into a new line below.
+          Since the gloss itself is set in a box, this means the \jparam{free translation} will appear lined up with the
+          first line of the gloss. This can be useful when no translation, but an aligned number or something similar,
+          is to be inserted right to the gloss (please refer to sec.~\ref{sec:glossex} for an example).
+	\item[\joption{fi=\{\jparam{font settings}\}}] Adjusts the font settings of the first gloss line.
+	        Valid values are \LaTeX\ font switches such as \jfcsmacro{textit}, \jfcsmacro{bfseries} etc.
+	\item[\joption{fii=\{\jparam{font settings}\}}] Adjusts the font settings of the second gloss line.
+	        Valid values are \LaTeX\ font switches such as \jfcsmacro{textit}, \jfcsmacro{bfseries} etc.
+	\item[\joption{fiii=\{\jparam{font settings}\}}] Adjusts the font settings of the third gloss line.
+	        Valid values are \LaTeX\ font switches such as \jfcsmacro{textit}, \jfcsmacro{bfseries} etc.
+\end{description}
+%
+If given as the argument to a \jcsmacro{gloss} or \jcsmacro{glosss} macro, the options will only apply to
+this very gloss. If you want to make a permanent change, you can use the macro
+\begin{itemize}
+	\item \jcsmacro{setglossoptions\{\jparam{options}\}}
+\end{itemize}
+and pass either of the above options to it. This will apply to all subsequent glosses (until further global
+change and unless the setting is altered locally via macro option).
+
+Notice, finally, that the words do not have to be typed lining up; instead, \TeX\ 
 counts them.  If the words in the two languages do not correspond 
 one-to-one, you can use curly brackets to group words.
 For example, to print
@@ -455,9 +483,9 @@ you would type:
       {This is a little example in Dutch.}
 \end{lstlisting}
 %
-Please read sec.~\ref{sec:glossex} for more examples.
+Please consult sec.~\ref{sec:glossex} below for more examples.
 
-\subsection{Glossing low-level commands}\label{sec:glosscmds}
+\subsection{Glossing with low-level commands}\label{sec:glosscmds}
 
 The gloss macros described above build on low-level commands\footnote{The commands are adapted
 with permission from \texttt{gloss.tex}, by Marcel R. van der Goot.} which can also
@@ -465,7 +493,8 @@ be used directly (this was actually the only way up to \cvt\ 2.0 which introduce
 Low-level commands can be useful if you want to do fancy things in a gloss.
 Note, though, that using them also has limitations:
 Some commands cannot be used inside macros (such as footnotes), and the markup is not done automatically
-in all cases (as documented in what follows). Thus, we strongly suggest to use the macros,
+in all cases (as documented in what follows); furthermore, you cannot make use of the options the macros have.
+Thus, we strongly suggest to use the macros,
 unless you have very good reasons not to do that.
 
 The following is a complete list of all low-level glossing commands:
@@ -552,12 +581,16 @@ Layout is critical in the part preceding \jcsmacro{glt} or \jcsmacro{gln}, and f
 
 \subsection{Customization}\label{sec:glossfc}
 
-The font settings of each gloss line can be customized by redefining these macros:
+The font settings of each gloss line can be customized globally by way of
+the global options macro \jcsmacro{setglossoptions} and the \joption{fi},
+\joption{fii} or \joption{fiii} key, respectively (see sec.~\ref{sec:gmacros}).
+Alternatively, you can also redefine these macros:
 \begin{lstlisting}[moretexcs={glosslineone,glosslinetwo,glosslinethree}]
 \newcommand*\glosslineone{\normalfont\itshape}% font settings 1st gloss line
 \newcommand*\glosslinetwo{\normalfont\upshape}% font settings 2nd gloss line
 \newcommand*\glosslinethree{\normalfont\upshape}% font settings 3rd gloss line
 \end{lstlisting}
+%
 The markup of the translation line (if the \jcsmacro{gloss} or \jcsmacro{glosss}
 macro or the \jcsmacro{glot} low-level command is used) can be customized by redefining
 the following macro.
@@ -575,50 +608,46 @@ If not, a fallback quotation (using English single quotation marks) is used. The
 
 This section gives some further examples.  First, a sentence with three lines aligned, 
 instead of just two:
-\glosss{Hoc est aliud exemplum}
-       {\textsc{n.sg.nom} \textsc{3sg} \textsc{n.sg.nom} \textsc{n.sg.nom}}
-       {This is another example}
-       {This is another example.}
-This is typed as:
-\begin{lstlisting}[moretexcs={glosss}]
-\glosss{Hoc est aliud exemplum}
-       {\textsc{n.sg.nom} \textsc{3sg} \textsc{n.sg.nom} \textsc{n.sg.nom}}
-       {This is another example}
-       {This is another example.}
-\end{lstlisting}
-or in a more convenient way, using the font customization possibilities described
-in sec.~\ref{sec:glossfc}:
-\begin{lstlisting}[moretexcs={glosss,glosslinetwo}]
-\begingroup
-\renewcommand*\glosslinetwo{\normalfont\scshape}
-\glosss{Hoc      est aliud    exemplum}
+\glosss[fii={\normalfont\scshape}]
+       {Hoc est aliud exemplum}
        {n.sg.nom 3sg n.sg.nom n.sg.nom}
-       {This     is  another  example}
+       {This is another example}
        {This is another example.}
-\endgroup
+In order to produce this, we use the \jcsmacro{glosss} macro for a three-line gloss
+and pass the \joption{fii} option with the respective font switches in order to
+get small capitals in the second line:
+\begin{lstlisting}[moretexcs={glosss}]
+\glosss[fii={\normalfont\scshape}]
+       {Hoc est aliud exemplum}
+       {n.sg.nom 3sg n.sg.nom n.sg.nom}
+       {This is another example}
+       {This is another example.}
 \end{lstlisting}
-(with \lstinline|\begingroup...\endgroup| to keep the changes local).
-
+%
 Next, an example with a gloss but no translation, with an example number 
 at the right:
-\gloss*{Hoc habet numerum}
-       {This has number}
-       {\hfill (\exampleno)}
+\gloss[tlr]{Hoc habet numerum}
+           {This has number}
+           {\hfill (\exampleno)}
 %
-That one was typed using the starred version of the macro:
+That one was typed using the option \joption{tlr}:
 \begin{lstlisting}[moretexcs={gloss,exampleno}]
-\gloss*{Hoc habet numerum}
-       {This has number}
-       {\hfill (\exampleno)}
+\gloss[tlr]{Hoc habet numerum}
+           {This has number}
+           {\hfill (\exampleno)}
 \end{lstlisting}
 Finally we'll put a glossed sentence inside the \texttt{example} 
 environment, which is a very common way of using it:
-\begin{example}
-\gloss{Hoc habet numerum praepositum}
-      {This has number preposed}
-      {This one has a number in front of it.}
-\end{example}
+\gloss[ex]{Hoc habet numerum praepositum}
+          {This has number preposed}
+          {This one has a number in front of it.}
 This last example was, of course, typed as:
+\begin{lstlisting}[moretexcs={gloss}]
+\gloss[ex]{Hoc habet numerum praepositum}
+          {This has number preposed}
+          {This one has a number in front of it.}
+\end{lstlisting}
+although you could also construct it manually as:
 \begin{lstlisting}[moretexcs={gloss}]
 \begin{example}
 \gloss{Hoc habet numerum praepositum}
@@ -892,7 +921,7 @@ it.
 \subsection*{2.0 (forthcoming)}
 
 \begin{itemize}
-	\item Add new gloss macros (\jcsmacro{gloss}, \jcsmacro{gloss*}, \jcsmacro{glosss}, and \jcsmacro{glosss*})
+	\item Add new gloss macros (\jcsmacro{gloss} and \jcsmacro{glosss})
 	      for a more convenient, flexible and robust gloss insertion. See sec.~\ref{sec:gmacros}.
 	\item Add \jcsmacro{glot} command for customizable gloss translation line, together with customization possibilities.
 	      See sec.~\ref{sec:glosscmds}.

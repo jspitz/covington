@@ -61,6 +61,11 @@
 \ProcessOptions
 }
 
+%
+% Required packages
+%
+\RequirePackage{xkeyval}
+
 % Macro to issue warnings
 \newcommand\cov@warning[1]{%
    \@ifundefined{PackageWarning}{%
@@ -588,38 +593,132 @@
 
 % V. 2.0: More convenient gloss macros
 %
-% 1. \gloss{<line 1>}{<line 2>}{<translation>}
-% 2. \gloss*{<line 1>}{<line 2>}{<appendix without linebreak>}
-\newcommand*\gloss{\@ifstar{\@@gloss}{\@gloss}}
-\newcommand*\@gloss[3]{%
-  \xgll #1\xgle
-        #2\xgle
-  \glot{#3}
-  \glend
+% Key-val options for the macros
+%
+% 1. ex=<true|false>
+\newif\ifgexample\gexamplefalse
+\newif\ifggexample\ggexamplefalse
+\define@boolkey+{covington}{ex}[true]{%
+    \ifKV@covington@ex
+      \gexampletrue
+    \else
+      \gexamplefalse
+    \fi
+}{%
+    \cov@warning{unknown env value '#1' in gloss macro}%
 }
-\newcommand*\@@gloss[3]{%
-  \xgll #1\xgle
-        #2\xgle
-  \gln #3
+\define@boolkey+{gcovington}{ex}[true]{%
+    \ifKV@gcovington@ex
+      \ggexampletrue
+    \else
+      \ggexamplefalse
+    \fi
+}{%
+    \cov@warning{unknown env value '#1' in setglossoptions}%
+}
+\newif\ifgtright\gtrightfalse
+\newif\ifggtright\ggtrightfalse
+%
+% 2. tlb=<true|false>
+\define@boolkey+{covington}{tlr}[true]{%
+    \ifKV@covington@tlr
+      \gtrighttrue
+    \else
+      \gtrightfalse
+    \fi
+}{%
+    \cov@warning{unknown tlr value '#1' in gloss macro}%
+}
+\define@boolkey+{gcovington}{tlr}[true]{%
+    \ifKV@gcovington@tlr
+      \ggtrighttrue
+    \else
+      \ggtrightfalse
+    \fi
+}{%
+    \cov@warning{unknown tlr value '#1' in setglossoptions}%
+}
+%
+% 3. font settings for gloss line i, ii, iii
+\define@key{covington}{fi}{\def\lglosslineone{#1}}
+\define@key{covington}{fii}{\def\lglosslinetwo{#1}}
+\define@key{covington}{fiii}{\def\lglosslinethree{#1}}
+\define@key{gcovington}{fi}{\def\glosslineone{#1}}
+\define@key{gcovington}{fii}{\def\glosslinetwo{#1}}
+\define@key{gcovington}{fiii}{\def\glosslinethree{#1}}
+%
+% General setting option
+\newcommand*\setglossoptions[1]{\setkeys{gcovington}{#1}}
+%
+% 1. \gloss[<opts>]{<line 1>}{<line 2>}{<translation>}
+\newcommand*\gloss[4][\empty]{%
+  \ifggexample
+    \setkeys{covington}{ex=true}
+  \else
+    \setkeys{covington}{ex=false}
+  \fi%
+  \ifggtright
+    \setkeys{covington}{tlr=true}
+  \else
+    \setkeys{covington}{tlr=false}
+  \fi%
+  \ifx#1\empty\else\setkeys{covington}{#1}\fi%
+  \ifgexample
+  \begin{covexample}
+  \fi%
+  \@ifundefined{lglosslineone}{}{\def\glosslineone{\lglosslineone}}%
+  \@ifundefined{lglosslinetwo}{}{\def\glosslinetwo{\lglosslinetwo}}%
+  \@ifundefined{lglosslinethree}{}{\def\glosslinethree{\lglosslinethree}}%
+  \xgll #2\xgle
+        #3\xgle
+  \ifgtright
+    \gln #4
+  \else
+    \glot{#4}
+  \fi
   \glend
+  \ifgexample
+  \end{covexample}
+  \fi%
+  \let\lglosslineone\relax%
+  \let\lglosslinetwo\relax%
+  \let\lglosslinethree\relax%
 }
 
-% 3. \glosss{<line 1>}{<line 2>}{<line 3>}{<translation>}
-% 4. \glosss*{<line 1>}{<line 2>}{<line 3>}{<appendix without linebreak>}
-\newcommand*\glosss{\@ifstar{\@@glosss}{\@glosss}}
-\newcommand*\@glosss[4]{%
-  \xglll #1\xgle
-         #2\xgle
+% 2. \glosss[<opts>]{<line 1>}{<line 2>}{<line 3>}{<translation>}
+\newcommand\glosss[5][\empty]{%
+    \ifggexample
+    \setkeys{covington}{ex=true}
+  \else
+    \setkeys{covington}{ex=false}
+  \fi%
+  \ifggtright
+    \setkeys{covington}{tlr=true}
+  \else
+    \setkeys{covington}{tlr=false}
+  \fi%
+  \ifx#1\empty\else\setkeys{covington}{#1}\fi%
+  \ifgexample
+  \begin{covexample}
+  \fi%
+  \@ifundefined{lglosslineone}{}{\def\glosslineone{\lglosslineone}}%
+  \@ifundefined{lglosslinetwo}{}{\def\glosslinetwo{\lglosslinetwo}}%
+  \@ifundefined{lglosslinethree}{}{\def\glosslinethree{\lglosslinethree}}%
+  \xglll #2\xgle
          #3\xgle
-  \glot{#4}
+         #4\xgle
+  \ifgtright
+    \gln #5
+  \else
+    \glot{#5}
+  \fi
   \glend
-}
-\newcommand*\@@glosss[4]{%
-  \xglll #1\xgle
-         #2\xgle
-         #3\xgle
-  \gln #4
-  \glend
+  \ifgexample
+  \end{covexample}
+  \fi%
+  \let\lglosslineone\relax%
+  \let\lglosslinetwo\relax%
+  \let\lglosslinethree\relax%
 }
 
 
