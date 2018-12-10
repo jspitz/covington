@@ -403,9 +403,9 @@ To gloss a sentence is to annotate it word-by-word.  Most commonly, a
 sentence in a foreign language is followed by a word-for-word 
 translation (with the words lined up vertically) and then a smooth 
 translation (not lined up), like this:
-\gloss{Dit is een Nederlands voorbeeld}
-      {This is a Dutch example}
-      {This is an example in Dutch.}
+\digloss{Dit is een Nederlands voorbeeld}
+        {This is a Dutch example}
+        {This is an example in Dutch.}
 \Cvt\ provides different ways to typeset such glosses. The most convenient
 way is via gloss macros (see sec.~\ref{sec:gmacros}), an alternative (and the
 traditional) way is via a set of commands (see sec.~\ref{sec:glosscmds}).
@@ -415,20 +415,22 @@ Both are described in turn.
 
 \Cvt\ provides two gloss macros:
 \begin{itemize}
-	\item \jcsmacro{gloss[\jparam{options}]\{\jparam{gloss line 1}\}\{\jparam{gloss line 2}\}\{\jparam{free translation}\}}\\
-	       typesets two-line glosses with a translation line
-	\item \jcsmacro{glosss[\jparam{options}]\{\jparam{gloss l.\,1}\}\{\jparam{gloss l.\,2}\}\{\jparam{gloss l.\,3}\}\{\jparam{free tr.}\}}\\
+	\item \jcsmacro{digloss[\jparam{options}]\{\jparam{gloss line 1}\}\{\jparam{gloss line 2}\}\{\jparam{free translation}\}}\\
+	       typesets two-line glosses with a translation line (the macro name
+	       puns on Greek \lexp{diglossía}, lit. \lmean{two tongues}, \lmean{bilingualism})
+	\item \jcsmacro{trigloss[\jparam{options}]\{\jparam{gloss l.\,1}\}\{\jparam{gloss l.\,2}\}\{\jparam{gloss l.\,3}\}\{\jparam{free tr.}\}}\\
 	       typesets three-line\footnote{The additional line can be useful for instance
 	       to gloss cited forms, morphology, or an additional translation.
 	       See sec.~\ref{sec:glossex} for examples.}
-       	   glosses with a translation line
+       	   glosses with a translation line (cf. Greek \lexp{triglossía},
+       	   lit. \lmean{three tongues}, \lmean{trilingualism})
 \end{itemize}
 %
 The example given above would thus be typed as:
-\begin{lstlisting}[moretexcs={gloss}]
-\gloss{Dit is een Nederlands voorbeeld}
-      {This is a Dutch example}
-      {This is an example in Dutch.}
+\begin{lstlisting}[moretexcs={digloss}]
+\digloss{Dit is een Nederlands voorbeeld}
+        {This is a Dutch example}
+        {This is an example in Dutch.}
 \end{lstlisting}
 %
 Note that:
@@ -453,15 +455,15 @@ Note that:
           Since the gloss itself is set in a box, this means the \jparam{free translation} will appear lined up with the
           first line of the gloss. This can be useful when no translation, but an aligned number or something similar,
           is to be inserted right to the gloss (please refer to sec.~\ref{sec:glossex} for an example).
-	\item[\joption{fi=\{\jparam{font settings}\}}] Adjusts the font settings of the first gloss line.
+	\item[\joption{fsi=\{\jparam{font settings}\}}] Adjusts the font settings of the first gloss line.
 	        Valid values are \LaTeX\ font switches such as \jfcsmacro{textit}, \jfcsmacro{bfseries} etc.
-	\item[\joption{fii=\{\jparam{font settings}\}}] Adjusts the font settings of the second gloss line.
+	\item[\joption{fsii=\{\jparam{font settings}\}}] Adjusts the font settings of the second gloss line.
 	        Valid values are \LaTeX\ font switches such as \jfcsmacro{textit}, \jfcsmacro{bfseries} etc.
-	\item[\joption{fiii=\{\jparam{font settings}\}}] Adjusts the font settings of the third gloss line.
+	\item[\joption{fsiii=\{\jparam{font settings}\}}] Adjusts the font settings of the third gloss line.
 	        Valid values are \LaTeX\ font switches such as \jfcsmacro{textit}, \jfcsmacro{bfseries} etc.
 \end{description}
 %
-If given as the argument to a \jcsmacro{gloss} or \jcsmacro{glosss} macro, the options will only apply to
+If given as the argument to a \jcsmacro{digloss} or \jcsmacro{trigloss} macro, the options will only apply to
 this very gloss. If you want to make a permanent change, you can use the macro
 \begin{itemize}
 	\item \jcsmacro{setglossoptions\{\jparam{options}\}}
@@ -473,14 +475,14 @@ Notice, finally, that the words do not have to be typed lining up; instead, \TeX
 counts them.  If the words in the two languages do not correspond 
 one-to-one, you can use curly brackets to group words.
 For example, to print
-\gloss{Dit  is een voorbeeldje      in het Nederlands}
-      {This is a   {little example} in {}  Dutch}
-      {This is a little example in Dutch.}
+\digloss{Dit  is een voorbeeldje      in het Nederlands}
+        {This is a   {little example} in {}  Dutch}
+        {This is a little example in Dutch.}
 you would type:
-\begin{lstlisting}[moretexcs={gloss}]
-\gloss{Dit  is een voorbeeldje      in het Nederlands}
-      {This is a   {little example} in {}  Dutch}
-      {This is a little example in Dutch.}
+\begin{lstlisting}[moretexcs={digloss}]
+\digloss{Dit  is een voorbeeldje      in het Nederlands}
+        {This is a   {little example} in {}  Dutch}
+        {This is a little example in Dutch.}
 \end{lstlisting}
 %
 Please consult sec.~\ref{sec:glossex} below for more examples.
@@ -582,8 +584,8 @@ Layout is critical in the part preceding \jcsmacro{glt} or \jcsmacro{gln}, and f
 \subsection{Customization}\label{sec:glossfc}
 
 The font settings of each gloss line can be customized globally by way of
-the global options macro \jcsmacro{setglossoptions} and the \joption{fi},
-\joption{fii} or \joption{fiii} key, respectively (see sec.~\ref{sec:gmacros}).
+the global options macro \jcsmacro{setglossoptions} and the \joption{fsi},
+\joption{fsii} or \joption{fsiii} key, respectively (see sec.~\ref{sec:gmacros}).
 Alternatively, you can also redefine these macros:
 \begin{lstlisting}[moretexcs={glosslineone,glosslinetwo,glosslinethree}]
 \newcommand*\glosslineone{\normalfont\itshape}% font settings 1st gloss line
@@ -591,7 +593,7 @@ Alternatively, you can also redefine these macros:
 \newcommand*\glosslinethree{\normalfont\upshape}% font settings 3rd gloss line
 \end{lstlisting}
 %
-The markup of the translation line (if the \jcsmacro{gloss} or \jcsmacro{glosss}
+The markup of the translation line (if the \jcsmacro{digloss} or \jcsmacro{trigloss}
 macro or the \jcsmacro{glot} low-level command is used) can be customized by redefining
 the following macro.
 \begin{lstlisting}[moretexcs={glosslinetrans,covenquote}]
@@ -608,51 +610,51 @@ If not, a fallback quotation (using English single quotation marks) is used. The
 
 This section gives some further examples.  First, a sentence with three lines aligned, 
 instead of just two:
-\glosss[fii={\normalfont\scshape}]
-       {Hoc est aliud exemplum}
-       {n.sg.nom 3sg n.sg.nom n.sg.nom}
-       {This is another example}
-       {This is another example.}
-In order to produce this, we use the \jcsmacro{glosss} macro for a three-line gloss
-and pass the \joption{fii} option with the respective font switches in order to
+\trigloss[fsii={\normalfont\scshape}]
+         {Hoc est aliud exemplum}
+         {n.sg.nom 3sg n.sg.nom n.sg.nom}
+         {This is another example}
+         {This is another example.}
+In order to produce this, we use the \jcsmacro{trigloss} macro for a three-line gloss
+and pass the \joption{fsii} option with the respective font switches in order to
 get small capitals in the second line:
-\begin{lstlisting}[moretexcs={glosss}]
-\glosss[fii={\normalfont\scshape}]
-       {Hoc est aliud exemplum}
-       {n.sg.nom 3sg n.sg.nom n.sg.nom}
-       {This is another example}
-       {This is another example.}
+\begin{lstlisting}[moretexcs={trigloss}]
+\trigloss[fsii={\normalfont\scshape}]
+         {Hoc est aliud exemplum}
+         {n.sg.nom 3sg n.sg.nom n.sg.nom}
+         {This is another example}
+         {This is another example.}
 \end{lstlisting}
 %
 Next, an example with a gloss but no translation, with an example number 
 at the right:
-\gloss[tlr]{Hoc habet numerum}
-           {This has number}
-           {\hfill (\exampleno)}
+\digloss[tlr]{Hoc habet numerum}
+             {This has number}
+             {\hfill (\exampleno)}
 %
 That one was typed using the option \joption{tlr}:
-\begin{lstlisting}[moretexcs={gloss,exampleno}]
-\gloss[tlr]{Hoc habet numerum}
-           {This has number}
-           {\hfill (\exampleno)}
+\begin{lstlisting}[moretexcs={digloss,exampleno}]
+\digloss[tlr]{Hoc habet numerum}
+             {This has number}
+             {\hfill (\exampleno)}
 \end{lstlisting}
 Finally we'll put a glossed sentence inside the \texttt{example} 
 environment, which is a very common way of using it:
-\gloss[ex]{Hoc habet numerum praepositum}
-          {This has number preposed}
-          {This one has a number in front of it.}
+\digloss[ex]{Hoc habet numerum praepositum}
+            {This has number preposed}
+            {This one has a number in front of it.}
 This last example was, of course, typed as:
-\begin{lstlisting}[moretexcs={gloss}]
-\gloss[ex]{Hoc habet numerum praepositum}
-          {This has number preposed}
-          {This one has a number in front of it.}
+\begin{lstlisting}[moretexcs={digloss}]
+\digloss[ex]{Hoc habet numerum praepositum}
+            {This has number preposed}
+            {This one has a number in front of it.}
 \end{lstlisting}
 although you could also construct it manually as:
-\begin{lstlisting}[moretexcs={gloss}]
+\begin{lstlisting}[moretexcs={digloss}]
 \begin{example}
-\gloss{Hoc habet numerum praepositum}
-      {This has number preposed}
-      {This one has a number in front of it.}
+\digloss{Hoc habet numerum praepositum}
+        {This has number preposed}
+        {This one has a number in front of it.}
 \end{example}
 \end{lstlisting}
 
@@ -922,7 +924,7 @@ it.
 \subsection*{2.0 (2018 December 10)}
 
 \begin{itemize}
-	\item Add new gloss macros (\jcsmacro{gloss} and \jcsmacro{glosss})
+	\item Add new gloss macros (\jcsmacro{digloss} and \jcsmacro{trigloss})
 	      for a more convenient, flexible and robust gloss insertion. See sec.~\ref{sec:gmacros}.
 	\item Add \jcsmacro{glot} command for customizable gloss translation line, together with customization possibilities.
 	      See sec.~\ref{sec:glosscmds}.

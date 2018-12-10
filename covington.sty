@@ -640,18 +640,18 @@
 }
 %
 % 3. font settings for gloss line i, ii, iii
-\define@key{covington}{fi}{\def\lglosslineone{#1}}
-\define@key{covington}{fii}{\def\lglosslinetwo{#1}}
-\define@key{covington}{fiii}{\def\lglosslinethree{#1}}
-\define@key{gcovington}{fi}{\def\glosslineone{#1}}
-\define@key{gcovington}{fii}{\def\glosslinetwo{#1}}
-\define@key{gcovington}{fiii}{\def\glosslinethree{#1}}
+\define@key{covington}{fsi}{\def\lglosslineone{#1}}
+\define@key{covington}{fsii}{\def\lglosslinetwo{#1}}
+\define@key{covington}{fsiii}{\def\lglosslinethree{#1}}
+\define@key{gcovington}{fsi}{\def\glosslineone{#1}}
+\define@key{gcovington}{fsii}{\def\glosslinetwo{#1}}
+\define@key{gcovington}{fsiii}{\def\glosslinethree{#1}}
 %
 % General setting option
 \newcommand*\setglossoptions[1]{\setkeys{gcovington}{#1}}
 %
-% 1. \gloss[<opts>]{<line 1>}{<line 2>}{<translation>}
-\newcommand*\gloss[4][\empty]{%
+% 1. \digloss[<opts>]{<line 1>}{<line 2>}{<translation>}
+\newcommand*\digloss[4][\empty]{%
   \ifggexample
     \setkeys{covington}{ex=true}
   \else
@@ -685,8 +685,8 @@
   \let\lglosslinethree\relax%
 }
 
-% 2. \glosss[<opts>]{<line 1>}{<line 2>}{<line 3>}{<translation>}
-\newcommand\glosss[5][\empty]{%
+% 2. \trigloss[<opts>]{<line 1>}{<line 2>}{<line 3>}{<translation>}
+\newcommand\trigloss[5][\empty]{%
     \ifggexample
     \setkeys{covington}{ex=true}
   \else
