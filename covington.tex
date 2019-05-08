@@ -94,8 +94,8 @@
 %
 % Titling
 %
-\def\pversion{Version 2.0}
-\def\pdate{December 10, 2018}
+\def\pversion{Version 2.1dev}
+\def\pdate{May 8, 2019}
 
 \title{\textbf{The \cvt\ Package\\Macros for Linguistics}}
 \author{Michael A. Covington \and J\"urgen Spitzm\"uller\thanks{Current maintainer.
@@ -138,22 +138,35 @@ The package has the following options:
 	This applies to the \jenv{example}, \jenv{examples}, \jenv{subexamples} and \jenv{exercise} environments,
 	which are by default not touched if they are already defined before \cvt\ is loaded.
 	See sec.~\ref{sec:ex}, \ref{sec:exs}, \ref{sec:subexs} and \ref{sec:exercises} for details.
+	
 	\item{\joption{keeplayout}:} Do not tweak the layout.
 	
 	\Cvt\ sets \jfcsmacro{raggedbottom} and redefines the value of the \jfcsmacro{textfloatsep} length.
 	This just follows the preferences of the original package author and is not necessary
 	for the package's functionality. Yet for backwards compatibility reasons, we cannot change this.
 	Thus, we provide the option described here to opt out this presetting.
+
+\item{\joption{noglossbreaks}:} If this option is set, \cvt\ will try hard to prevent page breaks within glosses.
+
+	If this option is not set, page breaks can occur between interlinearized text and free translation of a gloss, as
+	well as between gloss preamble and interlinearized text, which is usually not what you will want.
+	Nonetheless the option is not set by default. This is for backwards compatibility reasons (in order to not change
+	page breaking of existing documents). Note that page breaks might still occur in some cases even if the option is set.
+	In order to prevent them definitely, you can put the gloss in a parbox or minipage.
 \end{description}
+%
+Please note the following package-related caveats:
+\begin{itemize}
+	\item If you are using \cvt\ and \textsf{uga} (UGa thesis style) together, you should load \textsf{uga} before \cvt.
+	\item If you are using \cvt\ with \textsf{beamer-article}, you should load \textsf{beamer-article} before \cvt.
+\end{itemize}
 %
 In what follows we presume that you know how to use \LaTeX\ and have 
 access to \LaTeX\ manuals. Note that \cvt\ does not 
 provide any special fonts or character sets.  However, it can be used in 
 combination with other style sheets that do.
 
-If you are using \cvt\ and \texttt{uga.sty} (UGa thesis style) 
-together, you should load \texttt{uga} before \cvt.
-
+\pagebreak[4]
  
 \section{Stacked diacritics}\label{sec:accents}
 
@@ -461,6 +474,8 @@ Note that:
 	        Valid values are \LaTeX\ font switches such as \jfcsmacro{textit}, \jfcsmacro{bfseries} etc.
 	\item[\joption{fsiii=\{\jparam{font settings}\}}] Adjusts the font settings of the third gloss line.
 	        Valid values are \LaTeX\ font switches such as \jfcsmacro{textit}, \jfcsmacro{bfseries} etc.
+	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is inserted on an own line
+	     before the interlinearized gloss. This might be useful, for instance, to give context information.
 \end{description}
 %
 If given as the argument to a \jcsmacro{digloss} or \jcsmacro{trigloss} macro, the options will only apply to
@@ -527,6 +542,12 @@ The following is a complete list of all low-level glossing commands:
 	     and a smarter way to insert a translation line. Other than \jcsmacro{glt}, it marks up
 	     (by default: enquotes) the translation line. Also, it does not add an empty line if the
 	     translation is empty. This command has been introduced in \cvt\ 2.0.
+	\item[\jcsmacro{glosspreamble\{\jparam{arbitrary text}\}}] lets you enter text that is printed immediately
+	     before the interlinearized gloss (on a line of its own). This might be useful, for instance, to give context information.
+	     If the \joption{noglossbreaks} option is set, \cvt\ tries to keep this text on the same page than the gloss.
+	     Note, however, that page breaks might occur if this text spans multiple lines. In this case, you can
+	     wrap the whole gloss into a minipage.
+	     This command has been introduced in \cvt\ 2.1.
 	\item[\jcsmacro{glend}] ends the special \jfenv{flushleft}-like environment.
 \end{description}
 %
@@ -604,6 +625,12 @@ document begin whether the \textsf{csquotes} \cite{csquotes} package is loaded. 
 it uses its language-sensitive \jcsmacro{enquote*} macro for enquoting the translation.
 If not, a fallback quotation (using English single quotation marks) is used. The usage of
 \textsf{csquotes} is highly recommended!
+
+The markup of the preamble line (which is not marked up at all by default) can be customized
+by redefining the macro:
+\begin{lstlisting}[moretexcs={glosslinetrans,covenquote}]
+\newcommand*\glosslinepreamble[1]{#1}
+\end{lstlisting}
 
 
 \subsection{Examples}\label{sec:glossex}
@@ -920,6 +947,13 @@ software, and the authors make no commitment to do any further work on
 it.
 
 \section{Release history}
+
+\subsection*{2.1 (forthcoming)}
+
+\begin{itemize}
+	\item Add new option \joption{noglossbreaks} that tries to prevent page breaks within glosses.
+	\item Add \jcsmacro{glosspreamble} command and \joption{preamble} gloss macro option for arbitrary text preceding glosses.
+\end{itemize}
 
 \subsection*{2.0 (2018 December 10)}
 
