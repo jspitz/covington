@@ -367,6 +367,7 @@
 \fi
 
 % 2019-05.07: optional preceding gloss text (non-interlinearized)
+\newcommand*\glosslinepreamble[1]{#1}
 \def\cov@glp{}
 \newcommand*\glosspreamble[1]{\def\cov@glp{#1}}
 
@@ -504,7 +505,7 @@
 \gdef\twosent#1^^M#2^^M% #1 = first line, #2 = second line
    {\getwords(\lineone,\eachwordone)#1 ^^M%
     \getwords(\linetwo,\eachwordtwo)#2 ^^M%
-    \ifx\cov@glp\empty\else\cov@glp\cov@nopagebreak\newline\fi%
+    \ifx\cov@glp\empty\else\glosslinepreamble{\cov@glp}\cov@nopagebreak\newline\fi%
     \loop\lastword{\eachwordone}{\lineone}{\wordone}%
          \lastword{\eachwordtwo}{\linetwo}{\wordtwo}%
          \global\setbox\gline=\hbox{\unhbox\gline
@@ -525,7 +526,7 @@
    {\getwords(\lineone,\eachwordone)#1 ^^M%
     \getwords(\linetwo,\eachwordtwo)#2 ^^M%
     \getwords(\linethree,\eachwordthree)#3 ^^M%
-    \ifx\cov@glp\empty\else\cov@glp\cov@nopagebreak\newline\fi%
+    \ifx\cov@glp\empty\else\glosslinepreamble{\cov@glp}\cov@nopagebreak\newline\fi%
     \loop\lastword{\eachwordone}{\lineone}{\wordone}%
          \lastword{\eachwordtwo}{\linetwo}{\wordtwo}%
          \lastword{\eachwordthree}{\linethree}{\wordthree}%
@@ -566,7 +567,7 @@
 \gdef\xtwosent#1\xgle#2\xgle% #1 = first line, #2 = second line
    {\xgetwords(\lineone,\eachwordone)#1 \xgle%
     \xgetwords(\linetwo,\eachwordtwo)#2 \xgle%
-    \ifx\cov@glp\empty\else\cov@glp\cov@nopagebreak\newline\fi%
+    \ifx\cov@glp\empty\else\glosslinepreamble{\cov@glp}\cov@nopagebreak\newline\fi%
     \loop\lastword{\eachwordone}{\lineone}{\wordone}%
          \lastword{\eachwordtwo}{\linetwo}{\wordtwo}%
          \global\setbox\gline=\hbox{\unhbox\gline%
@@ -587,7 +588,7 @@
    {\xgetwords(\lineone,\eachwordone)#1 \xgle%
     \xgetwords(\linetwo,\eachwordtwo)#2 \xgle%
     \xgetwords(\linethree,\eachwordthree)#3 \xgle%
-    \ifx\cov@glp\empty\else\cov@glp\cov@nopagebreak\newline\fi%
+    \ifx\cov@glp\empty\else\glosslinepreamble{\cov@glp}\cov@nopagebreak\newline\fi%
     \loop\lastword{\eachwordone}{\lineone}{\wordone}%
          \lastword{\eachwordtwo}{\linetwo}{\wordtwo}%
          \lastword{\eachwordthree}{\linethree}{\wordthree}%
