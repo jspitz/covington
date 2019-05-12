@@ -31,7 +31,7 @@ The package consists of the following files:
 
 == CHANGES ==
 
-* Version 2.1 (forthcoming):
+* Version 2.1 (2019-05-12):
 	- Add new option noglossbreaks that tries to prevent page breaks within glosses.
 	- Add \glosspreamble command and preamble gloss macro option for arbitrary text
 	  preceding glosses.
