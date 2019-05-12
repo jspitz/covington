@@ -94,8 +94,8 @@
 %
 % Titling
 %
-\def\pversion{Version 2.1dev}
-\def\pdate{May 8, 2019}
+\def\pversion{Version 2.1}
+\def\pdate{May 12, 2019}
 
 \title{\textbf{The \cvt\ Package\\Macros for Linguistics}}
 \author{Michael A. Covington \and J\"urgen Spitzm\"uller\thanks{Current maintainer.
@@ -118,7 +118,7 @@ example numbering, and semantic markup.
 
 \clearpage
 
-\section{Introduction}
+\section{Introduction}\label{sec:intro}
 
 This is the documentation for \MakeLowercase{\pversion}
 of \cvt\ (\pdate), which is a \LaTeX\ package providing macros
@@ -453,6 +453,9 @@ Note that:
           quotation marks (using the language-sensitive \textsf{csquotes} \cite{csquotes} macros if
           this package is loaded). This can be customized, though, via the macro options or globally
           (for the latter, see sec.~\ref{sec:glossfc}).
+    \item By default, page breaks might occur within glosses. In order to prevent it, the option
+          \joption{noglossbreaks} (see sec.~\ref{sec:intro}) will help in many cases.
+          If it doesn't, you can wrap the whole gloss into a minipage or parbox.
 \end{itemize}
 
 \medskip
@@ -473,7 +476,11 @@ Note that:
 	\item[\joption{fsiii=\{\jparam{font settings}\}}] Adjusts the font settings of the third gloss line.
 	        Valid values are \LaTeX\ font switches such as \jfcsmacro{textit}, \jfcsmacro{bfseries} etc.
 	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is inserted on an own line
-	     before the interlinearized gloss. This might be useful, for instance, to give context information.
+	     before the interlinearized gloss. This might be useful, for instance, to give context information,
+	     to specify the language or the source in case of cited glosses. The advantages over just adding a
+	     line manually above the gloss are that you can globally set the markup (see sec.~\ref{sec:glossfc})
+	     and that such lines are kept on the same page than the gloss with the option \joption{noglossbreaks}
+	     (at least as long as preamble does not exceed one line).
 \end{description}
 %
 If given as the argument to a \jcsmacro{digloss} or \jcsmacro{trigloss} macro, the options will only apply to
@@ -541,10 +548,12 @@ The following is a complete list of all low-level glossing commands:
 	     (by default: enquotes) the translation line. Also, it does not add an empty line if the
 	     translation is empty. This command has been introduced in \cvt\ 2.0.
 	\item[\jcsmacro{glosspreamble\{\jparam{arbitrary text}\}}] lets you enter text that is printed immediately
-	     before the interlinearized gloss (on a line of its own). This might be useful, for instance, to give context information.
-	     If the \joption{noglossbreaks} option is set, \cvt\ tries to keep this text on the same page than the gloss.
-	     Note, however, that page breaks might occur if this text spans multiple lines. In this case, you can
-	     wrap the whole gloss into a minipage.
+	     before the interlinearized gloss (on a line of its own). This might be useful, for instance,
+	     to give context information, to specify the language or the source in case of cited glosses.
+	     The advantages over just adding a line manually above the gloss are that you can globally set the markup
+	     (see sec.~\ref{sec:glossfc})   and that such lines are kept on the same page than the gloss with the option
+	     \joption{noglossbreaks}. Note, however, that page breaks might occur if this text spans multiple lines.
+	     In this case, you can wrap the whole gloss into a minipage.
 	     This command has been introduced in \cvt\ 2.1.
 	\item[\jcsmacro{glend}] ends the special \jfenv{flushleft}-like environment.
 \end{description}
@@ -633,7 +642,7 @@ by redefining the macro:
 
 \subsection{Examples}\label{sec:glossex}
 
-This section gives some further examples.  First, a sentence with three lines aligned, 
+This section gives some further examples. First, a sentence with three lines aligned, 
 instead of just two:
 \trigloss[fsii={\normalfont\scshape}]
          {Hoc est aliud exemplum}
@@ -663,7 +672,8 @@ That one was typed using the option \joption{tlr}:
              {This has number}
              {\hfill (\exampleno)}
 \end{lstlisting}
-Finally we'll put a glossed sentence inside the \texttt{example} 
+%
+Third, we'll put a glossed sentence inside the \texttt{example} 
 environment, which is a very common way of using it:
 \digloss[ex]{Hoc habet numerum praepositum}
             {This has number preposed}
@@ -682,6 +692,25 @@ although you could also construct it manually as:
         {This one has a number in front of it.}
 \end{example}
 \end{lstlisting}
+%
+And finally, an example that uses the \emph{Leipzig glossing rules} (\cite{leipzig},
+cited example: p.~2) and also exemplifies the use of \joption{preamble}:
+\digloss[ex, preamble={Lezgian (Haspelmath 1993:207)}]
+            {Gila abur-u-n              ferma hami¨alu\v{g} gü\v{g}üna amuq'-da-\v{c}.}
+            {now  they-\textsc{obl-gen} farm  forever       behind     stay-\textsc{fut-neg}}
+            {Now their farm will not stay behind forever.}
+This has been input as follows:
+\begin{lstlisting}[moretexcs={digloss},basicstyle={\footnotesize\ttfamily}]
+\digloss[ex,preamble={Lezgian (Haspelmath 1993:207)}]
+        {Gila abur-u-n              ferma hami¨alu\v{g} gü\v{g}üna amuq'-da-\v{c}.}
+        {now  they-\textsc{obl-gen} farm  forever       behind     stay-\textsc{fut-neg}}
+        {Now their farm will not stay behind forever.}
+\end{lstlisting}
+%
+Of course, you would use \jfcsmacro{cite} in a real document for the citation.
+Also, if you adhere to the \emph{Leipzig glossing rules}, you might want to check out the \textsf{leipzig}
+\LaTeX\ package \cite{leipzig-ltx} that facilitates the use of the gloss abbreviations that have
+been entered and marked-up manually here.
 
 
 \section{Phrase structure rules}
@@ -836,6 +865,7 @@ the alias environment \jenv{covexercise} which can be used in order to produce \
 If you use the package option \joption{force}, \cvt\ will override existing \jenv{exercise}
 environments. In any case, the package will issue a warning if \jenv{exercise} is already defined.
 
+\clearpage
 \section{Reference Lists}\label{sec:reflists}
 
 To type a simple \textsc{lsa}-style hanging-indented reference list, you can use the \jenv{reflist}
@@ -946,7 +976,7 @@ it.
 
 \section{Release history}
 
-\subsection*{2.1 (forthcoming)}
+\subsection*{2.1 (2019 May 12)}
 
 \begin{itemize}
 	\item Add new option \joption{noglossbreaks} that tries to prevent page breaks within glosses.
@@ -1076,11 +1106,18 @@ it.
 \end{itemize}
 
 \begin{thebibliography}{99}
+	\bibitem{leipzig} Bickel, Balthasar, Bernard Comrie, and Martin Haspelmath:
+		\emph{The Leipzig glossing rules: Conventions for interlinear morpheme
+		by morpheme glosses}. Revised version of February 2008. Department
+		of Linguistics, Max Plank Institute for Evolutionary Anthropology.
+		\url{http://www.eva.mpg.de/lingua/resources/glossing-rules.php}.
 	\bibitem{csquotes} Lehman, Philipp and Joseph Wright:
-	    \emph{csquotes -- Context sensitive quotation facilities}. April 4, 2018.
-	    \url{http://www.ctan.org/pkg/csquotes}.
+	    \emph{csquotes: Context sensitive quotation facilities}. April 4, 2018.
+	    \url{https://www.ctan.org/pkg/csquotes}.
 	\bibitem{pakin} Pakin, Scott: The Comprehensive \LaTeX\ Symbol List.
-	     November 30, 2015. \url{http://www.ctan.org/pkg/comprehensive}.
+	     November 30, 2015. \url{https://www.ctan.org/pkg/comprehensive}.
+	\bibitem{leipzig-ltx} Weber, Nathalie: \emph{leipzig: Typeset and index linguistic
+	     gloss abbreviations}. June 16, 2017. \url{https://ctan.org/pkg/leipzig}.
 \end{thebibliography}
 
 \end{document}
