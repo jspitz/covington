@@ -42,8 +42,8 @@
 %%% Metadata
 %%%
 
-\def\filedate{2019/05/12}
-\def\fileversion{2.1}
+\def\filedate{2019/06/04}
+\def\fileversion{2.2}
 \def\filename{covington.sty}
 
 % Force redefinition of environments?
@@ -52,6 +52,8 @@
 \newif\iftweaklayout\tweaklayouttrue
 % Prevent page breaks in glosses
 \newif\ifnoglossbreaks\noglossbreaksfalse
+% Use own example counter
+\newif\ifownexcounter\ownexcounterfalse
 
 \@ifundefined{ProvidesPackage}{%
 \typeout{* covington.sty : Covington's linguistic macros, \fileversion\ \filedate *}
@@ -61,6 +63,7 @@
 \DeclareOption{force}{\forceredeftrue}
 \DeclareOption{keeplayout}{\tweaklayoutfalse}
 \DeclareOption{noglossbreaks}{\noglossbreakstrue}
+\DeclareOption{owncounter}{\ownexcountertrue}
 \ProcessOptions
 }
 
@@ -129,9 +132,12 @@
 %%% Example numbering
 %%%
 
-% Example numbering uses the same counter as LaTeX's equation numbering.
+% Example numbering uses the same counter as LaTeX's equation numbering
+% by default.
 % Thus, you can use \label and \ref to refer to numbered examples in
 % exactly the same way as with equations.
+% As of v. 2.2, it is also possible to use an own counter and thus separate
+% equations from linguistic examples.
 
 % \exampleno  increments the counter and gives you its current value.
 %             You can use it anywhere to generate an example number.
@@ -143,7 +149,14 @@
 %             This is a sentence.  \hfill (\exampleno)
 %             \end{flushleft}
 
-\newcommand{\exampleno}{\refstepcounter{equation}\theequation}
+\ifownexcounter
+  \newcounter{covex}
+  \newcommand{\@exampleno}{\refstepcounter{covex}\thecovex}
+\else
+  \newcommand{\@exampleno}{\refstepcounter{equation}\theequation}
+\fi
+\newcommand*\@@exampleno{\ifownexcounter\thecovex\else\theequation\fi}
+\newcommand*\exampleno{\@ifstar{\@@exampleno}{\@exampleno}}
 
 %%%
 %%% The 'example' environment
@@ -215,7 +228,7 @@
 %
 % New in 1.8 (2018-12-07): Allow to redefine label (\covexnumber)
 
-\newcounter{equationsave}          % used in trick with equation number
+\newcounter{covexsave}          % used in trick with example number
 
 \newlength\examplenumbersep
 \setlength\examplenumbersep{0pt}
@@ -224,13 +237,19 @@
 
 \newenvironment{covexamples}%         % define "example" environment
 {%
-\begin{list}{\covexnumber{\theequation}}%
+\begin{list}{\covexnumber{\@@exampleno}}%
 {%
 \addtolength{\labelwidth}{\examplenumbersep}%
 \addtolength{\leftmargin}{\examplenumbersep}%
-\setcounter{equationsave}{\arabic{equation}}%
-\usecounter{equation}%                          % sets it to zero, unwantedly
-\setcounter{equation}{\arabic{equationsave}}%   % restores previous value
+\ifownexcounter
+  \setcounter{covexsave}{\arabic{covex}}%
+  \usecounter{covex}%                          % sets it to zero, unwantedly
+  \setcounter{covex}{\arabic{covexsave}}%   % restores previous value
+\else
+  \setcounter{covexsave}{\arabic{equation}}%
+  \usecounter{equation}%                          % sets it to zero, unwantedly
+  \setcounter{equation}{\arabic{covexsave}}%   % restores previous value
+\fi
 \setlength{\listparindent}{0pt}%
 \def\makelabel##1{##1\hfil}%       % put labels flushleft in space available
 }%
@@ -278,7 +297,7 @@
     \addtolength{\labelsep}{\subexamplenumbersep}%
     \renewcommand\theenumi{\alph{enumi}}
     \renewcommand\labelenumi{\covsubexnumber{\theenumi}}
-    \renewcommand\p@enumi{\theequation\,}%
+    \renewcommand\p@enumi{\@@exampleno\,}%
     \setlength{\listparindent}{0pt}%
     \def\makelabel##1{##1\hfil}%       % put labels flushleft in space available
 }%

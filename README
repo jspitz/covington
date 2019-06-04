@@ -31,6 +31,12 @@ The package consists of the following files:
 
 == CHANGES ==
 
+* Version 2.2 (2019-06-04):
+	- Add new option owncounter that makes covington use an own counter for examples
+	  (rather than the equation counter).
+	- Add starred \exampleno* command that outputs the current example number value
+	  without stepping it.
+
 * Version 2.1 (2019-05-12):
 	- Add new option noglossbreaks that tries to prevent page breaks within glosses.
 	- Add \glosspreamble command and preamble gloss macro option for arbitrary text
