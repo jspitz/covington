@@ -162,6 +162,10 @@
 %%% The 'example' environment
 %%%
 
+% Font setting possibility for example sentences
+\newcommand*\covexamplefs{}
+\newcommand*\covexamplenofs{\normalfont}
+
 % example     is an environment for displaying a single numbered 
 %             example, preceded by its number.  Example of use:
 %
@@ -237,7 +241,7 @@
 
 \newenvironment{covexamples}%         % define "example" environment
 {%
-\begin{list}{\covexnumber{\@@exampleno}}%
+\begin{list}{\covexamplenofs\covexnumber{\@@exampleno}}%
 {%
 \addtolength{\labelwidth}{\examplenumbersep}%
 \addtolength{\leftmargin}{\examplenumbersep}%
@@ -253,7 +257,7 @@
 \setlength{\listparindent}{0pt}%
 \def\makelabel##1{##1\hfil}%       % put labels flushleft in space available
 }%
-\raggedright}%                     % text is flushleft, not justified
+\raggedright\covexamplefs}%     % text is flushleft, not justified
 {\end{list}}
 
 \@ifundefined{examples}{%
@@ -296,7 +300,7 @@
     \begin{enumerate}
     \addtolength{\labelsep}{\subexamplenumbersep}%
     \renewcommand\theenumi{\alph{enumi}}
-    \renewcommand\labelenumi{\covsubexnumber{\theenumi}}
+    \renewcommand\labelenumi{\covexamplenofs\covsubexnumber{\theenumi}}
     \renewcommand\p@enumi{\@@exampleno\,}%
     \setlength{\listparindent}{0pt}%
     \def\makelabel##1{##1\hfil}%       % put labels flushleft in space available

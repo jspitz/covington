@@ -361,7 +361,7 @@ is always available as a fallback. If you use the package option \joption{force}
 existing \jenv{subexamples} environments. The package will issue a warning if \jenv{subexamples} is already defined.
 
 
-\subsection{Customizing the numbering}\label{sec:custno}
+\subsection{Customizing numbering and markup}\label{sec:custno}
 
 You can change the display of the example number by redefining (via \jfcsmacro{renewcommand*}) the macro
 \jcsmacro{covexnumber} which has the following default definition:
@@ -395,6 +395,16 @@ for instance, will come out like this:
 	\item This is the second sentence.
 \end{subexamples}
 \egroup
+%
+\noindent You can also customize the markup of the example sentences by redefining the macro
+\jcsmacro{covexamplefs} (which is empty by default). To have all example sentences italicized, for instance, do this:
+\begin{lstlisting}[moretexcs={covexamplefs}]
+\renewcommand*{\covexamplefs}{\itshape}
+\end{lstlisting}
+%
+Note that this does, deliberately, not include the numbers, since those are controlled by another font setting macro,
+\jcsmacro{covexamplenofs}, which defaults to \jfcsmacro{normalfont}. Of course you are free to redefine this as well,
+if you wish do to so.
 
 
 \subsection{Referring to examples}\label{sec:ref}
@@ -983,6 +993,9 @@ it.
 \begin{itemize}
 	\item Add new option \joption{owncounter} that makes \cvt\ use an own counter for examples (rather than the equation counter).
 	\item Add starred \jcsmacro{exampleno*} command that outputs the current example number value without stepping it.
+	      See sec.~\ref{sec:exno}.
+	\item Add macros \jcsmacro{covexamplefs} and \jcsmacro{covexamplenofs} for global setting of example text markup.
+	      See sec.~\ref{sec:custno}.
 \end{itemize}
 
 \subsection*{2.1 (2019 May 12)}
