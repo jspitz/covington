@@ -31,6 +31,9 @@ The package consists of the following files:
 
 == CHANGES ==
 
+* Version 2.3 (forthcoming):
+	- Add preamble option to subexamples environment.
+
 * Version 2.2 (2019-06-04):
 	- Add new option owncounter that makes covington use an own counter for examples
 	  (rather than the equation counter).

@@ -42,8 +42,8 @@
 %%% Metadata
 %%%
 
-\def\filedate{2019/06/04}
-\def\fileversion{2.2}
+\def\filedate{2019/06/21}
+\def\fileversion{2.3dev}
 \def\filename{covington.sty}
 
 % Force redefinition of environments?
@@ -294,9 +294,15 @@
 
 \newcommand*\covsubexnumber[1]{(#1)}
 
-\newenvironment{covsubexamples}%         % define "subexamples" environment
+% 2019-06-21 (v. 2.3): optional preceding subexample text
+\define@key{cov@subex}{preamble}{\def\cov@sxp{#1}}
+\newcommand*\subexpreamblefs{\normalfont}
+
+\newenvironment{covsubexamples}[1][]%         % define "subexamples" environment
 {%
-    \begin{covexample}
+    \ifx#1\empty\else\setkeys{cov@subex}{#1}\fi%
+    \begin{covexample}%
+    \@ifundefined{cov@sxp}{}{\subexpreamblefs\cov@sxp}% insert preamble if given
     \begin{enumerate}
     \addtolength{\labelsep}{\subexamplenumbersep}%
     \renewcommand\theenumi{\alph{enumi}}
@@ -306,15 +312,16 @@
     \def\makelabel##1{##1\hfil}%       % put labels flushleft in space available
 }%
 {%
+    \let\cov@sxp\relax
     \end{enumerate}
     \end{covexample}
 }
 
 \@ifundefined{subexamples}{%
-  \newenvironment{subexamples}{\begin{covsubexamples}}{\end{covsubexamples}}
+  \newenvironment{subexamples}[1][]{\begin{covsubexamples}[#1]}{\end{covsubexamples}}
 }{%
 \ifforceredef
-  \renewenvironment{subexamples}{\begin{covsubexamples}}{\end{covsubexamples}}
+  \renewenvironment{subexamples}[1][]{\begin{covsubexamples}[#1]}{\end{covsubexamples}}
   \cov@warning{The subexamples environment was already defined. Redefining it.}
 \else
   \cov@warning{The subexamples environment was already defined.^^J
@@ -389,7 +396,7 @@
 \def\cov@nopagebreak{\let\reserved@e\vadjust\let\reserved@f\nobreak}
 \fi
 
-% 2019-05.07: optional preceding gloss text (non-interlinearized)
+% 2019-05-07: optional preceding gloss text (non-interlinearized)
 \newcommand*\glosslinepreamble[1]{#1}
 \def\cov@glp{}
 \newcommand*\glosspreamble[1]{\def\cov@glp{#1}}

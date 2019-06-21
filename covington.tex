@@ -94,8 +94,8 @@
 %
 % Titling
 %
-\def\pversion{Version 2.2}
-\def\pdate{June 4, 2019}
+\def\pversion{Version 2.3dev}
+\def\pdate{June 21, 2019}
 
 \title{\textbf{The \cvt\ Package\\Macros for Linguistics}}
 \author{Michael A. Covington \and J\"urgen Spitzm\"uller\thanks{Current maintainer.
@@ -355,10 +355,40 @@ prints as:
 	\item This is the first sentence.\label{sbex}
 	\item This is the second sentence.
 \end{subexamples}
+%
 Again, \cvt\ checks if there is already an \jenv{subexamples} environment defined,
 and if this is the case, \cvt\ does not define its own one. The alias environment \jenv{covsubexamples}
 is always available as a fallback. If you use the package option \joption{force}, \cvt\ will override
 existing \jenv{subexamples} environments. The package will issue a warning if \jenv{subexamples} is already defined.
+
+\medskip
+\noindent The \jenv{subexamples} environment provides the following option:
+\begin{description}
+	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is inserted in the first line
+	(after the main number and before the first sub-example, which then follows in a new line).
+	This might be useful, for instance, to give context information, to specify the language or the source
+	in case of cited sub-examples. You can globally set the markup of this preamble	text (see sec.~\ref{sec:custno}).
+\end{description}
+%
+For instance,
+\begin{lstlisting}
+\begin{subexamples}[preamble={Here are two sentences}]
+\item This is the first sentence.
+\item This is the second sentence.
+\end{subexamples}
+\end{lstlisting}
+or, respectively:
+\begin{lstlisting}
+\begin{covsubexamples}[preamble={Here are two sentences}]
+\item This is the first sentence.
+\item This is the second sentence.
+\end{covsubexamples}
+\end{lstlisting}
+prints as:
+\begin{subexamples}[preamble={Here are two sentences}]
+	\item This is the first sentence.
+	\item This is the second sentence.
+\end{subexamples}
 
 
 \subsection{Customizing numbering and markup}\label{sec:custno}
@@ -405,6 +435,12 @@ for instance, will come out like this:
 Note that this does, deliberately, not include the numbers, since those are controlled by another font setting macro,
 \jcsmacro{covexamplenofs}, which defaults to \jfcsmacro{normalfont}. Of course you are free to redefine this as well,
 if you wish do to so.
+
+Finally, you can customize the markup of the sub-example preamble text by redefining the macro
+\jcsmacro{subexpreamblefs}, which also defaults to \jfcsmacro{normalfont}. To have it italicized, do:
+\begin{lstlisting}[moretexcs={\subexpreamblefs}]
+\renewcommand*{\subexpreamblefs}{\itshape}
+\end{lstlisting}
 
 
 \subsection{Referring to examples}\label{sec:ref}
@@ -987,6 +1023,12 @@ software, and the authors make no commitment to do any further work on
 it.
 
 \section{Release history}
+
+\subsection*{2.3 (forthcoming)}
+
+\begin{itemize}
+	\item Add preamble option to subexamples environment. See sec.~\ref{sec:subexs}.
+\end{itemize}
 
 \subsection*{2.2 (2019 June 4)}
 
