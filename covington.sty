@@ -894,8 +894,11 @@
 %
 %             Example:   \negdrs{X}{donkey(X)\\green(X)}
 
+% 2019-06-21 (v. 2.3): Do not define the macros if already defined.
+%                      This allows to use covington with the drs package.
 
-\newcommand{\drs}[2]
+
+\providecommand{\drs}[2]
 {
     {
     \cov@emphasized
@@ -915,24 +918,24 @@
     }
 }
 
-\newcommand{\sdrs}[3]
+\providecommand{\sdrs}[3]
 {\begin{tabular}{l}
 \mbox{\cov@emphasized #1} \\
 ~ \\
 \drs{#2}{#3}
 \end{tabular}}
 
-\newcommand{\ifdrs}[4]
+\providecommand{\ifdrs}[4]
 {
   \mbox{\drs{#1}{#2}~~{\large $\Rightarrow$}~\drs{#3}{#4}}
 }
 
-\newcommand{\alifdrs}[4]
+\providecommand{\alifdrs}[4]
 {
   \mbox{$\!\!\!$\drs{#1}{#2}~~{\large $\Rightarrow$}~\drs{#3}{#4}}
 }
 
-\newcommand{\negdrs}[2]
+\providecommand{\negdrs}[2]
 {
   \mbox{{\large $\neg$}\drs{#1}{#2}}
 }
