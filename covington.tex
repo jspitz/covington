@@ -166,6 +166,7 @@ Please note the following package-related caveats:
 \begin{itemize}
 	\item If you are using \cvt\ and the \textsf{uga} (University of Georgia thesis style) package together, you should load \textsf{uga} before \cvt.
 	\item If you are using \cvt\ with \textsf{beamer-article}, you should load \textsf{beamer-article} before \cvt.
+	\item If you are using \cvt\ with the \textsf{drs} package, you should load \textsf{drs} before \cvt. See sec.~\ref{sec:drs}.
 \end{itemize}
 %
 In what follows we presume that you know how to use \LaTeX\ and have 
@@ -240,7 +241,7 @@ Here's what you get:
 \begin{flushleft}
 This is a sentence. \hfill (\exampleno)
 \end{flushleft}
-If you want to output the number without stepping it, the starred form \jcsmacro{exampleno*} will do that. 
+If you want to output the (current) number without stepping it, the starred form \jcsmacro{exampleno*} will do that. 
 
 Normally, however, you do not need to manually place \jcsmacro{exampleno} yourselves,
 as in the example above. For the common case where example numbers in parentheses are
@@ -297,7 +298,7 @@ This prints as:
 \item[(b)] This is the second sentence.
 \end{itemize}
 \end{example}
-However, the \jenv{examples} and \jenv{subexamples} environments, described in turn, are usually more 
+However, the \jenv{subexamples} environment, described in sec.~\ref{sec:subexs}, is usually more 
 convenient for this task.
 
 \subsection[The \texttt{examples} environment]{The \jenv{examples} environment}\label{sec:exs}
@@ -389,22 +390,7 @@ prints as:
 	\item This is the first sentence.
 	\item This is the second sentence.
 \end{subexamples}
-
-
-\subsection{Customizing numbering and markup}\label{sec:custno}
-
-You can change the display of the example number by redefining (via \jfcsmacro{renewcommand*}) the macro
-\jcsmacro{covexnumber} which has the following default definition:
-\begin{lstlisting}[moretexcs={covexnumber}]
-\newcommand*\covexnumber[1]{(#1)}
-\end{lstlisting}
-
-In the same vein, you can customize the display of the subexample letter by redefining (also via \jfcsmacro{renewcommand*})
-the macro \jcsmacro{covsubexnumber} which has the following default definition:
-\begin{lstlisting}[moretexcs={covsubexnumber}]
-\newcommand*\covsubexnumber[1]{(#1)}
-\end{lstlisting}
-
+%
 The distance between example number and subnumber (letter) can be changed via the length \jcsmacro{examplenumbersep}
 (which is preset to \texttt{0pt}). The distance between example subnumber and text can be changed  via the length
 \jcsmacro{subexamplenumbersep} (preset to \texttt{0pt} as well). In both cases, a positive value will increase, a negative
@@ -425,9 +411,31 @@ for instance, will come out like this:
 	\item This is the second sentence.
 \end{subexamples}
 \egroup
+
+
+\subsection{Customizing number display and example markup}\label{sec:custno}
+
+You can change the display of the example number by redefining (via \jfcsmacro{renewcommand*}) the macro
+\jcsmacro{covexnumber}, which has the following default definition:
+\begin{lstlisting}[moretexcs={covexnumber}]
+\newcommand*\covexnumber[1]{(#1)}
+\end{lstlisting}
+%
+with the variable \texttt{\#1} representing the number.
+
+In the same vein, you can customize the display of the subexample letter by redefining
+the macro \jcsmacro{covsubexnumber}, which has the following default definition:
+\begin{lstlisting}[moretexcs={covsubexnumber}]
+\newcommand*\covsubexnumber[1]{(#1)}
+\end{lstlisting}
+%
+To remove the parentheses from the subexample letter, for instance, to this:
+\begin{lstlisting}[moretexcs={covsubexnumber}]
+\renewcommand*\covsubexnumber[1]{#1}
+\end{lstlisting}
 %
 \noindent You can also customize the markup of the example sentences by redefining the macro
-\jcsmacro{covexamplefs} (which is empty by default). To have all example sentences italicized, for instance, do this:
+\jcsmacro{covexamplefs} (which is empty by default). To have all example sentences italicized, for instance, do:
 \begin{lstlisting}[moretexcs={covexamplefs}]
 \renewcommand*{\covexamplefs}{\itshape}
 \end{lstlisting}
@@ -437,7 +445,7 @@ Note that this does, deliberately, not include the numbers, since those are cont
 if you wish do to so.
 
 Finally, you can customize the markup of the sub-example preamble text by redefining the macro
-\jcsmacro{subexpreamblefs}, which also defaults to \jfcsmacro{normalfont}. To have it italicized, do:
+\jcsmacro{subexpreamblefs}, which also defaults to \jfcsmacro{normalfont}. To have it italicized, analogously do:
 \begin{lstlisting}[moretexcs={\subexpreamblefs}]
 \renewcommand*{\subexpreamblefs}{\itshape}
 \end{lstlisting}
@@ -505,10 +513,32 @@ Note that:
     \item By default, page breaks might occur within glosses. In order to prevent it, the option
           \joption{noglossbreaks} (see sec.~\ref{sec:intro}) will help in many cases.
           If it doesn't, you can wrap the whole gloss into a minipage or parbox.
+    \item The words do not have to be typed lining up; \TeX\ counts and aligns them.
+    \item On the other hand, multiple blanks are ignored, so you can, but do not need to,
+          use the space key to line up the words to your liking in the \TeX\ file.
+          The example above could thus also have been input like this, with no change to the output:
+\begin{lstlisting}[moretexcs={digloss}]
+\digloss{Dit  is een Nederlands voorbeeld}
+        {This is a   Dutch      example}
+        {This is an example in Dutch.}
+\end{lstlisting}
+    \item If the words in the two languages do not correspond one-to-one, you can use curly brackets
+          to group words and a pair of empty curly brackets to mark null forms.
+          For example, to print
+          \digloss{Dit  is een voorbeeldje      in het Nederlands}
+                  {This is a   {little example} in {}  Dutch}
+                  {This is a little example in Dutch.}
+          you would type:
+\begin{lstlisting}[moretexcs={digloss}]
+\digloss{Dit  is een voorbeeldje      in het Nederlands}
+        {This is a   {little example} in {}  Dutch}
+        {This is a little example in Dutch.}
+\end{lstlisting}
 \end{itemize}
 
 \medskip
-\noindent The following \joption{\jparam{options}} (key-value pairs) are provided for either macro:
+\noindent The following \joption{\jparam{options}} (key-value pairs) are provided for the two gloss macro:%
+\footnote{Please consult sec.~\ref{sec:glossex} below for examples that showcase these options.}
 
 \begin{description}
 	\item[\joption{ex=\jparam{true|false}}] Default: \emph{false}. Wraps the gloss in an example environment
@@ -526,35 +556,21 @@ Note that:
 	        Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is inserted on an own line
 	     before the interlinearized gloss. This might be useful, for instance, to give context information,
-	     to specify the language or the source in case of cited glosses. The advantages over just adding a
-	     line manually above the gloss are that you can globally set the markup (see sec.~\ref{sec:glossfc})
-	     and that such lines are kept on the same page than the gloss with the option \joption{noglossbreaks}
-	     (at least as long as preamble does not exceed one line).
+	     to specify the language or the source in case of cited glosses. 
+	     
+	     The advantages over just adding a line manually above the gloss are that you can globally set the
+	     markup (see sec.~\ref{sec:glossfc}), and that such lines are kept on the same page than the gloss
+	     with the option \joption{noglossbreaks} (at least as long as preamble does not exceed one line). 
+	     Furthermore, this option is the only way to add such text when the \joption{ex} option is used.
 \end{description}
 %
-If given as the argument to a \jcsmacro{digloss} or \jcsmacro{trigloss} macro, the options will only apply to
+If given as optional arguments to a \jcsmacro{digloss} or \jcsmacro{trigloss} macro, the options will only apply to
 this very gloss. If you want to make a permanent change, you can use the macro
 \begin{itemize}
 	\item \jcsmacro{setglossoptions\{\jparam{options}\}}
 \end{itemize}
 and pass either of the above options to it. This will apply to all subsequent glosses (until further global
 change and unless the setting is altered locally via macro option).
-
-Notice, finally, that the words do not have to be typed lining up; instead, \TeX\ 
-counts them.  If the words in the two languages do not correspond 
-one-to-one, you can use curly brackets to group words.
-For example, to print
-\digloss{Dit  is een voorbeeldje      in het Nederlands}
-        {This is a   {little example} in {}  Dutch}
-        {This is a little example in Dutch.}
-you would type:
-\begin{lstlisting}[moretexcs={digloss}]
-\digloss{Dit  is een voorbeeldje      in het Nederlands}
-        {This is a   {little example} in {}  Dutch}
-        {This is a little example in Dutch.}
-\end{lstlisting}
-%
-Please consult sec.~\ref{sec:glossex} below for more examples.
 
 \subsection{Glossing with low-level commands}\label{sec:glosscmds}
 
@@ -607,7 +623,7 @@ The following is a complete list of all low-level glossing commands:
 	\item[\jcsmacro{glend}] ends the special \jfenv{flushleft}-like environment.
 \end{description}
 %
-Using the low-level commands, the examples given above would be
+Using the low-level commands, the examples given in the previous section would be
 coded as follows:
 \begin{lstlisting}[moretexcs={gll,glt,glend}]
 \gll Dit is een Nederlands voorbeeld. 
@@ -779,7 +795,7 @@ you can type:
 \fs{case:nom \\ person:P}
 \end{lstlisting}
 
-The feature structure can appear anywhere --- in continuous text, in a
+The feature structure can appear anywhere -- in continuous text, in a
 displayed environment such as \jfenv{flushleft}, or inside a
 phrase-structure rule, or even inside another feature structure.
 
@@ -805,84 +821,122 @@ which was obviously coded as:
 \end{lstlisting}
 
 
-\section{Discourse Representation Structures}
+\section{Discourse Representation Structures}\label{sec:drs}
 
-Several macros in \cvt\ facilitate display of discourse 
-Representation Structures (\textsc{drs}es) in the box notation introduced by 
-Hans Kamp.  The simplest one is \jcsmacro{drs}, which takes two arguments:
+Several macros in \cvt\ facilitate display of \emph{Discourse Representation Structures}
+(\textsc{drs}es) in the box notation introduced by Hans Kamp \cite{kamp}.
+The simplest one is \jcsmacro{drs}, which takes two arguments:
 a list of discourse variables joined by \verb"~", and a list of \textsc{drs} 
-conditions separated by \verb"\\".  Nesting is permitted.  Note that the 
-\jcsmacro{drs} macro itself does not give you a displayed environment; you 
-must use \jfenv{flushleft} or the like to display the \textsc{drs}.
-Here are some examples:
+conditions separated by \verb"\\".  Nesting is permitted.  
 
-\begin{minipage}{.5\textwidth}
-\begin{lstlisting}[moretexcs={drs}]
-\begin{flushleft}
-  \drs{X}{donkey(X)\\green(X)}
-\end{flushleft}
-\end{lstlisting}
-\end{minipage}\hfill
-\begin{minipage}{.4\textwidth}
-\begin{flushleft}
-\drs{X}{donkey(X)\\green(X)}
-\end{flushleft}
-\end{minipage}
+Note that the \jcsmacro{drs} macro itself does not give you a displayed environment; you 
+must use \jfenv{flushleft} or the like to display the \textsc{drs}.
 
 \medskip
+\noindent Here are some examples:
 
-\begin{minipage}{.5\textwidth}
 \begin{lstlisting}[moretexcs={drs}]
 \begin{flushleft}
   \drs{X}
-  {named(X,`Pedro') \\
-    \drs{Y}{donkey(Y)\\owns(X,Y)}~~
-    {\large $\Rightarrow$}~
-    \drs{~}{feeds(X,Y)}
-  }
+      {
+       donkey(X)\\
+       green(X)
+      }
 \end{flushleft}
 \end{lstlisting}
-\end{minipage}\hfill
-\begin{minipage}{.4\textwidth}
-	\begin{flushleft}
-		\drs{X}
-		{named(X,`Pedro') \\
-			\drs{Y}{donkey(Y)\\owns(X,Y)}~~
-			{\large $\Rightarrow$}~
-			\drs{~}{feeds(X,Y)}
-		}
-	\end{flushleft}
-\end{minipage}
+%
+prints as:
+\begin{flushleft}
+\drs{X}
+    {
+     donkey(X)\\
+     green(X)
+    }
+\end{flushleft}
 
 \medskip
 
-\noindent To display a sentence above the \textsc{drs}, use \jcsmacro{sdrs}, as in:
+\begin{lstlisting}[moretexcs={drs}]
+\begin{flushleft}
+  \drs{X}
+      {
+       named(X,`Pedro')\\
+       \drs{Y}
+           {
+            donkey(Y)\\
+            owns(X,Y)
+           }
+       ~~{\large $\Rightarrow$}~
+       \drs{~}
+           {feeds(X,Y)}
+      }
+\end{flushleft}
+\end{lstlisting}
+%
+comes out as:
+\begin{flushleft}
+  \drs{X}
+      {
+       named(X,`Pedro')\\
+	   \drs{Y}
+	       {
+	       	donkey(Y)\\
+	       	owns(X,Y)
+       	   }
+	   ~~{\large $\Rightarrow$}~
+	   \drs{~}
+	   {feeds(X,Y)}
+      }
+\end{flushleft}
+%
+Note that the alignment of the input is fairly free, so you can also write the
+two arguments of \jcsmacro{drs} in one line, like:
+\begin{lstlisting}[moretexcs={drs}]
+\drs{X}{donkey(X)\\green(X)}
+\end{lstlisting}
 
+\medskip
+\noindent To display a sentence above the \textsc{drs}, use \jcsmacro{sdrs}, which has one
+extra argument for this purpose, as in:
 \begin{lstlisting}[moretexcs={sdrs}]
 \begin{flushleft}
-  \sdrs{A donkey is green.}{X}{donkey(X)\\green(X)}
+  \sdrs{A donkey is green.}
+       {X}
+       {donkey(X)\\green(X)}
 \end{flushleft}
 \end{lstlisting}
 which prints as:
-
+%
 \begin{flushleft}
-		\sdrs{A donkey is green.}{X}{donkey(X)\\green(X)}
+	\sdrs{A donkey is green.}{X}{donkey(X)\\green(X)}
 \end{flushleft}
-
+%
 Some \textsc{drs} connectives are also provided (normally for forming
 \textsc{drs}es that are to be nested within other \textsc{drs}es).
-The macro \jcsmacro{negdrs} forms a \textsc{drs} preceded by a negation symbol:
+The macro \jcsmacro{negdrs} forms a \textsc{drs} preceded by a negation symbol, so
 \begin{lstlisting}[moretexcs={negdrs}]
-\negdrs{X}{donkey(X)\\green(X)}
+\negdrs{X}
+       {
+        donkey(X)\\
+        green(X)
+       }
 \end{lstlisting}
+%
+comes out as
+%
 \begin{flushleft}
 \negdrs{X}{donkey(X)\\green(X)}
 \end{flushleft}
 Finally, \jcsmacro{ifdrs} forms a pair of \textsc{drs}es joined by a big arrow,
 like this:
 \begin{lstlisting}[moretexcs={ifdrs}]
-\ifdrs{X}{donkey(X)\\hungry(X)}
-      {~}{feeds(Pedro,X)}
+\ifdrs{X}
+      {
+       donkey(X)\\
+       hungry(X)
+      }
+      {~}
+      {feeds(Pedro,X)}
 \end{lstlisting}
 \begin{flushleft}
 \ifdrs{X}{donkey(X)\\hungry(X)}
@@ -890,7 +944,24 @@ like this:
 \end{flushleft}
 If you have an ``if''-structure appearing among ordinary predicates 
 inside a \textsc{drs}, you may prefer to use \jcsmacro{alifdrs}, which is just like 
-\jcsmacro{ifdrs} but shifted slightly to the left for better alignment.
+\jcsmacro{ifdrs} but shifted slightly to the left for better alignment:
+\begin{flushleft}
+\alifdrs{X}{donkey(X)\\hungry(X)}
+        {~}{feeds(Pedro,X)}
+\end{flushleft}
+
+\medskip
+\noindent Note that for more extended \textsc{drs} representations, dedicated packages are meanwhile available,
+most notably the \textsf{drs} \cite{drs} and the \textsf{sdrt} \cite{sdrt} package.
+Both packages actually draw on \cvt, add some additional features and, in some cases, tweak the layout to
+(what strikes those package authors) the better. If the rather basic \textsc{drs} macros provided by \cvt\
+do not suit you, please check if one of those packages does.
+
+Note, though, that while \textsf{sdrt} introduces new (capitalized) macro naming which lets the package peacefully
+coexist with \cvt, \textsf{drs} simply re-uses \cvt's macro names, which makes the two packages incompatible.
+In order to fix this, \cvt\ checks whether the \textsc{drs} macros are already defined when it is loaded; if so, it does not define its own ones.
+So if you want to use the \textsc{drs} macros of the \textsf{drs} package together with \cvt's non-\textsc{drs} features, you can do so,
+provided that \textsf{drs} is loaded \emph{before} \cvt. In that case, \cvt's own \textsc{drs} macros are disabled.
 
 \section{Exercises}\label{sec:exercises}
 
@@ -1015,7 +1086,7 @@ within a sentence or \textsc{ps}-rule:
 \begin{flushleft}
 \lstinline[moretexcs={either,psr}]"\psr{A}{B~\either{C}{D}~E} " $=$ \psr{A}{B~\either{C}{D}~E}
 \end{flushleft}
-
+%
 That's all there is for now.
 Suggestions for improving \cvt\ are welcome, and bug
 reports are actively solicited (via \url{https://github.com/jspitz/covington}).  Please note, however, that this is free
@@ -1028,7 +1099,8 @@ it.
 
 \begin{itemize}
 	\item Add preamble option to subexamples environment. See sec.~\ref{sec:subexs}.
-	\item Minor documentation fixes.
+	\item Allow to use \cvt\ together with the \textsf{drs} package.
+	\item Documentation fixes and restructuring.
 \end{itemize}
 
 \subsection*{2.2 (2019 June 4)}
@@ -1176,6 +1248,13 @@ it.
 		by morpheme glosses}. Revised version of February 2008. Department
 		of Linguistics, Max Plank Institute for Evolutionary Anthropology.
 		\url{http://www.eva.mpg.de/lingua/resources/glossing-rules.php}.
+	\bibitem{drs} Dimitradis, Alexis: \emph{drs -- Typeset Discourse Representation Structures (DRS)}.
+	     June 10, 2010. \url{https://ctan.org/pkg/drs}.
+	\bibitem{sdrt} Isambert, Paul: \emph{sdrt -- Macros for Segmented Discourse Representation Theory}.
+	     May 13, 2007. \url{https://ctan.org/pkg/sdrt}.
+	\bibitem{kamp} Kamp, Hans: A Theory of Truth and Semantic Representation.
+	      In Jeroen A.\,G. Groenendijk, Theo M.\,V. Janssen, and Martin J.\,B. Stokhof (eds.):
+	      Formal Methods in the Study of Language. Amsterdam: Mathematics Center, 1981, 277--322.
 	\bibitem{csquotes} Lehman, Philipp and Joseph Wright:
 	    \emph{csquotes: Context sensitive quotation facilities}. April 4, 2018.
 	    \url{https://www.ctan.org/pkg/csquotes}.

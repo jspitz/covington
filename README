@@ -33,7 +33,8 @@ The package consists of the following files:
 
 * Version 2.3 (2019-06-21):
 	- Add preamble option to subexamples environment.
-	- Minor documentation fixes.
+	- Allow to use covington together with the drs package.
+	- Documentation fixes and restructuring.
 
 * Version 2.2 (2019-06-04):
 	- Add new option owncounter that makes covington use an own counter for examples
