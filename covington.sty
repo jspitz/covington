@@ -42,8 +42,8 @@
 %%% Metadata
 %%%
 
-\def\filedate{2021/01/20}
-\def\fileversion{2.5dev}
+\def\filedate{2021/03/21}
+\def\fileversion{2.5}
 \def\filename{covington.sty}
 
 % Force redefinition of environments?
@@ -71,6 +71,7 @@
 % Required packages
 %
 \RequirePackage{xkeyval}
+\RequirePackage{iftex}
 
 % Macro to issue warnings
 \newcommand\cov@warning[1]{%
@@ -110,7 +111,7 @@
                      \setbox2=\hbox{{#2{}}}%
                      \dimen0=\ifdim\wd1>\wd2\wd1\else\wd2\fi%
                      \dimen1=\ht2\advance\dimen1by\twoaccsep%
-                     \setbox1=\hbox to1\dimen0{\hss#1\hss}%
+                     \setbox1=\hbox to1\dimen0{\hss#1{}\hss}%
                      \rlap{\raise1\dimen1\box1}%
                      \hbox to1\dimen0{\hss#2\hss}}}%
 
@@ -121,14 +122,19 @@
                      \setbox2=\hbox{{#2{#3}}}%
                      \dimen0=\ifdim\wd1>\wd2\wd1\else\wd2\fi%
                      \dimen1=\ht2\advance\dimen1by\twoaccsep%
-                     \setbox1=\hbox to1\dimen0{\hss#1\hss}%
+                     \setbox1=\hbox to1\dimen0{\hss#1{}\hss}%
                      \rlap{\raise1\dimen1\box1}%
                      \hbox to1\dimen0{\hss#2{#3}\hss}}}
 
 % Special cases:
-\def\acm#1{\twodias{\'}{\=}{#1}}   % acute over macron
-\def\grm#1{\twodias{\`}{\=}{#1}}   % grave over macron
-\def\cim#1{\twodias{\^}{\=}{#1}}   % circumflex over macron
+\def\acm#1{\twodias{\'}{\=}{#1}}          % acute over macron
+\def\grm#1{\twodias{\`}{\=}{#1}}          % grave over macron
+% Use MODIFIER LETTER CIRCUMFLEX ACCENT (U+2C6) with Xe/LuaTeX
+\iftutex
+  \def\cim#1{\twodias{\char"2C6}{\=}{#1}} % circumflex over macron
+\else
+  \def\cim#1{\twodias{\^}{\=}{#1}}        % circumflex over macron
+\fi
 
 %%%
 %%% Example numbering
