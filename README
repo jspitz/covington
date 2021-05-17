@@ -31,6 +31,9 @@ The package consists of the following files:
 
 == CHANGES ==
 
+* Version 2.6 (forthcoming):
+        - New length \exampleind to adjust (increase/decrease) the indendation of examples.
+
 * Version 2.5 (2021-03-21):
 	- Fix metrics of stacked diacritics with XeTeX/LuaTeX.
 

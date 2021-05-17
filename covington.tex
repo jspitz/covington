@@ -274,6 +274,10 @@ If you need more space between the example number and the text, you can increase
 the length \jcsmacro{examplenumbersep} (which is preset to \texttt{0pt}). Doing \lstinline|\setlength\examplenumbersep{1em}|,
 for instance, will increase the space by 1\,em (negative values will decrease the space accordingly).
 
+If you need to change the indentation of examples,  you can do so by means of
+the length \jcsmacro{exampleind} (which is preset to \texttt{0pt}). Doing \lstinline|\setlength\exampleind{1em}|,
+for instance, will increase the indentation by 1\,em (negative values will decrease it accordingly).
+
 Note that, as of version 1.1, \cvt\ checks if there is already an \jenv{example} environment defined
 (e.\,g., by the class). If so, \cvt\ does not
 define its own one. However, there is always the alias environment \jenv{covexample} which can be used in order to
@@ -1094,6 +1098,13 @@ software, and the authors make no commitment to do any further work on
 it.
 
 \section{Release history}
+
+\subsection*{2.6 (forthcoming)}
+
+\begin{itemize}
+	\item New length \jcsmacro{exampleind} to adjust (increase/decrease)
+	      the indendation of examples. See sec.~\ref{sec:ex} for details.
+\end{itemize}
 
 \subsection*{2.5 (2021 March 21)}
 
