@@ -274,9 +274,9 @@ If you need more space between the example number and the text, you can increase
 the length \jcsmacro{examplenumbersep} (which is preset to \texttt{0pt}). Doing \lstinline|\setlength\examplenumbersep{1em}|,
 for instance, will increase the space by 1\,em (negative values will decrease the space accordingly).
 
-If you need to change the indentation of examples,  you can do so by means of
-the length \jcsmacro{exampleind} (which is preset to \texttt{0pt}). Doing \lstinline|\setlength\exampleind{1em}|,
-for instance, will increase the indentation by 1\,em (negative values will decrease it accordingly).
+If you need to change the indentation (left margin) of examples,  you can do so by means of
+the length \jcsmacro{exampleind} (preset to \texttt{0pt}). Doing \lstinline|\setlength\exampleind{1em}|,
+for instance, will increase the indentation by 1\,em, negative values will decrease it accordingly.
 
 Note that, as of version 1.1, \cvt\ checks if there is already an \jenv{example} environment defined
 (e.\,g., by the class). If so, \cvt\ does not
@@ -335,6 +335,8 @@ is always available as a fallback. If you use the package option \joption{force}
 existing \jenv{examples} environments. The package will issue a warning if \jenv{examples} is already defined
 (this is the case, for instance, if you use \cvt\ with the \texttt{beamer} class), telling you
 how it has dealt with the situation.
+
+Please refer to sec.~\ref{sec:ex} for ways to adjust the spacing of the environment.
 
 
 \subsection[The \texttt{subexamples} environment]{The \jenv{subexamples} environment}\label{sec:subexs}
@@ -414,6 +416,9 @@ for instance, will come out like this:
 	\item This is the first sentence.
 	\item This is the second sentence.
 \end{subexamples}
+%
+To change the indentation (left margin) of subexamples, adjust the length \jcsmacro{exampleind}
+(preset to \texttt{0pt}). Note that this also applies to the \jenv{examples} environment.
 \egroup
 
 
@@ -1103,7 +1108,7 @@ it.
 
 \begin{itemize}
 	\item New length \jcsmacro{exampleind} to adjust (increase/decrease)
-	      the indendation of examples. See sec.~\ref{sec:ex} for details.
+	      the indentation of examples. See sec.~\ref{sec:ex} for details.
 \end{itemize}
 
 \subsection*{2.5 (2021 March 21)}
