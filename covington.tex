@@ -94,8 +94,8 @@
 %
 % Titling
 %
-\def\pversion{Version 2.6}
-\def\pdate{May 19, 2021}
+\def\pversion{Version 2.7}
+\def\pdate{September 1, 2021}
 
 \title{\textbf{The \cvt\ Package\\Macros for Linguistics}}
 \author{Michael A. Covington \and J\"urgen Spitzm\"uller\thanks{Current maintainer.
@@ -565,12 +565,16 @@ Note that:
 	        Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is inserted on an own line
 	     before the interlinearized gloss. This might be useful, for instance, to give context information,
-	     to specify the language or the source in case of cited glosses. 
+	     to specify the language or the source in case of cited glosses.
 	     
 	     The advantages over just adding a line manually above the gloss are that you can globally set the
 	     markup (see sec.~\ref{sec:glossfc}), and that such lines are kept on the same page than the gloss
 	     with the option \joption{noglossbreaks} (at least as long as preamble does not exceed one line). 
 	     Furthermore, this option is the only way to add such text when the \joption{ex} option is used.
+
+	\item[\joption{postamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is appended to the translation line, but after
+	     the closing quotation mark. This might be useful to add a footnote or some additional text to the translation
+	     line, after the actual translation.
 \end{description}
 %
 If given as optional arguments to a \jcsmacro{digloss} or \jcsmacro{trigloss} macro, the options will only apply to
@@ -709,8 +713,14 @@ If not, a fallback quotation (using English single quotation marks) is used. The
 
 The markup of the preamble line (which is not marked up at all by default) can be customized
 by redefining the macro:
-\begin{lstlisting}[moretexcs={glosslinetrans,covenquote}]
+\begin{lstlisting}[moretexcs={glosslinepreamble}]
 \newcommand*\glosslinepreamble[1]{#1}
+\end{lstlisting}
+
+Analogously, the markup of the postamble text (which is not marked up at all by default either)
+can be customized by redefining the macro:
+\begin{lstlisting}[moretexcs={glosslinepostamble}]
+\newcommand*\glosslinepostamble[1]{#1}
 \end{lstlisting}
 
 
@@ -767,7 +777,7 @@ although you could also construct it manually as:
 \end{example}
 \end{lstlisting}
 %
-And finally, an example that uses the \emph{Leipzig glossing rules} (\cite{leipzig},
+Here is an example that uses the \emph{Leipzig glossing rules} (\cite{leipzig},
 cited example: p.~2) and also exemplifies the use of \joption{preamble}:
 \digloss[ex, preamble={Lezgian (Haspelmath 1993:207)}]
             {Gila abur-u-n              ferma hami¨alu\v{g} gü\v{g}üna amuq'-da-\v{c}.}
@@ -785,6 +795,20 @@ Of course, you would use \jfcsmacro{cite} in a real document for the citation.
 Also, if you adhere to the \emph{Leipzig glossing rules}, you might want to check out the \textsf{leipzig}
 \LaTeX\ package \cite{leipzig-ltx} that facilitates the use of the gloss abbreviations that have
 been entered and marked-up manually here.
+
+The final example exemplifies the use of \joption{postamble}. In what follows we add a footnote to the
+translation line, but outside the translation (as marked-up by quotation marks):
+\digloss[ex, postamble={\footnote{Yes, really!}}]
+{Mein Luftkissenboot ist voller    Aale}
+{My   hovercraft     is  {full of} eels}
+{Do you have matches?}
+This has been input as follows:
+\begin{lstlisting}[moretexcs={digloss},basicstyle={\footnotesize\ttfamily}]
+\digloss[ex, postamble={\footnote{Yes, really!}}]
+        {Mein Luftkissenboot ist voller    Aale}
+        {My   hovercraft     is  {full of} eels}
+        {Do you have matches?}
+\end{lstlisting}
 
 
 \section{Phrase structure rules}
@@ -1103,6 +1127,14 @@ software, and the authors make no commitment to do any further work on
 it.
 
 \section{Release history}
+
+\subsection*{2.7 (2021 September 1)}
+
+\begin{itemize}
+\item Add \joption{postamble} gloss macro option for arbitrary text that is appended to the free
+      translation line (after closing quotation marks). See sec.~\ref{sec:gmacros}.
+\item Add \jcsmacro{glosslinepostamble} command to markup this text. See sec.~\ref{sec:glossfc}.
+\end{itemize}
 
 \subsection*{2.6 (2021 May 19)}
 
