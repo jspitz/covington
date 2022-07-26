@@ -32,8 +32,8 @@ The package consists of the following files:
 == CHANGES ==
 
 * Version 2.8 (forthcoming):
-        - Add ownfncounter option to allow for separate counting of examples in footnotes.
-        - Add resetownfncounter option to reset separate counters in each footnote.
+        - Add  Add ownfncounter and ownfncounter* options to allow for separate counting
+          of examples in footnotes. The starred option resets the counter at each footnote.
 
 * Version 2.7 (2021-09-01):
         - Add postamble gloss macro option for arbitrary text that is appended to the free

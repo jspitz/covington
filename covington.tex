@@ -163,12 +163,13 @@ The package has the following options:
 
 \item{\joption{ownfncounter}:} Use a separate counter for numbered examples in footnotes.
 
-	By default, \cvt\ numbers examples in footnotes subsequently (with the numbering used in the main text). With this option,
-	examples in footnotes get a different numbering, using by default roman numbering (see sec.~\ref{sec:custno} on how to change this).
+	By default, \cvt\ numbers examples in footnotes in sequence with the numbering used in the main text. With this option,
+	examples in footnotes get a different numbering. This uses by default roman numbering (see sec.~\ref{sec:custno} on how
+	to change this) and is incremented throughout the whole footnote apparatus.
 
-\item{\joption{resetownfncounter}:} If a separate counter for numbered examples in footnotes is used, reset at each footnote.
+\item{\joption{ownfncounter*}:} Same as \joption{ownfncounter}, except that this variant resets the counter at each footnote
+	(similar to \textsf{linguex} and \textsf{gb4e}).
 
-	The roman nubering used with \joption{ownfncounter} is not reset between footnotes by default. Use this option if you prefer that.
 \end{description}
 %
 Please note the following package-related caveats:
@@ -1151,8 +1152,8 @@ it.
 \subsection*{2.8 (forthcoming)}
 
 \begin{itemize}
-	\item Add \joption{ownfncounter} option to allow for separate counting of examples in footnotes. See sec.~\ref{sec:intro}.
-	\item Add \joption{resetownfncounter} option to reset separate counters in each footnote. See sec.~\ref{sec:intro}.
+	\item Add \joption{ownfncounter} and \joption{ownfncounter*} options to allow for separate counting of examples
+	in footnotes. The starred option resets the counter at each footnote. See sec.~\ref{sec:intro}.
 \end{itemize}
 
 \subsection*{2.7 (2021 September 1)}
