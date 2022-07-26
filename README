@@ -31,6 +31,10 @@ The package consists of the following files:
 
 == CHANGES ==
 
+* Version 2.8 (forthcoming):
+        - Add ownfncounter option to allow for separate counting of examples in footnotes.
+        - Add resetownfncounter option to reset separate counters in each footnote.
+
 * Version 2.7 (2021-09-01):
         - Add postamble gloss macro option for arbitrary text that is appended to the free
           translation line (after closing quotation marks).
