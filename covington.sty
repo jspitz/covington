@@ -42,8 +42,8 @@
 %%% Metadata
 %%%
 
-\def\filedate{2021/09/01}
-\def\fileversion{2.7}
+\def\filedate{2022/07/26}
+\def\fileversion{2.8dev}
 \def\filename{covington.sty}
 
 % Force redefinition of environments?
@@ -54,6 +54,10 @@
 \newif\ifnoglossbreaks\noglossbreaksfalse
 % Use own example counter
 \newif\ifownexcounter\ownexcounterfalse
+% Use separate counter in footnote
+\newif\ifownfnexcounter\ownfnexcounterfalse
+% Reset separate counter in footnote
+\newif\ifresetownfnexcounter\resetownfnexcounterfalse
 
 \@ifundefined{ProvidesPackage}{%
 \typeout{* covington.sty : Covington's linguistic macros, \fileversion\ \filedate *}
@@ -64,6 +68,8 @@
 \DeclareOption{keeplayout}{\tweaklayoutfalse}
 \DeclareOption{noglossbreaks}{\noglossbreakstrue}
 \DeclareOption{owncounter}{\ownexcountertrue}
+\DeclareOption{ownfncounter}{\ownfnexcountertrue}
+\DeclareOption{resetownfncounter}{\resetownfnexcountertrue}
 \ProcessOptions
 }
 
@@ -166,6 +172,19 @@
 \newcommand*\@@exampleno{\ifownexcounter\thecovex\else\theequation\fi}
 \newcommand*\exampleno{\@ifstar{\@@exampleno}{\@exampleno}}
 
+\newif\ifcov@infootnote\cov@infootnotefalse
+\ifownfnexcounter
+  % Check whether we are in a footnote
+  \AddToHook{cmd/@footnotetext/before}{\cov@infootnotetrue}
+  \AddToHook{cmd/@footnotetext/after}{\cov@infootnotefalse}
+  \ifresetownfnexcounter
+    \newcounter{covfnex}[footnote]
+  \else
+    \newcounter{covfnex}
+  \fi
+  \renewcommand{\thecovfnex}{\roman{covfnex}}
+\fi
+
 %%%
 %%% The 'example' environment
 %%%
@@ -249,27 +268,42 @@
 \setlength\exampleind{0pt}
 
 \newcommand*\covexnumber[1]{(#1)}
+\newcommand*\covexnumberfn[1]{\covexnumber{#1}}
 
 \newenvironment{covexamples}%         % define "example" environment
 {%
-\begin{list}{\covexamplenofs\covexnumber{\@@exampleno}}%
+\begin{list}%
 {%
-\addtolength{\labelwidth}{\examplenumbersep}%
-\addtolength{\leftmargin}{\examplenumbersep}%
-\addtolength{\leftmargin}{\exampleind}%
-\ifownexcounter
-  \setcounter{covexsave}{\arabic{covex}}%
-  \usecounter{covex}%                          % sets it to zero, unwantedly
-  \setcounter{covex}{\arabic{covexsave}}%   % restores previous value
-\else
-  \setcounter{covexsave}{\arabic{equation}}%
-  \usecounter{equation}%                          % sets it to zero, unwantedly
-  \setcounter{equation}{\arabic{covexsave}}%   % restores previous value
-\fi
-\setlength{\listparindent}{0pt}%
-\def\makelabel##1{##1\hfil}%       % put labels flushleft in space available
+  \covexamplenofs% font
+  \ifcov@infootnote
+    \covexnumberfn{\thecovfnex}%
+  \else
+    \covexnumber{\@@exampleno}%
+  \fi
 }%
-\raggedright\covexamplefs}%     % text is flushleft, not justified
+{%
+  \addtolength{\labelwidth}{\examplenumbersep}%
+  \addtolength{\leftmargin}{\examplenumbersep}%
+  \addtolength{\leftmargin}{\exampleind}%
+  \ifcov@infootnote
+    \setcounter{covexsave}{\arabic{covfnex}}%
+    \usecounter{covfnex}%
+    \setcounter{covfnex}{\arabic{covexsave}}%
+  \else
+    \ifownexcounter
+      \setcounter{covexsave}{\arabic{covex}}%
+      \usecounter{covex}%                          % sets it to zero, unwantedly
+      \setcounter{covex}{\arabic{covexsave}}%   % restores previous value
+    \else
+      \setcounter{covexsave}{\arabic{equation}}%
+      \usecounter{equation}%                          % sets it to zero, unwantedly
+      \setcounter{equation}{\arabic{covexsave}}%   % restores previous value
+    \fi
+  \fi
+  \setlength{\listparindent}{0pt}%
+  \def\makelabel##1{##1\hfil}%       % put labels flushleft in space available
+}%
+  \raggedright\covexamplefs}%     % text is flushleft, not justified
 {\end{list}}
 
 \@ifundefined{examples}{%

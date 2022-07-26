@@ -94,8 +94,8 @@
 %
 % Titling
 %
-\def\pversion{Version 2.7}
-\def\pdate{September 1, 2021}
+\def\pversion{Version 2.8dev}
+\def\pdate{July 26, 2022}
 
 \title{\textbf{The \cvt\ Package\\Macros for Linguistics}}
 \author{Michael A. Covington \and J\"urgen Spitzm\"uller\thanks{Current maintainer.
@@ -160,6 +160,15 @@ The package has the following options:
 	in the same	paper, you get a single continuous series of numbers. While some people (including the original author of this package)
 	consider this a feature, others might prefer to number equations and linguistic examples separately. If you count to the latter sort,
 	use this option.
+
+\item{\joption{ownfncounter}:} Use a separate counter for numbered examples in footnotes.
+
+	By default, \cvt\ numbers examples in footnotes subsequently (with the numbering used in the main text). With this option,
+	examples in footnotes get a different numbering, using by default roman numbering (see sec.~\ref{sec:custno} on how to change this).
+
+\item{\joption{resetownfncounter}:} If a separate counter for numbered examples in footnotes is used, reset at each footnote.
+
+	The roman nubering used with \joption{ownfncounter} is not reset between footnotes by default. Use this option if you prefer that.
 \end{description}
 %
 Please note the following package-related caveats:
@@ -431,7 +440,12 @@ You can change the display of the example number by redefining (via \jfcsmacro{r
 \end{lstlisting}
 %
 with the variable \texttt{\#1} representing the number.
-
+If you use \joption{ownfncounter}, example numbers in footnote use this macro as well. If you want
+a different display, you can redefine
+\begin{lstlisting}[moretexcs={covexfnnumber}]
+\newcommand*\covexfnnumber[1]{\covennumber{#1}}
+\end{lstlisting}
+%
 In the same vein, you can customize the display of the subexample letter by redefining
 the macro \jcsmacro{covsubexnumber}, which has the following default definition:
 \begin{lstlisting}[moretexcs={covsubexnumber}]
@@ -457,6 +471,12 @@ Finally, you can customize the markup of the sub-example preamble text by redefi
 \jcsmacro{subexpreamblefs}, which also defaults to \jfcsmacro{normalfont}. To have it italicized, analogously do:
 \begin{lstlisting}[moretexcs={\subexpreamblefs}]
 \renewcommand*{\subexpreamblefs}{\itshape}
+\end{lstlisting}
+%
+The separate footnote example number with \joption{ownfncounter} uses roman numbering by default.
+This can be changed by redefining
+\begin{lstlisting}[moretexcs={\thecovfnex}]
+\renewcommand{\thecovfnex}{\roman{covfnex}}
 \end{lstlisting}
 
 
@@ -1127,6 +1147,13 @@ software, and the authors make no commitment to do any further work on
 it.
 
 \section{Release history}
+
+\subsection*{2.8 (forthcoming)}
+
+\begin{itemize}
+	\item Add \joption{ownfncounter} option to allow for separate counting of examples in footnotes. See sec.~\ref{sec:intro}.
+	\item Add \joption{resetownfncounter} option to reset separate counters in each footnote. See sec.~\ref{sec:intro}.
+\end{itemize}
 
 \subsection*{2.7 (2021 September 1)}
 
