@@ -219,10 +219,18 @@
 %            with packages/classes that roll their own example environment
 %            (such as beamer).
 
-\newenvironment{covexample}{\begin{covexamples}\item}{\end{covexamples}}
+% 2022-08-20 (v. 2.8): optional preceding example text
+\define@key{cov@ex}{preamble}{\def\cov@xp{#1}}
+\newcommand*\expreamblefs{\normalfont}
+
+\newenvironment{covexample}[1][]{%
+    \ifx#1\empty\else\setkeys{cov@ex}{#1}\fi%
+    \begin{covexamples}
+       \item\@ifundefined{cov@xp}{}{\bgroup\expreamblefs\cov@xp\egroup\par}% insert preamble if given
+}{\end{covexamples}}
 
 \@ifundefined{example}{%
-  \newenvironment{example}{\begin{covexample}}{\end{covexample}}
+  \newenvironment{example}[1][]{\begin{covexample}[#1]}{\end{covexample}}
 }{%
 \ifforceredef
   \renewenvironment{example}{\begin{covexample}}{\end{covexample}}
@@ -303,7 +311,9 @@
   \setlength{\listparindent}{0pt}%
   \def\makelabel##1{##1\hfil}%       % put labels flushleft in space available
 }%
-  \raggedright\covexamplefs}%     % text is flushleft, not justified
+  \raggedright%  text is flushleft, not justified
+  \covexamplefs%
+}%
 {\end{list}}
 
 \@ifundefined{examples}{%

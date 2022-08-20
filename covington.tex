@@ -280,6 +280,16 @@ This is a sentence.\label{expl}
 \end{example}
 The example can be of any length; it can consist of many lines (separated by \verb"\\"), or even whole paragraphs.
 
+The \jenv{example} environment provides the following option:
+
+\begin{description}
+	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is inserted on an own line
+	after the example number (preceding the actual example text). This might be useful, for instance,
+	to give context information, to specify the language or the source in case of cited examples.
+	The advantage over just adding a line manually in the example is that you can globally set the markup
+	(see sec.~\ref{sec:custno}).
+\end{description}
+%
 If you need more space between the example number and the text, you can increase it by means of
 the length \jcsmacro{examplenumbersep} (which is preset to \texttt{0pt}). Doing \lstinline|\setlength\examplenumbersep{1em}|,
 for instance, will increase the space by 1\,em (negative values will decrease the space accordingly).
@@ -318,9 +328,9 @@ convenient for this task.
 \subsection[The \texttt{examples} environment]{The \jenv{examples} environment}\label{sec:exs}
 
 To display a series of examples together, each with its own example 
-number, use \jenv{examples} (or \jenv{covexamples}) instead of \jenv{example} or \jenv{covexample}.  The only 
-difference is that there can be more than one example, and each of them 
-has to be introduced by \jfcsmacro{item}, like this:
+number, use \jenv{examples} (or \jenv{covexamples}) instead of \jenv{example} or \jenv{covexample}.
+The only drawback is that there is no \joption{preamble} option. On the other hand, there can be more
+than one example with this environment, and each of them has to be introduced by \jfcsmacro{item}, like this:
 \begin{lstlisting}
 \begin{examples}
 \item This is the first sentence.
@@ -339,6 +349,7 @@ This prints as:
 \item This is the first sentence.
 \item This is the second sentence.
 \end{examples}
+%
 As for \jenv{example}, \cvt\ checks if there is already an \jenv{examples} environment defined,
 and if this is the case, \cvt\ does not define its own one. The alias environment \jenv{covexamples}
 is always available as a fallback. If you use the package option \joption{force}, \cvt\ will override
@@ -468,10 +479,15 @@ Note that this does, deliberately, not include the numbers, since those are cont
 \jcsmacro{covexamplenofs}, which defaults to \jfcsmacro{normalfont}. Of course you are free to redefine this as well,
 if you wish do to so.
 
-Finally, you can customize the markup of the sub-example preamble text by redefining the macro
-\jcsmacro{subexpreamblefs}, which also defaults to \jfcsmacro{normalfont}. To have it italicized, analogously do:
+Finally, you can customize the markup of the example and sub-example preamble text by redefining the macro
+\jcsmacro{expreamblefs} or \jcsmacro{subexpreamblefs}, which also both default to \jfcsmacro{normalfont}.
+To have them italicized, analogously do:
 \begin{lstlisting}[moretexcs={\subexpreamblefs}]
 \renewcommand*{\subexpreamblefs}{\itshape}
+\end{lstlisting}
+or
+\begin{lstlisting}[moretexcs={\expreamblefs}]
+\renewcommand*{\expreamblefs}{\itshape}
 \end{lstlisting}
 %
 The separate footnote example number with \joption{ownfncounter} uses roman numbering by default.
@@ -1154,6 +1170,7 @@ it.
 \begin{itemize}
 	\item Add \joption{ownfncounter} and \joption{ownfncounter*} options to allow for separate counting of examples
 	in footnotes. The starred option resets the counter at each footnote. See sec.~\ref{sec:intro}.
+	\item Add \joption{preamble} option to \jenv{example} environment. See sec.~\ref{expl}.
 \end{itemize}
 
 \subsection*{2.7 (2021 September 1)}
