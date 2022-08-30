@@ -32,9 +32,9 @@ The package consists of the following files:
 == CHANGES ==
 
 * Version 2.8 (2022-08-30):
-        - Add  Add ownfncounter and ownfncounter* options to allow for separate counting
+        - Add ownfncounter and ownfncounter* options to allow for separate counting
           of examples in footnotes. The starred option resets the counter at each footnote.
-        -  Add preamble option to example environment.
+        - Add preamble option to example environment.
 
 * Version 2.7 (2021-09-01):
         - Add postamble gloss macro option for arbitrary text that is appended to the free
