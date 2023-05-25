@@ -164,8 +164,8 @@ The package has the following options:
 \item{\joption{ownfncounter}:} Use a separate counter for numbered examples in footnotes.
 
 	By default, \cvt\ numbers examples in footnotes in sequence with the numbering used in the main text. With this option,
-	examples in footnotes get a different numbering. This uses by default roman numbering (see sec.~\ref{sec:custno} on how
-	to change this) and is incremented throughout the whole footnote apparatus.
+	examples in footnotes get a different numbering. This uses by default lowercase Roman numbering (see sec.~\ref{sec:custno}
+	on how to change this) and is incremented throughout the whole footnote apparatus.
 
 \item{\joption{ownfncounter*}:} Same as \joption{ownfncounter}, except that this variant resets the counter at each footnote
 	(similar to \textsf{linguex} and \textsf{gb4e}).
@@ -454,8 +454,8 @@ You can change the display of the example number by redefining (via \jfcsmacro{r
 with the variable \texttt{\#1} representing the number.
 If you use \joption{ownfncounter}, example numbers in footnote use this macro as well. If you want
 a different display, you can redefine
-\begin{lstlisting}[moretexcs={covexfnnumber}]
-\newcommand*\covexfnnumber[1]{\covennumber{#1}}
+\begin{lstlisting}[moretexcs={covexnumberfn,covexnumber}]
+\newcommand*\covexnumberfn[1]{\covexnumber{#1}}
 \end{lstlisting}
 %
 In the same vein, you can customize the display of the subexample letter by redefining
@@ -482,17 +482,17 @@ if you wish do to so.
 Finally, you can customize the markup of the example and sub-example preamble text by redefining the macro
 \jcsmacro{expreamblefs} or \jcsmacro{subexpreamblefs}, which also both default to \jfcsmacro{normalfont}.
 To have them italicized, analogously do:
-\begin{lstlisting}[moretexcs={\subexpreamblefs}]
+\begin{lstlisting}[moretexcs={subexpreamblefs}]
 \renewcommand*{\subexpreamblefs}{\itshape}
 \end{lstlisting}
 or
-\begin{lstlisting}[moretexcs={\expreamblefs}]
+\begin{lstlisting}[moretexcs={expreamblefs}]
 \renewcommand*{\expreamblefs}{\itshape}
 \end{lstlisting}
 %
-The separate footnote example number with \joption{ownfncounter} uses roman numbering by default.
+The separate footnote example number with \joption{ownfncounter} uses lowercase Roman numbering by default.
 This can be changed by redefining
-\begin{lstlisting}[moretexcs={\thecovfnex}]
+\begin{lstlisting}[moretexcs={thecovfnex}]
 \renewcommand{\thecovfnex}{\roman{covfnex}}
 \end{lstlisting}
 
@@ -1164,6 +1164,11 @@ software, and the authors make no commitment to do any further work on
 it.
 
 \section{Release history}
+
+\subsection*{2.9 (forthcoming)}
+\begin{itemize}
+	\item Some documentation fixes.
+\end{itemize}
 
 \subsection*{2.8 (2022 August 30)}
 

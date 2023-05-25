@@ -3,7 +3,7 @@ The covington package
 
 LaTeX macros for Linguistics
 
-Copyright 1991--2022 Michael A. Covington
+Copyright 1991--2023 Michael A. Covington
                      Robin Fairbairns
                      Juergen Spitzmueller
 
@@ -30,6 +30,9 @@ The package consists of the following files:
 * README (this file)
 
 == CHANGES ==
+
+* Version 2.9 (forthcoming):
+	- Some documentation fixes.
 
 * Version 2.8 (2022-08-30):
         - Add ownfncounter and ownfncounter* options to allow for separate counting
