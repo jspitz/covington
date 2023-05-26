@@ -294,10 +294,12 @@ The \jenv{example} environment provides the following options:
 	    The advantage over just adding text manually in the example is that this uses its own markup
 	    (see sec.~\ref{sec:custno}).
 	\item[\joption{postamble*=\{\jparam{arbitrary text}\}}] A variant of \joption{postamble} that does not add
-		a space. This might be preferred if you want to add a footnote. Note that \joption{postamble} and
-		\joption{postamble*} are mutually exclusive.
+		a space. This might be preferred if you want to add a footnote.
+		Note that \joption{postamble} and \joption{postamble*} are mutually exclusive.
 \end{description}
 %
+If you want the postamble text be on a line of its own, simply add a line break (i.\,e., \verb|postamble={\\Text}|).
+
 If you need more space between the example number and the text, you can increase it by means of
 the length \jcsmacro{examplenumbersep} (which is preset to \texttt{0pt}). Doing \lstinline|\setlength\examplenumbersep{1em}|,
 for instance, will increase the space by 1\,em (negative values will decrease the space accordingly).
@@ -526,14 +528,14 @@ The distance between example number and subnumber (letter) can be changed via th
 value will decrease the respective distance.
 Doing 
 \begin{lstlisting}[moretexcs={setlength,examplenumbersep,subexamplenumbersep}]
-\setlength{\examplenumbersep}{-0.5em}
-\setlength{\subexamplenumbersep}{0.5em}
+\setlength{\examplenumbersep}{-0.4em}
+\setlength{\subexamplenumbersep}{0.4em}
 \end{lstlisting}
 for instance, will come out like this:
 
 \bgroup
-\setlength{\examplenumbersep}{-0.5em}
-\setlength{\subexamplenumbersep}{0.5em}
+\setlength{\examplenumbersep}{-0.4em}
+\setlength{\subexamplenumbersep}{0.4em}
 
 \begin{subexamples}
 	\item This is the first sentence.
@@ -695,7 +697,7 @@ Note that:
 
 \begin{description}
 	\item[\joption{ex=\jparam{true|false}}] Default: \emph{false}. Wraps the gloss in an example environment
-	      (i.\,e., it is numberered).
+	      (i.\,e., it is numbered).
 	\item[\joption{tlr=\jparam{true|false}}] Default: \emph{false}. If set to true, the translation line (content
           of the \jparam{free translation} argument) is set right to the gloss lines, rather than into a new line below.
           Since the gloss itself is set in a box, this means the \jparam{free translation} will appear lined up with the
