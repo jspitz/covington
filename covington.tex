@@ -367,7 +367,7 @@ you can use the \jcsmacro{expreamble} macro, like this:
 \item \expreamble{Here is Jakobson's famous poetic example:}
       I like Ike
 \item \expreamble{Here is the less poetic variant:}
-      I am in favor of Mr. Eisenhover
+      I am in favor of Mr. Eisenhower
 \end{examples}
 \end{lstlisting}
 %
@@ -376,7 +376,7 @@ which prints:
 	\item \expreamble{Here is Jakobson's famous poetic example:}
 	      I like Ike
 	\item \expreamble{Here is the less poetic variant:}
-	      I am in favor of Mr. Eisenhover
+	      I am in favor of Mr. Eisenhower
 \end{examples}
 %
 Again, the advantage over just adding a line manually in the example is that you can globally set the markup
@@ -387,14 +387,14 @@ can be added to specific items via the \jcsmacro{expostamble} macro, like this:
 \begin{lstlisting}[moretexcs={expostamble}]
 \begin{examples}
 \item I like Ike \expostamble{(Jakobson 1960: 357)}
-\item I am in favor of Mr. Eisenhover\expostamble{\footnote{He actually didn't.}}
+\item I am in favor of Mr. Eisenhower\expostamble{\footnote{He actually didn't.}}
 \end{examples}
 \end{lstlisting}
 %
 which results in:
 \begin{examples}
 	\item I like Ike \expostamble{(Jakobson 1960: 357)}
-	\item I am in favor of Mr. Eisenhover\expostamble{\footnote{He actually didn't.}}
+	\item I am in favor of Mr. Eisenhower\expostamble{\footnote{He actually didn't.}}
 \end{examples}
 %
 The advantage over just adding text as is in the example is that this has its own, globally settable markup,
