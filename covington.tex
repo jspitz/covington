@@ -327,10 +327,10 @@ convenient for this task.
 
 \subsection[The \texttt{examples} environment]{The \jenv{examples} environment}\label{sec:exs}
 
-To display a series of examples together, each with its own example 
-number, use \jenv{examples} (or \jenv{covexamples}) instead of \jenv{example} or \jenv{covexample}.
-The only drawback is that there is no \joption{preamble} option. On the other hand, there can be more
-than one example with this environment, and each of them has to be introduced by \jfcsmacro{item}, like this:
+To display a series of examples together, each with its own example number, use \jenv{examples}
+(or \jenv{covexamples}) instead of \jenv{example} or \jenv{covexample}.
+There can be more than one example with this environment, and each of them has to be introduced
+by \jfcsmacro{item}, like this:
 \begin{lstlisting}
 \begin{examples}
 \item This is the first sentence.
@@ -348,6 +348,43 @@ This prints as:
 \begin{examples}
 \item This is the first sentence.
 \item This is the second sentence.
+\end{examples}
+%
+To add additional text to specific items (analogous to the \joption{preamble} option of the \jenv{example} environment),
+you can use the \jcsmacro{expreamble} macro, like this:
+\begin{lstlisting}[moretexcs={expreamble}]
+\begin{examples}
+\item \expreamble{Here is Jakobson's famous poetic example:}
+      I like Ike
+\item \expreamble{Here is the less poetic variant:}
+      I am in favor of Mr. Eisenhover
+\end{examples}
+\end{lstlisting}
+%
+which prints:
+\begin{examples}
+	\item \expreamble{Here is Jakobson's famous poetic example:}
+	      I like Ike
+	\item \expreamble{Here is the less poetic variant:}
+	      I am in favor of Mr. Eisenhover
+\end{examples}
+%
+Again, the advantage over just adding a line manually in the example is that you can globally set the markup
+(see sec.~\ref{sec:custno}).
+
+Like in any other \LaTeX\ list, the numbering can be freely set via the optional argument of \jfcsmacro{item}.
+For a somewhat practical example, consider
+\begin{lstlisting}[moretexcs={covexnumber,exampleno}]
+\begin{examples}
+\item A proposition.
+\item[\covexnumber{\exampleno*'}] An alternative proposition.
+\end{examples}
+\end{lstlisting}
+%
+which results in:
+\begin{examples}
+	\item A proposition.
+	\item[\covexnumber{\exampleno*'}] An alternative proposition.
 \end{examples}
 %
 As for \jenv{example}, \cvt\ checks if there is already an \jenv{examples} environment defined,
@@ -418,6 +455,23 @@ prints as:
 	\item This is the second sentence.
 \end{subexamples}
 %
+To add additional text to specific subitems, you can use the \jcsmacro{subexpreamble} macro, which uses the
+same markup than the \joption{preamble} option, like this:
+\begin{lstlisting}[moretexcs={subexpreamble}]
+\begin{covsubexamples}[preamble={Here are two sentences}]
+\item This is the first sentence.
+\item \subexpreamble{Note particular this one}
+      This is the second sentence.
+\end{covsubexamples}
+\end{lstlisting}
+%
+which prints:
+\begin{covsubexamples}[preamble={Here are two sentences}]
+	\item This is the first sentence.
+	\item \subexpreamble{Note particular this one}
+	This is the second sentence.
+\end{covsubexamples}
+%
 The distance between example number and subnumber (letter) can be changed via the length \jcsmacro{examplenumbersep}
 (which is preset to \texttt{0pt}). The distance between example subnumber and text can be changed  via the length
 \jcsmacro{subexamplenumbersep} (preset to \texttt{0pt} as well). In both cases, a positive value will increase, a negative
@@ -479,7 +533,8 @@ Note that this does, deliberately, not include the numbers, since those are cont
 \jcsmacro{covexamplenofs}, which defaults to \jfcsmacro{normalfont}. Of course you are free to redefine this as well,
 if you wish do to so.
 
-Finally, you can customize the markup of the example and sub-example preamble text by redefining the macro
+Finally, you can customize the markup of the example and sub-example preamble text (supplied either via the \joption{preamble}
+option or the \jcsmacro{expreamble} or \jcsmacro{subexpreamble} macro) by redefining the macro
 \jcsmacro{expreamblefs} or \jcsmacro{subexpreamblefs}, which also both default to \jfcsmacro{normalfont}.
 To have them italicized, analogously do:
 \begin{lstlisting}[moretexcs={subexpreamblefs}]
@@ -1167,6 +1222,7 @@ it.
 
 \subsection*{2.9 (forthcoming)}
 \begin{itemize}
+	\item Add \jcsmacro{expreamble} and \jcsmacro{subexpreamble} macros (sec.~\ref{sec:exs} and \ref{sec:subexs}).
 	\item Some documentation fixes.
 \end{itemize}
 

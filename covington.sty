@@ -223,10 +223,12 @@
 \define@key{cov@ex}{preamble}{\def\cov@xp{#1}}
 \newcommand*\expreamblefs{\normalfont}
 
+\newcommand\expreamble[1]{\bgroup\expreamblefs#1\egroup\par}
+
 \newenvironment{covexample}[1][]{%
     \ifx#1\empty\else\setkeys{cov@ex}{#1}\fi%
     \begin{covexamples}
-       \item\@ifundefined{cov@xp}{}{\bgroup\expreamblefs\cov@xp\egroup\par}% insert preamble if given
+       \item\@ifundefined{cov@xp}{}{\expreamble{\cov@xp}}% insert preamble if given
 }{\end{covexamples}}
 
 \@ifundefined{example}{%
@@ -353,6 +355,8 @@
 % 2019-06-21 (v. 2.3): optional preceding subexample text
 \define@key{cov@subex}{preamble}{\def\cov@sxp{#1}}
 \newcommand*\subexpreamblefs{\normalfont}
+
+\newcommand\subexpreamble[1]{\bgroup\subexpreamblefs#1\egroup\par}
 
 \newenvironment{covsubexamples}[1][]%         % define "subexamples" environment
 {%
