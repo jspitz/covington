@@ -222,14 +222,23 @@
 % 2022-08-20 (v. 2.8): optional preceding example text
 \define@key{cov@ex}{preamble}{\def\cov@xp{#1}}
 \newcommand*\expreamblefs{\normalfont}
-
 \newcommand\expreamble[1]{\bgroup\expreamblefs#1\egroup\par}
+
+\newif\if@cov@expst@star\@cov@expst@starfalse
+\define@key{cov@ex}{postamble}{\def\cov@xpst{#1}\@cov@expst@starfalse}
+\define@key{cov@ex}{postamble*}{\def\cov@xpst{#1}\@cov@expst@startrue}
+% 2023.05.26 (v. 2.9): optional trailung subexample text
+\newcommand*\expostamblefs{\normalfont}
+\newcommand*\expostamble[1]{\bgroup\expostamblefs#1\egroup}
 
 \newenvironment{covexample}[1][]{%
     \ifx#1\empty\else\setkeys{cov@ex}{#1}\fi%
     \begin{covexamples}
        \item\@ifundefined{cov@xp}{}{\expreamble{\cov@xp}}% insert preamble if given
-}{\end{covexamples}}
+}{%
+   \@ifundefined{cov@xpst}{}{\if@cov@expst@star\unskip\fi\expostamble{\cov@xpst}}%
+   \end{covexamples}%
+}
 
 \@ifundefined{example}{%
   \newenvironment{example}[1][]{\begin{covexample}[#1]}{\end{covexample}}
@@ -355,8 +364,12 @@
 % 2019-06-21 (v. 2.3): optional preceding subexample text
 \define@key{cov@subex}{preamble}{\def\cov@sxp{#1}}
 \newcommand*\subexpreamblefs{\normalfont}
-
 \newcommand\subexpreamble[1]{\bgroup\subexpreamblefs#1\egroup\par}
+
+% 2023.05.26 (v. 2.9): optional trailung subexample text
+\define@key{cov@subex}{postamble}{\def\cov@sxpst{#1}}
+\newcommand*\subexpostamblefs{\normalfont}
+\newcommand*\subexpostamble[1]{\bgroup\expostamblefs#1\egroup}
 
 \newenvironment{covsubexamples}[1][]%         % define "subexamples" environment
 {%
@@ -374,6 +387,8 @@
 {%
     \let\cov@sxp\relax
     \end{enumerate}
+    \@ifundefined{cov@sxpst}{}{\subexpostamble{\cov@sxpst}}% insert postamble if given
+    \let\cov@sxpst\relax
     \end{covexample}
 }
 

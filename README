@@ -32,7 +32,8 @@ The package consists of the following files:
 == CHANGES ==
 
 * Version 2.9 (forthcoming):
-	- Add \expreamble and \subexpreamble macros.
+	- Add postamble and postamble* options to example and subexamples environment.
+	- Add \expreamble, \subexpreamble, \expostamble and \subexpostamble macros.
 	- Some documentation fixes.
 
 * Version 2.8 (2022-08-30):
