@@ -31,7 +31,7 @@ The package consists of the following files:
 
 == CHANGES ==
 
-* Version 2.9 (forthcoming):
+* Version 2.9 (2023-05-26):
 	- Add postamble and postamble* options to example and subexamples environment.
 	- Add \expreamble, \subexpreamble, \expostamble and \subexpostamble macros.
 	- Some documentation fixes.

@@ -42,8 +42,8 @@
 %%% Metadata
 %%%
 
-\def\filedate{2022/08/30}
-\def\fileversion{2.8}
+\def\filedate{2023/05/26}
+\def\fileversion{2.9}
 \def\filename{covington.sty}
 
 % Force redefinition of environments?
@@ -60,10 +60,10 @@
 \newif\ifresetownfnexcounter\resetownfnexcounterfalse
 
 \@ifundefined{ProvidesPackage}{%
-\typeout{* covington.sty : Covington's linguistic macros, \fileversion\ \filedate *}
+\typeout{* covington.sty -- Macros for Linguistics, \fileversion\ \filedate *}
 }{%
 \ProvidesPackage{covington}
-	[\filedate\space v\fileversion\space Covington's linguistic macros]
+	[\filedate\space v\fileversion\space Macros for Linguistics]
 \DeclareOption{force}{\forceredeftrue}
 \DeclareOption{keeplayout}{\tweaklayoutfalse}
 \DeclareOption{noglossbreaks}{\noglossbreakstrue}
