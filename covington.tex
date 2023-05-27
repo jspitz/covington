@@ -65,10 +65,11 @@
 \usepackage{tocloft}
 \setlength{\cftbeforesecskip}{0pt}
 \renewcommand{\cfttoctitlefont}{\normalsize\bfseries}
-\renewcommand{\cftsecfont}{\footnotesize}
-\renewcommand{\cftsecpagefont}{\footnotesize}
-\renewcommand{\cftsubsecfont}{\footnotesize}
-\renewcommand{\cftsubsecpagefont}{\footnotesize}
+\renewcommand{\cftsecfont}{\small}
+\renewcommand{\cftsecpagefont}{\small}
+\renewcommand{\cftsubsecfont}{\small}
+\renewcommand{\cftsubsecpagefont}{\small}
+\tocloftpagestyle{empty}
 
 \usepackage{babel}
 
@@ -114,6 +115,7 @@ same letter, interlinear glosses (word-by-word translations), Discourse Represen
 example numbering, and semantic markup.
 \end{abstract}
 
+\enlargethispage{2\baselineskip}
 \tableofcontents
 
 \section{Introduction}\label{sec:intro}
