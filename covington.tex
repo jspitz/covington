@@ -116,8 +116,6 @@ example numbering, and semantic markup.
 
 \tableofcontents
 
-\clearpage
-
 \section{Introduction}\label{sec:intro}
 
 This is the documentation for \MakeLowercase{\pversion}
@@ -234,8 +232,15 @@ Linguistic papers often include numbered examples. With \cvt, generating those i
 In this section, we describe how you can typeset a self-stepping example number (see section~\ref{sec:exno}),
 a single numbered example (sec.~\ref{sec:ex}), a consecutive range of numbered examples (sec.~\ref{sec:exs}),
 and alpha-numerically labeled sub-examples (sec.~\ref{sec:subexs}).
-All numbered examples can be referred to in the text via \jfcsmacro{label} and \jfcsmacro{ref} as usual
-(see sec.~\ref{sec:ref} for details).
+
+\Cvt's numbered examples can be customized in many ways. For instance, you can make them by default be
+typeset in italics, as common in linguistics (see sec.~\ref{sec:custexmk}), you can adjust the way the numbers
+are displayed (see sec.~\ref{sec:custno}), and you can customize the spacing and indentation if the default
+settings do not suit you (see sec.~\ref{sec:custsp}).
+
+All numbered examples can be referred to in the text via \jfcsmacro{label} and \jfcsmacro{ref} as usual,
+and with a convenience macro \jcsmacro{pxref} that adds the parentheses that are usually used
+in example references (see sec.~\ref{sec:ref} for details).
 
 \subsection{Example numbers}\label{sec:exno}
 
@@ -294,12 +299,12 @@ The \jenv{example} environment provides the following options:
 		after the example number (preceding the actual example text). This might be useful, for instance,
 		to give context information, to specify the language or the source in case of cited examples.
 		The advantage over just adding a line manually in the example is that you can globally set the markup
-		(see sec.~\ref{sec:custno}).
+		(see sec.~\ref{sec:custexmk}).
 	\item[\joption{postamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is appended to the example
 	    (on the	same line after a space).
 	    This might be useful to add a reference or an explanation to the translation.
 	    The advantage over just adding text manually in the example is that this uses its own markup
-	    (see sec.~\ref{sec:custno}).
+	    (see sec.~\ref{sec:custexmk}).
 	\item[\joption{postamble*=\{\jparam{arbitrary text}\}}] A variant of \joption{postamble} that does not add
 		a space. This might be preferred if you want to add a footnote.
 		Note that \joption{postamble} and \joption{postamble*} are mutually exclusive.
@@ -320,7 +325,7 @@ Das ist ein Satz.
 %
 The output of examples can be adjusted globally. You can once and for all set the markup, e.\,g.,
 to set all examples in italics, as common in linguistics, while pre- and postamble text are still
-in upright or any other font you prefer (see sec.~\ref{sec:custno}). Also, you can adjust the spacing
+in upright or any other font you prefer (see sec.~\ref{sec:custexmk}). Also, you can adjust the spacing
 of examples, i.\,e., the indentation of the numbers and the spacing between numbers and example
 text (see sec.~\ref{sec:custsp}).
 
@@ -376,8 +381,7 @@ which prints:
 \end{examples}
 %
 Again, the advantage over just adding a line manually in the example is that this respects the global markup
-of example sentences and the separate markup of preamble text in the case if the example sentences are italicized
-(see sec.~\ref{sec:custno}).
+of example sentences and the potentially separate markup of preamble text (see sec.~\ref{sec:custexmk}).
 
 Along the same line, trailing text (analogous to the \joption{postamble} option of the \jenv{example} environment)
 can be added to specific items via the \jcsmacro{expostamble} macro, like this:
@@ -395,7 +399,7 @@ which results in:
 \end{examples}
 %
 Also here, the advantage over just adding text as is in the example is that this has its own, globally settable markup,
-which is particularly relevant if you globally set examples to be italicized (see sec.~\ref{sec:custno}).
+which is particularly relevant if you globally set examples to be italicized (see sec.~\ref{sec:custexmk}).
 
 Like in any other \LaTeX\ list, the numbering can be freely set via the optional argument of \jfcsmacro{item}.
 For a somewhat practical example, consider
@@ -413,7 +417,7 @@ which results in:
 \end{examples}
 %
 Please refer to sec.~\ref{sec:custsp} for ways to adjust the spacing of the environment and to sec.~\ref{sec:custno}
-for possibilities to customize the appearance.
+and \ref{sec:custexmk} for possibilities to customize the appearance.
 
 
 \subsection[The \texttt{subexamples} environment]{The \jenv{subexamples} environment}\label{sec:subexs}
@@ -491,7 +495,7 @@ prints as:
 \end{subexamples}
 %
 The advantage of these options over just adding text manually in the example is that text which is inserted like
-this uses its own markup as opposed to the markup of the example sentences (sec.~\ref{sec:custno} elaborates how
+this uses its own markup as opposed to the markup of the example sentences (sec.~\ref{sec:custexmk} elaborates how
 to adjust this, e.\,g., if you want to follow the convention to set example sentences in italics).
 
 To add additional text to specific subitems, you can use the \jcsmacro{subexpreamble}
@@ -531,7 +535,7 @@ which results in:
 	\item This is the second sentence.\subexpostamble{\footnote{My own.}}
 \end{subexamples}
 %
-Customization possibilities of examples and subexamples are elaborated in the following two sections.
+Customization possibilities of examples and subexamples are elaborated in the following three sections.
 
 \subsection{Customizing example spacing}\label{sec:custsp}
 
@@ -581,7 +585,7 @@ for instance, will yield:
 \end{subexamples}
 \egroup
 
-\subsection{Customizing number display and example markup}\label{sec:custno}
+\subsection{Customizing number display}\label{sec:custno}
 
 You can change the display of the example number by redefining (via \jfcsmacro{renewcommand*}) the macro
 \jcsmacro{covexnumber}, which has the following default definition:
@@ -596,10 +600,12 @@ a different display, you can redefine
 \newcommand*\covexnumberfn[1]{\covexnumber{#1}}
 \end{lstlisting}
 %
-The separate footnote example number with \joption{ownfncounter} uses lowercase Roman numbering by default.
-This can be changed by redefining
-\begin{lstlisting}[moretexcs={thecovfnex}]
-\renewcommand{\thecovfnex}{\roman{covfnex}}
+The separate footnote example number with \joption{ownfncounter} uses lowercase Roman (\jfcsmacro{roman})
+numbering by default.
+By redefining the macro \jcsmacro{fnexfmt} which links to \jfcsmacro{roman} by
+default, this can be changed. E.\,g., to get an arabic number instead, do:
+\begin{lstlisting}[moretexcs={fnexfmt}]
+\let\fnexfmt\arabic
 \end{lstlisting}
 %
 The display of the subexample letter can be customized by redefining
@@ -613,6 +619,23 @@ To remove the parentheses from the subexample letter, for instance, to this:
 \renewcommand*\covsubexnumber[1]{#1}
 \end{lstlisting}
 %
+By default, subexamples use lower alphabetic numbering (\jfcsmacro{alph}). If you want to change that,
+you can redefine the macro \jcsmacro{subexfmt} which links to \jfcsmacro{alph} by default, e.\,g. like so:
+\begin{lstlisting}[moretexcs={subexfmt}]
+\let\subexfmt\roman
+\end{lstlisting}
+%
+to achieve
+\bgroup
+\let\subexfmt\roman
+\begin{subexamples}
+	\item This is a subexample.
+	\item This is another one.
+\end{subexamples}
+\egroup
+
+\subsection{Customizing example markup}\label{sec:custexmk}
+
 \noindent You can also customize the markup of the example sentences by redefining the macro
 \jcsmacro{covexamplefs} (which is empty by default). To have all example sentences italicized, for instance, do:
 \begin{lstlisting}[moretexcs={covexamplefs}]
@@ -991,8 +1014,6 @@ This has been input as follows:
         {Do you have matches?}
 \end{lstlisting}
 
-\clearpage
-
 \section{Phrase structure rules}
 
 To print phrase structure rules such as \psr{S}{NP~VP} you can use \texttt{covington's} macro
@@ -1312,6 +1333,7 @@ it.
 
 \subsection*{2.10 (forthcoming)}
 \begin{itemize}
+	\item Add way to customize subexample number format (see sec.~\ref{sec:custno}).
 	\item Documentation improvements.
 \end{itemize}
 
@@ -1376,7 +1398,7 @@ it.
 	\item Add starred \jcsmacro{exampleno*} command that outputs the current example number value without stepping it.
 	      See sec.~\ref{sec:exno}.
 	\item Add macros \jcsmacro{covexamplefs} and \jcsmacro{covexamplenofs} for global setting of example text markup.
-	      See sec.~\ref{sec:custno}.
+	      See sec.~\ref{sec:custexmk}.
 \end{itemize}
 
 \subsection*{2.1 (2019 May 12)}
@@ -1401,7 +1423,7 @@ it.
 
 \begin{itemize}
 	\item Fix font markup of second gloss line (do not force rm).
-	\item Add possibility to customize gloss line font setting. See sec.~\ref{sec:custno}.
+	\item Add possibility to customize gloss line font setting. See sec.~\ref{sec:custexmk}.
 	\item Add possibility to customize example number display. See sec.~\ref{sec:custno}.
 \end{itemize}
 
