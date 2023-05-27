@@ -172,6 +172,8 @@
 \newcommand*\@@exampleno{\ifownexcounter\thecovex\else\theequation\fi}
 \newcommand*\exampleno{\@ifstar{\@@exampleno}{\@exampleno}}
 
+\let\fnexfmt\roman
+
 \newif\ifcov@infootnote\cov@infootnotefalse
 \ifownfnexcounter
   % Check whether we are in a footnote
@@ -182,7 +184,7 @@
   \else
     \newcounter{covfnex}
   \fi
-  \renewcommand{\thecovfnex}{\roman{covfnex}}
+  \renewcommand{\thecovfnex}{\fnexfmt{covfnex}}
 \fi
 
 %%%
@@ -371,6 +373,8 @@
 \newcommand*\subexpostamblefs{\normalfont}
 \newcommand*\subexpostamble[1]{\bgroup\expostamblefs#1\egroup}
 
+\let\subexfmt\alph
+
 \newenvironment{covsubexamples}[1][]%         % define "subexamples" environment
 {%
     \ifx#1\empty\else\setkeys{cov@subex}{#1}\fi%
@@ -378,7 +382,7 @@
     \@ifundefined{cov@sxp}{}{\subexpreamblefs\cov@sxp}% insert preamble if given
     \begin{enumerate}
     \addtolength{\labelsep}{\subexamplenumbersep}%
-    \renewcommand\theenumi{\alph{enumi}}
+    \renewcommand\theenumi{\subexfmt{enumi}}
     \renewcommand\labelenumi{\covexamplenofs\covsubexnumber{\theenumi}}
     \renewcommand\p@enumi{\@@exampleno\,}%
     \setlength{\listparindent}{0pt}%
