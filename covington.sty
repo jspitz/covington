@@ -59,19 +59,16 @@
 % Reset separate counter in footnote
 \newif\ifresetownfnexcounter\resetownfnexcounterfalse
 
-\@ifundefined{ProvidesPackage}{%
-  \typeout{* covington.sty -- Macros for Linguistics, \fileversion\ \filedate *}
-}{%
-  \ProvidesPackage{covington}
+\ProvidesPackage{covington}
 	[\filedate\space v\fileversion\space Macros for Linguistics]
-  \DeclareOption{force}{\forceredeftrue}
-  \DeclareOption{keeplayout}{\tweaklayoutfalse}
-  \DeclareOption{noglossbreaks}{\noglossbreakstrue}
-  \DeclareOption{owncounter}{\ownexcountertrue}
-  \DeclareOption{ownfncounter}{\ownfnexcountertrue}
-  \DeclareOption{ownfncounter*}{\ownfnexcountertrue\resetownfnexcountertrue}
-  \ProcessOptions
-}
+
+\DeclareOption{force}{\forceredeftrue}
+\DeclareOption{keeplayout}{\tweaklayoutfalse}
+\DeclareOption{noglossbreaks}{\noglossbreakstrue}
+\DeclareOption{owncounter}{\ownexcountertrue}
+\DeclareOption{ownfncounter}{\ownfnexcountertrue}
+\DeclareOption{ownfncounter*}{\ownfnexcountertrue\resetownfnexcountertrue}
+\ProcessOptions
 
 %
 % Required packages
@@ -567,14 +564,8 @@
 \glossglue = 5pt plus 2pt minus 1pt % allow stretch/shrink between words
 \newif\ifnotdone
 
-% Add semantic markup (with latex 2.09 backwards support)
-\@ifundefined{selectfont}{%
-  \def\cov@emphasized{\it}%
-  \def\cov@normalfont{\rm}%
-}{%
-  \def\cov@emphasized{\normalfont\itshape}%
-  \def\cov@normalfont{\normalfont\upshape}%
-}
+\def\cov@emphasized{\normalfont\itshape}%
+\def\cov@normalfont{\normalfont\upshape}%
 
 % Font settings for gloss lines
 \newcommand*\glosslineone{\cov@emphasized}
