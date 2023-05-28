@@ -78,11 +78,7 @@
 
 % Macro to issue warnings
 \newcommand\cov@warning[1]{%
-   \@ifundefined{PackageWarning}{%
-      \typeout{* covington warning : #1 *}
-   }{%
-      \PackageWarning{covington}{#1}%
-   }
+  \PackageWarning{covington}{#1}%
 }
 
 %%%
