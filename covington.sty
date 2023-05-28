@@ -62,18 +62,28 @@
 \ProvidesPackage{covington}
 	[\filedate\space v\fileversion\space Macros for Linguistics]
 
-\DeclareOption{force}{\forceredeftrue}
-\DeclareOption{keeplayout}{\tweaklayoutfalse}
-\DeclareOption{noglossbreaks}{\noglossbreakstrue}
-\DeclareOption{owncounter}{\ownexcountertrue}
-\DeclareOption{ownfncounter}{\ownfnexcountertrue}
-\DeclareOption{ownfncounter*}{\ownfnexcountertrue\resetownfnexcountertrue}
-\ProcessOptions
+\DeclareKeys[covington]
+{
+    % 1. force=<true|false>
+    force.if = forceredef,
+    % 2. keeplayout=<true|false>
+    keeplayout.ifnot = tweaklayout,
+    % 3. noglossbreaks=<true|false>
+    noglossbreaks.if = noglossbreaks,
+    % 4. owncounter=<true|false>
+    owncounter.if = ownexcounter,
+    % 5. force=<true|false>
+    ownfncounter.if = ownfnexcounter,
+    % 6. force=<true|false>
+    ownfncounter*.code = { \ownfnexcountertrue\resetownfnexcountertrue }
+}
+
+% Process package options
+\ProcessKeyOptions[covington]
 
 %
 % Required packages
 %
-\RequirePackage{xkeyval}
 \RequirePackage{iftex}
 
 % Macro to issue warnings
@@ -214,20 +224,25 @@
 %            with packages/classes that roll their own example environment
 %            (such as beamer).
 
+\newif\if@cov@expst@star\@cov@expst@starfalse
+
+\DeclareKeys[covexpl]
+{
+    preamble.store = \cov@xp,
+    postamble.code = { \def\cov@xpst{#1}\@cov@expst@starfalse },
+    postamble*.code = { \def\cov@xpst{#1}\@cov@expst@startrue }
+}
+
 % 2022-08-20 (v. 2.8): optional preceding example text
-\define@key{cov@ex}{preamble}{\def\cov@xp{#1}}
 \newcommand*\expreamblefs{\normalfont}
 \newcommand\expreamble[1]{\bgroup\expreamblefs#1\egroup\par}
 
-\newif\if@cov@expst@star\@cov@expst@starfalse
-\define@key{cov@ex}{postamble}{\def\cov@xpst{#1}\@cov@expst@starfalse}
-\define@key{cov@ex}{postamble*}{\def\cov@xpst{#1}\@cov@expst@startrue}
 % 2023.05.26 (v. 2.9): optional trailung subexample text
 \newcommand*\expostamblefs{\normalfont}
 \newcommand*\expostamble[1]{\bgroup\expostamblefs#1\egroup}
 
 \newenvironment{covexample}[1][]{%
-    \ifx#1\empty\else\setkeys{cov@ex}{#1}\fi%
+    \ifx#1\empty\else\SetKeys[covexpl]{#1}\fi%
     \begin{covexamples}
        \item\@ifundefined{cov@xp}{}{\expreamble{\cov@xp}}% insert preamble if given
 }{%
@@ -351,18 +366,22 @@
 %             \item This is the second subexample.
 %             \end{subexamples}
 
+\DeclareKeys[covsubexpl]
+{
+    preamble.store = \cov@sxp,
+    postamble.store = \cov@sxpst
+}
+
 \newlength\subexamplenumbersep
 \setlength\subexamplenumbersep{0pt}
 
 \newcommand*\covsubexnumber[1]{(#1)}
 
 % 2019-06-21 (v. 2.3): optional preceding subexample text
-\define@key{cov@subex}{preamble}{\def\cov@sxp{#1}}
 \newcommand*\subexpreamblefs{\normalfont}
 \newcommand\subexpreamble[1]{\bgroup\subexpreamblefs#1\egroup\par}
 
 % 2023.05.26 (v. 2.9): optional trailung subexample text
-\define@key{cov@subex}{postamble}{\def\cov@sxpst{#1}}
 \newcommand*\subexpostamblefs{\normalfont}
 \newcommand*\subexpostamble[1]{\bgroup\expostamblefs#1\egroup}
 
@@ -370,7 +389,7 @@
 
 \newenvironment{covsubexamples}[1][]%         % define "subexamples" environment
 {%
-    \ifx#1\empty\else\setkeys{cov@subex}{#1}\fi%
+    \ifx#1\empty\else\SetKeys[covsubexpl]{#1}\fi%
     \begin{covexample}%
     \@ifundefined{cov@sxp}{}{\subexpreamblefs\cov@sxp}% insert preamble if given
     \begin{enumerate}
@@ -721,84 +740,62 @@
 %
 % Key-val options for the macros
 %
-% 1. ex=<true|false>
 \newif\ifgexample\gexamplefalse
 \newif\ifggexample\ggexamplefalse
-\define@boolkey+{covington}{ex}[true]{%
-    \ifKV@covington@ex
-      \gexampletrue
-    \else
-      \gexamplefalse
-    \fi
-}{%
-    \cov@warning{unknown env value '#1' in gloss macro}%
-}
-\define@boolkey+{gcovington}{ex}[true]{%
-    \ifKV@gcovington@ex
-      \ggexampletrue
-    \else
-      \ggexamplefalse
-    \fi
-}{%
-    \cov@warning{unknown env value '#1' in setglossoptions}%
-}
 \newif\ifgtright\gtrightfalse
 \newif\ifggtright\ggtrightfalse
-%
-% 2. tlb=<true|false>
-\define@boolkey+{covington}{tlr}[true]{%
-    \ifKV@covington@tlr
-      \gtrighttrue
-    \else
-      \gtrightfalse
-    \fi
-}{%
-    \cov@warning{unknown tlr value '#1' in gloss macro}%
-}
-\define@boolkey+{gcovington}{tlr}[true]{%
-    \ifKV@gcovington@tlr
-      \ggtrighttrue
-    \else
-      \ggtrightfalse
-    \fi
-}{%
-    \cov@warning{unknown tlr value '#1' in setglossoptions}%
-}
-%
-% 3. font settings for gloss line i, ii, iii
-\define@key{covington}{fsi}{\def\lglosslineone{#1}}
-\define@key{covington}{fsii}{\def\lglosslinetwo{#1}}
-\define@key{covington}{fsiii}{\def\lglosslinethree{#1}}
-\define@key{gcovington}{fsi}{\def\glosslineone{#1}}
-\define@key{gcovington}{fsii}{\def\glosslinetwo{#1}}
-\define@key{gcovington}{fsiii}{\def\glosslinethree{#1}}
-%
-% 4. Gloss preamble text
 \def\cov@gglp{}
-\define@key{covington}{preamble}{\def\cov@lglp{#1}}
-\define@key{gcovington}{preamble}{\def\cov@gglp{#1}}
-%
-% 5. Gloss postamble text
 \def\cov@gglpst{}
-\define@key{covington}{postamble}{\def\cov@lglpst{#1}}
-\define@key{gcovington}{postamble}{\def\cov@gglpst{#1}}
+
+\DeclareKeys[covgloss]
+{
+    % 1. ex=<true|false>
+    ex.if = gexample,
+    % 2. tlr=<true|false>
+    tlr.if = gtright,
+    % 3. font settings for gloss line i, ii, iii
+    fsi.store = \lglosslineone,
+    fsii.store = \lglosslinetwo,
+    fsiii.store = \lglosslinethree,
+    % 4. Gloss preamble text
+    preamble.code = { \def\cov@lglp{#1} },
+    % 5. Gloss postamble text
+    postamble.store = \cov@lglpst
+}
+
+\DeclareKeys[gcovgloss]
+{
+    % 1. ex=<true|false>
+    ex.if = ggexample,
+    % 2. tlr=<true|false>
+    tlr.if = ggtright,
+    % 3. font settings for gloss line i, ii, iii
+    fsi.store = \glosslineone,
+    fsii.store = \glosslinetwo,
+    fsiii.store = \glosslinethree,
+    % 4. Gloss preamble text
+    preamble.code = { \def\cov@gglp{#1} },
+    % 5. Gloss postamble text
+    postamble.store = \cov@gglpst
+}
+
 %
 % General setting option
-\newcommand*\setglossoptions[1]{\setkeys{gcovington}{#1}}
+\newcommand*\setglossoptions[1]{\SetKeys[gcovgloss]{#1}}
 %
 % 1. \digloss[<opts>]{<line 1>}{<line 2>}{<translation>}
 \newcommand*\digloss[4][\empty]{%
   \ifggexample
-    \setkeys{covington}{ex=true}
+    \SetKeys[covgloss]{ex=true}
   \else
-    \setkeys{covington}{ex=false}
+    \SetKeys[covgloss]{ex=false}
   \fi%
   \ifggtright
-    \setkeys{covington}{tlr=true}
+    \SetKeys[covgloss]{tlr=true}
   \else
-    \setkeys{covington}{tlr=false}
+    \SetKeys[covgloss]{tlr=false}
   \fi%
-  \ifx#1\empty\else\setkeys{covington}{#1}\fi%
+  \ifx#1\empty\else\SetKeys[covgloss]{#1}\fi%
   \ifgexample
   \begin{covexample}
   \fi%
@@ -829,17 +826,17 @@
 
 % 2. \trigloss[<opts>]{<line 1>}{<line 2>}{<line 3>}{<translation>}
 \newcommand\trigloss[5][\empty]{%
-    \ifggexample
-    \setkeys{covington}{ex=true}
+  \ifggexample
+    \SetKeys[covgloss]{ex=true}
   \else
-    \setkeys{covington}{ex=false}
+    \SetKeys[covgloss]{ex=false}
   \fi%
   \ifggtright
-    \setkeys{covington}{tlr=true}
+    \SetKeys[covgloss]{tlr=true}
   \else
-    \setkeys{covington}{tlr=false}
+    \SetKeys[covgloss]{tlr=false}
   \fi%
-  \ifx#1\empty\else\setkeys{covington}{#1}\fi%
+  \ifx#1\empty\else\SetKeys[covgloss]{#1}\fi%
   \ifgexample
   \begin{covexample}
   \fi%
