@@ -69,6 +69,8 @@
 \renewcommand{\cftsecpagefont}{\small}
 \renewcommand{\cftsubsecfont}{\small}
 \renewcommand{\cftsubsecpagefont}{\small}
+\renewcommand{\cftsubsubsecfont}{\footnotesize}
+\renewcommand{\cftsubsubsecpagefont}{\footnotesize}
 \tocloftpagestyle{empty}
 
 \usepackage{babel}
@@ -537,9 +539,11 @@ which results in:
 	\item This is the second sentence.\subexpostamble{\footnote{My own.}}
 \end{subexamples}
 %
-Customization possibilities of examples and subexamples are elaborated in the following three sections.
+Customization possibilities of examples and subexamples are elaborated in the following section.
 
-\subsection{Customizing example spacing}\label{sec:custsp}
+\subsection{Customization of examples}\label{sec:custex}
+
+\subsubsection{Customizing example spacing}\label{sec:custsp}
 
 If you need more space between the example number and the text (or the subnumber in case of subexamples),
 you can increase it by means of the length \jcsmacro{examplenumbersep} (which is preset to \texttt{0pt}).
@@ -587,7 +591,7 @@ for instance, will yield:
 \end{subexamples}
 \egroup
 
-\subsection{Customizing number display}\label{sec:custno}
+\subsubsection{Customizing number display}\label{sec:custno}
 
 You can change the display of the example number by redefining (via \jfcsmacro{renewcommand*}) the macro
 \jcsmacro{covexnumber}, which has the following default definition:
@@ -636,7 +640,7 @@ to achieve
 \end{subexamples}
 \egroup
 
-\subsection{Customizing example markup}\label{sec:custexmk}
+\subsubsection{Customizing example markup}\label{sec:custexmk}
 
 \noindent You can also customize the markup of the example sentences by redefining the macro
 \jcsmacro{covexamplefs} (which is empty by default). To have all example sentences italicized, for instance, do:
