@@ -60,17 +60,17 @@
 \newif\ifresetownfnexcounter\resetownfnexcounterfalse
 
 \@ifundefined{ProvidesPackage}{%
-\typeout{* covington.sty -- Macros for Linguistics, \fileversion\ \filedate *}
+  \typeout{* covington.sty -- Macros for Linguistics, \fileversion\ \filedate *}
 }{%
-\ProvidesPackage{covington}
+  \ProvidesPackage{covington}
 	[\filedate\space v\fileversion\space Macros for Linguistics]
-\DeclareOption{force}{\forceredeftrue}
-\DeclareOption{keeplayout}{\tweaklayoutfalse}
-\DeclareOption{noglossbreaks}{\noglossbreakstrue}
-\DeclareOption{owncounter}{\ownexcountertrue}
-\DeclareOption{ownfncounter}{\ownfnexcountertrue}
-\DeclareOption{ownfncounter*}{\ownfnexcountertrue\resetownfnexcountertrue}
-\ProcessOptions
+  \DeclareOption{force}{\forceredeftrue}
+  \DeclareOption{keeplayout}{\tweaklayoutfalse}
+  \DeclareOption{noglossbreaks}{\noglossbreakstrue}
+  \DeclareOption{owncounter}{\ownexcountertrue}
+  \DeclareOption{ownfncounter}{\ownfnexcountertrue}
+  \DeclareOption{ownfncounter*}{\ownfnexcountertrue\resetownfnexcountertrue}
+  \ProcessOptions
 }
 
 %
@@ -399,15 +399,15 @@
 \@ifundefined{subexamples}{%
   \newenvironment{subexamples}[1][]{\begin{covsubexamples}[#1]}{\end{covsubexamples}}
 }{%
-\ifforceredef
-  \renewenvironment{subexamples}[1][]{\begin{covsubexamples}[#1]}{\end{covsubexamples}}
-  \cov@warning{The subexamples environment was already defined. Redefining it.}
-\else
-  \cov@warning{The subexamples environment was already defined.^^J
-               Covington does not touch it.^^J
-               Use covsubexamples if you want to access covington's^^J
-               version, or use the force package option.}
-\fi
+  \ifforceredef
+    \renewenvironment{subexamples}[1][]{\begin{covsubexamples}[#1]}{\end{covsubexamples}}
+    \cov@warning{The subexamples environment was already defined. Redefining it.}
+  \else
+    \cov@warning{The subexamples environment was already defined.^^J
+                 Covington does not touch it.^^J
+                 Use covsubexamples if you want to access covington's^^J
+                 version, or use the force package option.}
+  \fi
 }
 
 
@@ -472,7 +472,7 @@
 % Try to prevent page breaks in glosses if noglossbreaks option is set
 \def\cov@nopagebreak{}
 \ifnoglossbreaks
-\def\cov@nopagebreak{\let\reserved@e\vadjust\let\reserved@f\nobreak}
+  \def\cov@nopagebreak{\let\reserved@e\vadjust\let\reserved@f\nobreak}
 \fi
 
 % 2019-05-07: optional preceding gloss text (non-interlinearized)
@@ -1013,12 +1013,13 @@
     }
 }
 
-\providecommand{\sdrs}[3]
-{\begin{tabular}{l}
-\mbox{\cov@emphasized #1} \\
-~ \\
-\drs{#2}{#3}
-\end{tabular}}
+\providecommand{\sdrs}[3]{%
+  \begin{tabular}{l}
+  \mbox{\cov@emphasized #1} \\
+  ~ \\
+  \drs{#2}{#3}
+  \end{tabular}%
+}
 
 \providecommand{\ifdrs}[4]
 {
@@ -1081,15 +1082,15 @@
 \@ifundefined{exercise}{%
   \newenvironment{exercise}{\begin{covexercise}}{\end{covexercise}}
 }{%
-\ifforceredef
-  \renewenvironment{exercise}{\begin{covexercise}}{\end{covexercise}}
-  \cov@warning{The exercise environment was already defined. Redefining it.}
-\else
-  \cov@warning{The exercise environment was already defined.^^J
-               Covington does not touch it.^^J
-               Use covexercise if you want to access covington's^^J
-               version, or use the force package option.}
-\fi
+  \ifforceredef
+    \renewenvironment{exercise}{\begin{covexercise}}{\end{covexercise}}
+    \cov@warning{The exercise environment was already defined. Redefining it.}
+  \else
+    \cov@warning{The exercise environment was already defined.^^J
+                 Covington does not touch it.^^J
+                 Use covexercise if you want to access covington's^^J
+                 version, or use the force package option.}
+  \fi
 }
 
 \newlength\reflistindent
@@ -1099,14 +1100,16 @@
 \newlength\reflistparsep
 \setlength\reflistparsep{\parsep}
 \@ifundefined{reflist}{
-\newenvironment{reflist}{\begin{list}{}%
-{\setlength{\labelwidth}{0pt}%
- \setlength{\labelsep}{0pt}%
- \setlength{\leftmargin}{\reflistindent}%
- \setlength{\itemindent}{-\reflistindent}%
- \setlength{\listparindent}{-\reflistindent}%
- \setlength{\itemsep}{\reflistitemsep}%
- \setlength{\parsep}{\reflistparsep}}\item}{\end{list}}
+  \newenvironment{reflist}{%
+    \begin{list}{}{%
+      \setlength{\labelwidth}{0pt}%
+      \setlength{\labelsep}{0pt}%
+      \setlength{\leftmargin}{\reflistindent}%
+      \setlength{\itemindent}{-\reflistindent}%
+      \setlength{\listparindent}{-\reflistindent}%
+      \setlength{\itemsep}{\reflistitemsep}%
+      \setlength{\parsep}{\reflistparsep}}\item%
+    }{\end{list}}%
 }
 % Modified 1992 Nov 8 to skip defining reflist if reflist is already
 % defined.  Permits using uga.sty with covingtn.sty.
@@ -1114,8 +1117,11 @@
 % V. 2.0: Add macro for font settings customization
 \newcommand*\sentencefs{\cov@emphasized}
 
-\newcommand{\sentence}[1]
-     {\begin{flushleft}{\sentencefs #1}\end{flushleft}}
+\newcommand{\sentence}[1]{%
+   \begin{flushleft}%
+     {\sentencefs #1}%
+   \end{flushleft}%
+}
 
 % V. 2.0: Further semantic markup
 \providecommand*\lexp[1]{\textit{#1}}
