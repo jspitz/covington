@@ -31,8 +31,12 @@ The package consists of the following files:
 
 == CHANGES ==
 
-* Version 2.10 (forthcoming)_
+* Version 2.10 (forthcoming)
+	- Use LaTeX's own keyval mechanism rather than xkeyval.
 	- Add way to customize subexample number format.
+	- Introduce new package choice-option fnexamplecounter that supersedes
+	  the two boolean, mutually exclusive options ownfncounter and ownfncounter*
+	  (which are still supported for backwards compatibility reasons).
 	- Documentation improvements.
 
 * Version 2.9 (2023-05-26):

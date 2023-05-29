@@ -130,25 +130,26 @@ for typing some special notations common in linguistics.%
 file name limit). In em\TeX\ under \textsc{ms-dos}, the file was distributed as \texttt{covingto.sty}.
 Eventually, it has been renamed to \cvt\ and adapted to \LaTeXe.}
 
-To use \cvt\ with \LaTeXe, load the package as usual by adding the command
+To use \cvt, load the package by adding the command
 \lstinline"\usepackage{covington}" to your document preamble.
 The package has the following options:
 \begin{description}
-	\item{\joption{force}:} Force the redefinition of environments that have already been
-	defined by other packages or the class.
+	\item{\joption{force[=true|false]}:} Force the redefinition of environments that have already been
+	defined by other packages or the class (default: \joption{false}).
 	
 	This applies to the \jenv{example}, \jenv{examples}, \jenv{subexamples} and \jenv{exercise} environments,
 	which are by default not touched if they are already defined before \cvt\ is loaded.
 	See sec.~\ref{sec:ex}, \ref{sec:exs}, \ref{sec:subexs} and \ref{sec:exercises} for details.
 	
-	\item{\joption{keeplayout}:} Do not tweak the layout.
+	\item{\joption{keeplayout[=true|false]}:} Do not tweak the layout (default: \joption{false}).
 	
 	\Cvt\ sets \jfcsmacro{raggedbottom} and redefines the value of the \jfcsmacro{textfloatsep} length.
 	This just follows the preferences of the original package author and is not necessary
 	for the package's functionality. Yet for backwards compatibility reasons, we cannot change this.
 	Thus, we provide the option described here to opt out this presetting.
 
-\item{\joption{noglossbreaks}:} If this option is set, \cvt\ will try hard to prevent page breaks within glosses.
+\item{\joption{noglossbreaks[=true|false]}:} If this option is set to \joption{true}, \cvt\ will try hard to prevent
+    page breaks within glosses (default: \joption{false}).
 
 	If this option is not set, page breaks can occur between interlinearized text and free translation of a gloss, as
 	well as between gloss preamble and interlinearized text, which is usually not what you will want.
@@ -156,21 +157,25 @@ The package has the following options:
 	page breaking of existing documents). Note that page breaks might still occur in some cases even if the option is set.
 	In order to prevent them definitely, you can put the gloss in a parbox or minipage.
 	
-\item{\joption{owncounter}:} Use an own counter for numbered examples.
+\item{\joption{owncounter[=true|false]}:} Use an own counter for numbered examples (default: \joption{false}).
 
 	By default, \cvt\ uses \LaTeX's equation counter for example numbering, so that if you use equations and numbered examples
 	in the same	paper, you get a single continuous series of numbers. While some people (including the original author of this package)
 	consider this a feature, others might prefer to number equations and linguistic examples separately. If you count to the latter sort,
 	use this option.
 
-\item{\joption{ownfncounter}:} Use a separate counter for numbered examples in footnotes.
+\item{\joption{fnexamplecounter=main|own|own-reset}:} Specifics of the counter for numbered examples in footnotes
+    (default: \joption{main}).
 
-	By default, \cvt\ numbers examples in footnotes in sequence with the numbering used in the main text. With this option,
-	examples in footnotes get a different numbering. This uses by default lowercase Roman numbering (see sec.~\ref{sec:custno}
-	on how to change this) and is incremented throughout the whole footnote apparatus.
-
-\item{\joption{ownfncounter*}:} Same as \joption{ownfncounter}, except that this variant resets the counter at each footnote
-	(similar to \textsf{linguex} and \textsf{gb4e}).
+	By default, \cvt\ numbers examples in footnotes in sequence with the numbering used in the main text (this conforms to
+	the default value of this option, \joption{fnexamplecounter=main}). If you set \joption{fnexamplecounter=own},
+	examples in footnotes get a different numbering which is incremented throughout the whole footnote apparatus.%
+	\footnote{The previous option \joption{ownfncounter} is still supported,
+		but deprecated.} 
+	If you set \joption{fnexamplecounter=own-reset}, examples in footnotes get an own counter as well, but this variant
+	resets the counter at each footnote	(similar to \textsf{linguex} and \textsf{gb4e}).\footnote{The previous option
+		\joption{ownfncounter*} is still supported,	but deprecated.} 
+	Both own counters use lowercase Roman numbering by default (see sec.~\ref{sec:custno} on how to change this) 
 
 \end{description}
 %
@@ -1341,6 +1346,10 @@ it.
 \begin{itemize}
 	\item Use \LaTeXe's own keyval mechanism rather than \textsf{xkeyval}.
 	\item Add way to customize subexample number format (see sec.~\ref{sec:custno}).
+	\item Introduce new package choice-option \joption{fnexamplecounter} that
+	      supersedes the two boolean, mutually exclusive options \joption{ownfncounter}
+	      and \joption{ownfncounter*} (which are still supported for backwards
+	      compatibility reasons).
 	\item Documentation improvements.
 \end{itemize}
 

@@ -46,6 +46,11 @@
 \def\fileversion{2.9}
 \def\filename{covington.sty}
 
+% Macro to issue warnings
+\newcommand\cov@warning[1]{%
+  \PackageWarning{covington}{#1}%
+}
+
 % Force redefinition of environments?
 \newif\ifforceredef\forceredeffalse
 % Tweak text layout?
@@ -72,10 +77,30 @@
     noglossbreaks.if = noglossbreaks,
     % 4. owncounter=<true|false>
     owncounter.if = ownexcounter,
-    % 5. force=<true|false>
-    ownfncounter.if = ownfnexcounter,
-    % 6. force=<true|false>
-    ownfncounter*.code = { \ownfnexcountertrue\resetownfnexcountertrue }
+    % 5. fnexamplecounter=<main|own|own-reset>
+    fnexamplecounter.choice:,
+    % a. main
+    fnexamplecounter / main.code:n = { \ownfnexcounterfalse\resetownfnexcounterfalse },
+    % b. own
+    fnexamplecounter / own.code:n = { \ownfnexcountertrue\resetownfnexcounterfalse },
+    % c. own-reset
+    fnexamplecounter / own-reset.code:n = { \ownfnexcountertrue\resetownfnexcountertrue },
+    fnexamplecounter.default:n = { main },
+    % DEPRECATED OPTONS
+    % force=<true|false>
+    ownfncounter.code:n =
+    { \ownfnexcountertrue
+      \resetownfnexcounterfalse
+      \cov@warning{Option 'ownfncounter' is deprecated!\MessageBreak
+                   Please use fnexamplecounter=own instead.}
+    },
+    % force=<true|false>
+    ownfncounter*.code = 
+    { \ownfnexcountertrue
+      \resetownfnexcountertrue
+      \cov@warning{Option 'ownfncounter*' is deprecated!\MessageBreak
+                   Please use fnexamplecounter=own-reset instead.}
+    }
 }
 
 % Process package options
@@ -85,11 +110,6 @@
 % Required packages
 %
 \RequirePackage{iftex}
-
-% Macro to issue warnings
-\newcommand\cov@warning[1]{%
-  \PackageWarning{covington}{#1}%
-}
 
 %%%
 %%% Preferences about how text is laid out
