@@ -37,6 +37,8 @@ The package consists of the following files:
 	- Introduce new package choice-option fnexamplecounter that supersedes
 	  the two boolean, mutually exclusive options ownfncounter and ownfncounter*
 	  (which are still supported for backwards compatibility reasons).
+	- New gloss options: fspreamble, fspostamble, enquotetl for full customization
+	  of glosses via options.
 	- Documentation improvements.
 
 * Version 2.9 (2023-05-26):

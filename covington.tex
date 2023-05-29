@@ -775,6 +775,15 @@ Note that:
 	\item[\joption{fsiii=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
 		 Adjusts the font settings of the third gloss line (in case of \jcsmacro{trigloss}).
 		 Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+	\item[\joption{enquotetl=\jparam{true|false}}] Default: \emph{true}.
+	     By default, the translation line is embraced in single quotation marks. Set this option to
+	     \jparam{false} to omit this.
+		 
+		 Note that for \joption{enquotetl=true}, \cvt\ checks at document begin whether the \textsf{csquotes}
+		 \cite{csquotes} package is loaded. If so, it uses its language-sensitive \jcsmacro{enquote*} macro
+		 for enquoting the translation.
+		 If not, a fallback quotation (using English single quotation marks) is used. The usage of
+	     \textsf{csquotes} is highly recommended!
 	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is inserted on an own line
 	     before the interlinearized gloss. This might be useful, for instance, to give context information,
 	     to specify the language or the source in case of cited glosses.
@@ -843,6 +852,17 @@ The following is a complete list of all low-level glossing commands:
 	     and a smarter way to insert a translation line. Other than \jcsmacro{glt}, it marks up
 	     (by default: enquotes) the translation line. Also, it does not add an empty line if the
 	     translation is empty. This command has been introduced in \cvt\ 2.0.
+	     The markup can be customized by redefining the following macro:
+\begin{lstlisting}[moretexcs={glosslinetrans,covenquote}]
+\newcommand*\glosslinetrans[1]{\ifcov@enquote@tl\covenquote{#1}\else#1\fi}
+\end{lstlisting}
+	     Note that for \jcsmacro{covenquote}, as used in the default definition, \cvt\ checks at
+	     document begin whether the \textsf{csquotes} \cite{csquotes} package is loaded. If so,
+	     it uses its language-sensitive \jcsmacro{enquote*} macro for enquoting the translation.
+	     If not, a fallback quotation (using English single quotation marks) is used. The usage of
+	     \textsf{csquotes} is highly recommended! The \jcsmacro{ifcov@enquote@tl} boolean checks 
+	     for the \joption{enquotetl} option of the gloss macro and is relevant also for low-level commands
+	     if you set this option via \jcsmacro{setglossoptions}.
 	\item[\jcsmacro{glosspreamble\{\jparam{arbitrary text}\}}] lets you enter text that is printed immediately
 	     before the interlinearized gloss (on a line of its own). This might be useful, for instance,
 	     to give context information, to specify the language or the source in case of cited glosses.
@@ -910,18 +930,6 @@ Layout is critical in the part preceding \jcsmacro{glt} or \jcsmacro{gln}, and f
 Glosses (font settings and markup for different elements) can be adjusted locally
 via gloss options of globally by way of the global options macro
 \jcsmacro{setglossoptions} (see sec.~\ref{sec:gmacros}).
-
-The markup of the translation line (if the \jcsmacro{digloss} or \jcsmacro{trigloss}
-macro or the \jcsmacro{glot} low-level command is used) can be customized by redefining
-the following macro.
-\begin{lstlisting}[moretexcs={glosslinetrans,covenquote}]
-\newcommand*\glosslinetrans[1]{\covenquote{#1}}
-\end{lstlisting}
-Note that for \jcsmacro{covenquote}, as used in the default definition, \cvt\ checks at
-document begin whether the \textsf{csquotes} \cite{csquotes} package is loaded. If so,
-it uses its language-sensitive \jcsmacro{enquote*} macro for enquoting the translation.
-If not, a fallback quotation (using English single quotation marks) is used. The usage of
-\textsf{csquotes} is highly recommended!
 
 
 \subsection{Example glosses}\label{sec:glossex}
@@ -1335,6 +1343,8 @@ it.
 	      supersedes the two boolean, mutually exclusive options \joption{ownfncounter}
 	      and \joption{ownfncounter*} (which are still supported for backwards
 	      compatibility reasons).
+	\item New gloss options: \joption{fspreamble}, \joption{fspostamble}, \joption{enquotetl}
+	      for full customization of glosses via options (see sec.~\ref{sec:gloss}).
 	\item Documentation improvements.
 \end{itemize}
 

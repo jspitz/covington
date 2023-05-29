@@ -766,7 +766,8 @@
    }
 
 % V. 2.0: enquotable translation line
-\newcommand*\glosslinetrans[1]{\covenquote{#1}}
+\newif\ifcov@enquote@tl\cov@enquote@tltrue
+\newcommand*\glosslinetrans[1]{\ifcov@enquote@tl\covenquote{#1}\else#1\fi}
 \newcommand*\glot[1]{%
   \def\tempx{#1}%
   \ifx\tempx\empty\gln
@@ -781,6 +782,7 @@
 \newif\ifcov@ex@gloss@global\cov@ex@gloss@globalfalse
 \newif\ifcov@tlr\cov@tlrfalse
 \newif\ifcov@tlr@global\cov@tlr@globalfalse
+\newif\ifcov@enquote@tl@global\cov@enquote@tl@globaltrue
 \def\cov@gl@preamble@global{}
 \def\cov@gl@postamble@global{}
 
@@ -802,6 +804,8 @@
     fspreamble.store = \cov@fsglpreamble@local,
     % 7. Gloss postamble font settings
     fspostamble.store = \cov@fsglpostamble@local,
+    % 8. Enquote translation line
+    enquotetl.if = cov@enquote@tl
 }
 
 \DeclareKeys[gcovgloss]
@@ -822,6 +826,8 @@
     fspreamble.store = \cov@fsglpreamble@global,
     % 7. Gloss postamble font settings
     fspostamble.store = \cov@fsglpostamble@global,
+    % 8. Enquote translation line
+    enquotetl.if = cov@enquote@tl@global
 }
 
 %
@@ -839,6 +845,11 @@
     \SetKeys[covgloss]{tlr=true}
   \else
     \SetKeys[covgloss]{tlr=false}
+  \fi%
+  \ifcov@enquote@tl@global
+    \SetKeys[covgloss]{enquotetl=true}
+  \else
+    \SetKeys[covgloss]{enquotetl=false}
   \fi%
   \def\cov@gl@preamble{\cov@gl@preamble@global}%
   \def\cov@gl@postamble{\cov@gl@postamble@global}%
@@ -890,6 +901,11 @@
     \SetKeys[covgloss]{tlr=true}
   \else
     \SetKeys[covgloss]{tlr=false}
+  \fi%
+  \ifcov@enquote@tl@global
+    \SetKeys[covgloss]{enquotetl=true}
+  \else
+    \SetKeys[covgloss]{enquotetl=false}
   \fi%
   \def\cov@gl@preamble{\cov@gl@preamble@global}%
   \def\cov@gl@postamble{\cov@gl@postamble@global}%
