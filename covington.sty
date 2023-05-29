@@ -762,10 +762,10 @@
 %
 % Key-val options for the macros
 %
-\newif\ifgexample\gexamplefalse
-\newif\ifggexample\ggexamplefalse
-\newif\ifgtright\gtrightfalse
-\newif\ifggtright\ggtrightfalse
+\newif\ifcov@ex@gloss\cov@ex@glossfalse
+\newif\ifcov@ex@gloss@global\cov@ex@gloss@globalfalse
+\newif\ifcov@tlr\cov@tlrfalse
+\newif\ifcov@tlr@global\cov@tlr@globalfalse
 \def\cov@gglp{}
 \def\cov@gglpst{}
 \def\cov@fsglpreamble@global{}
@@ -774,9 +774,9 @@
 \DeclareKeys[covgloss]
 {
     % 1. ex=<true|false>
-    ex.if = gexample,
+    ex.if = cov@ex@gloss,
     % 2. tlr=<true|false>
-    tlr.if = gtright,
+    tlr.if = cov@tlr,
     % 3. font settings for gloss line i, ii, iii
     fsi.store = \lglosslineone,
     fsii.store = \lglosslinetwo,
@@ -788,15 +788,15 @@
     % 6. Gloss preamble font settings
     fspreamble.store = \cov@fsglpreamble@local,
     % 7. Gloss postamble font settings
-    fspostamble.store = \cov@fsglpostamble@local
+    fspostamble.store = \cov@fsglpostamble@local,
 }
 
 \DeclareKeys[gcovgloss]
 {
     % 1. ex=<true|false>
-    ex.if = ggexample,
+    ex.if = cov@ex@gloss@global,
     % 2. tlr=<true|false>
-    tlr.if = ggtright,
+    tlr.if = cov@tlr@global,
     % 3. font settings for gloss line i, ii, iii
     fsi.store = \glosslineone,
     fsii.store = \glosslinetwo,
@@ -808,7 +808,7 @@
     % 6. Gloss preamble font settings
     fspreamble.store = \cov@fsglpreamble@global,
     % 7. Gloss postamble font settings
-    fspostamble.store = \cov@fsglpostamble@global
+    fspostamble.store = \cov@fsglpostamble@global,
 }
 
 %
@@ -817,19 +817,19 @@
 %
 % 1. \digloss[<opts>]{<line 1>}{<line 2>}{<translation>}
 \newcommand*\digloss[4][\empty]{%
-  \ifggexample
+  \ifcov@ex@gloss@global
     \SetKeys[covgloss]{ex=true}
   \else
     \SetKeys[covgloss]{ex=false}
   \fi%
-  \ifggtright
+  \ifcov@tlr@global
     \SetKeys[covgloss]{tlr=true}
   \else
     \SetKeys[covgloss]{tlr=false}
   \fi%
   \ifx#1\empty\else\SetKeys[covgloss]{#1}\fi%
-  \ifgexample
-  \begin{covexample}
+  \ifcov@ex@gloss
+    \begin{covexample}
   \fi%
   \@ifundefined{lglosslineone}{}{\def\glosslineone{\lglosslineone}}%
   \@ifundefined{lglosslinetwo}{}{\def\glosslinetwo{\lglosslinetwo}}%
@@ -841,18 +841,20 @@
   \@ifundefined{cov@fsglpreamble@local}%
        {\let\fsglpreamble\cov@fsglpreamble@global}%
        {\let\fsglpreamble\cov@fsglpreamble@local}%
-  \@ifundefined{cov@fsglpostamble@local}{\let\fsglpostamble\cov@fsglpostamble@global}{\let\fsglpostamble\cov@fsglpostamble@local}%
+  \@ifundefined{cov@fsglpostamble@local}%
+       {\let\fsglpostamble\cov@fsglpostamble@global}%
+       {\let\fsglpostamble\cov@fsglpostamble@local}%
   \xgll #2\xgle
         #3\xgle
-  \ifgtright
+  \ifcov@tlr
     \gln #4%
   \else
     \glot{#4}%
   \fi
   \ifx\cov@glpst\empty\else\glosslinepostamble{\cov@glpst}\cov@nopagebreak\fi%
   \glend
-  \ifgexample
-  \end{covexample}
+  \ifcov@ex@gloss
+    \end{covexample}
   \fi%
   \let\lglosslineone\relax%
   \let\lglosslinetwo\relax%
@@ -864,19 +866,19 @@
 
 % 2. \trigloss[<opts>]{<line 1>}{<line 2>}{<line 3>}{<translation>}
 \newcommand\trigloss[5][\empty]{%
-  \ifggexample
+  \ifcov@ex@gloss@global
     \SetKeys[covgloss]{ex=true}
   \else
     \SetKeys[covgloss]{ex=false}
   \fi%
-  \ifggtright
+  \ifcov@tlr@global
     \SetKeys[covgloss]{tlr=true}
   \else
     \SetKeys[covgloss]{tlr=false}
   \fi%
   \ifx#1\empty\else\SetKeys[covgloss]{#1}\fi%
-  \ifgexample
-  \begin{covexample}
+  \ifcov@ex@gloss
+    \begin{covexample}
   \fi%
   \@ifundefined{lglosslineone}{}{\def\glosslineone{\lglosslineone}}%
   \@ifundefined{lglosslinetwo}{}{\def\glosslinetwo{\lglosslinetwo}}%
@@ -894,15 +896,15 @@
   \xglll #2\xgle
          #3\xgle
          #4\xgle
-  \ifgtright
+  \ifcov@tlr
     \gln #5%
   \else
     \glot{#5}%
   \fi
   \ifx\cov@glpst\empty\else\glosslinepostamble{\cov@glpst}\cov@nopagebreak\fi%
   \glend
-  \ifgexample
-  \end{covexample}
+  \ifcov@ex@gloss
+    \end{covexample}
   \fi%
   \let\lglosslineone\relax%
   \let\lglosslinetwo\relax%
