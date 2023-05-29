@@ -768,8 +768,8 @@
 
 % V. 2.0: enquotable translation line
 \newif\ifcov@enquote@tl\cov@enquote@tltrue
-\def\fstl{\cov@fstl@global}
-\newcommand*\glosslinetrans[1]{\bgroup\fstl\ifcov@enquote@tl\covenquote{#1}\else#1\fi\egroup}
+\def\cov@fstl{\cov@fstl@global}
+\newcommand*\glosslinetrans[1]{\bgroup\cov@fstl\ifcov@enquote@tl\covenquote{#1}\else#1\fi\egroup}
 \newcommand*\glot[1]{%
   \def\tempx{#1}%
   \ifx\tempx\empty\gln
@@ -880,8 +880,8 @@
        {\let\fsglpostamble\cov@fsglpostamble@global}%
        {\let\fsglpostamble\cov@fsglpostamble@local}%
   \@ifundefined{cov@fstl@local}%
-       {\let\fstl\cov@fstl@global}%
-       {\let\fstl\cov@fstl@local}%
+       {\let\cov@fstl\cov@fstl@global}%
+       {\let\cov@fstl\cov@fstl@local}%
   \xgll #2\xgle
         #3\xgle
   \ifcov@tlr
@@ -940,8 +940,8 @@
        {\let\fsglpostamble\cov@fsglpostamble@global}%
        {\let\fsglpostamble\cov@fsglpostamble@local}%
   \@ifundefined{cov@fstl@local}%
-       {\let\fstl\cov@fstl@global}%
-       {\let\fstl\cov@fstl@local}%
+       {\let\cov@fstl\cov@fstl@global}%
+       {\let\cov@fstl\cov@fstl@local}%
   \xglll #2\xgle
          #3\xgle
          #4\xgle

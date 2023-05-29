@@ -856,17 +856,17 @@ The following is a complete list of all low-level glossing commands:
 	     (by default: enquotes) the translation line. Also, it does not add an empty line if the
 	     translation is empty. This command has been introduced in \cvt\ 2.0.
 	     The markup can be customized by redefining the following macro:
-\begin{lstlisting}[moretexcs={glosslinetrans,covenquote,fstl,ifcov@enquote@tl}]
+\begin{lstlisting}[moretexcs={glosslinetrans,covenquote,cov@fstl,ifcov@enquote@tl}]
 \newcommand*\glosslinetrans[1]{%
-	\bgroup\fstl\ifcov@enquote@tl\covenquote{#1}\else#1\fi\egroup}
+	\bgroup\cov@fstl\ifcov@enquote@tl\covenquote{#1}\else#1\fi\egroup}
 \end{lstlisting}
 	     Note that for \jcsmacro{covenquote}, as used in the default definition, \cvt\ checks at
 	     document begin whether the \textsf{csquotes} \cite{csquotes} package is loaded. If so,
 	     it uses its language-sensitive \jcsmacro{enquote*} macro for enquoting the translation.
 	     If not, a fallback quotation (using English single quotation marks) is used. The usage of
 	     \textsf{csquotes} is highly recommended! The \jcsmacro{ifcov@enquote@tl} boolean checks 
-	     for the \joption{enquotetl} option of the gloss macro. The macro \jcsmacro{fslt} holds the font
-	     settings as set via the \joption{fslt} gloss option. These are both relevant also for low-level
+	     for the \joption{enquotetl} option of the gloss macro. The macro \jcsmacro{cov@fstl} holds the font
+	     settings as set via the \joption{fstl} gloss option. These are both relevant also for low-level
 	     commands if you set the respective options via \jcsmacro{setglossoptions}.
 	\item[\jcsmacro{glosspreamble\{\jparam{arbitrary text}\}}] lets you enter text that is printed immediately
 	     before the interlinearized gloss (on a line of its own). This might be useful, for instance,
