@@ -766,12 +766,14 @@ Note that:
           Since the gloss itself is set in a box, this means the \jparam{free translation} will appear lined up with the
           first line of the gloss. This can be useful when no translation, but an aligned number or something similar,
           is to be inserted right to the gloss (please refer to sec.~\ref{sec:glossex} for an example).
-	\item[\joption{fsi=\{\jparam{font settings}\}}] Adjusts the font settings of the first gloss line.
+	\item[\joption{fsi=\{\jparam{font settings}\}}]. Default: Default: \verb|{\normalfont\itshape}|.
+		 Adjusts the font settings of the first gloss line.
 	     Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
-	\item[\joption{fsii=\{\jparam{font settings}\}}] Adjusts the font settings of the second gloss line.
+	\item[\joption{fsii=\{\jparam{font settings}\}}] Default: Default: \verb|{\normalfont\upshape}|.
+		 Adjusts the font settings of the second gloss line.
 	     Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
-	\item[\joption{fsiii=\{\jparam{font settings}\}}] Adjusts the font settings of the third gloss line
-		 (in case of \jcsmacro{trigloss}).
+	\item[\joption{fsiii=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		 Adjusts the font settings of the third gloss line (in case of \jcsmacro{trigloss}).
 		 Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is inserted on an own line
 	     before the interlinearized gloss. This might be useful, for instance, to give context information,
@@ -785,9 +787,11 @@ Note that:
 	\item[\joption{postamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is appended to the translation line, but after
 	     the closing quotation mark. This might be useful to add a footnote or some additional text to the translation
 	     line, after the actual translation.
-	\item[\joption{fspreamble=\{\jparam{font settings}\}}] Adjusts the font settings of the preamble line.
+	\item[\joption{fspreamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		 Adjusts the font settings of the preamble line.
 		 Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
-	\item[\joption{fspostamble=\{\jparam{font settings}\}}] Adjusts the font settings of the postamble line.
+	\item[\joption{fspostamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		 Adjusts the font settings of the postamble line.
 		 Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 \end{description}
 %
@@ -903,8 +907,8 @@ Layout is critical in the part preceding \jcsmacro{glt} or \jcsmacro{gln}, and f
 
 \subsection{Customization of glosses}\label{sec:glossfc}
 
-The font settings in glosses (for the respective gloss lines as well as the pre- and postamble)
-can be adjusted locally via gloss options of globally by way of the global options macro
+Glosses (font settings and markup for different elements) can be adjusted locally
+via gloss options of globally by way of the global options macro
 \jcsmacro{setglossoptions} (see sec.~\ref{sec:gmacros}).
 
 The markup of the translation line (if the \jcsmacro{digloss} or \jcsmacro{trigloss}
