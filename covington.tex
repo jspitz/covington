@@ -302,16 +302,28 @@ The \jenv{example} environment provides the following options:
 	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is inserted on an own line
 		after the example number (preceding the actual example text). This might be useful, for instance,
 		to give context information, to specify the language or the source in case of cited examples.
-		The advantage over just adding a line manually in the example is that you can globally set the markup
-		(see sec.~\ref{sec:custexmk}).
+		The advantage over just adding a line manually in the example is that you can globally or locally
+		set the markup with the \joption{fspreamble} option.
 	\item[\joption{postamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is appended to the example
 	    (on the	same line after a space).
 	    This might be useful to add a reference or an explanation to the translation.
-	    The advantage over just adding text manually in the example is that this uses its own markup
-	    (see sec.~\ref{sec:custexmk}).
+	    The advantage over just adding text manually in the example is that that you can globally or locally
+	    set the markup with the \joption{fspreamble} option.
 	\item[\joption{postamble*=\{\jparam{arbitrary text}\}}] A variant of \joption{postamble} that does not add
 		a space. This might be preferred if you want to add a footnote.
 		Note that \joption{postamble} and \joption{postamble*} are mutually exclusive.
+	\item[\joption{fs=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		Adjusts the font settings of the example text.
+		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+	\item[\joption{fsno=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		Adjusts the font settings of the example number.
+		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+	\item[\joption{fspreamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		Adjusts the font settings of the preamble text.
+		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+	\item[\joption{fspostamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		Adjusts the font settings of the postamble text.
+		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 \end{description}
 %
 If you want the postamble text be on a line of its own, simply add a line break (i.\,e., \verb|postamble={\\Text}|).
@@ -476,6 +488,18 @@ The \jenv{subexamples}/\jenv{covsubexamples} environment provides the following 
 		in case of cited sub-examples.
 	\item[\joption{postamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is appended after all sub-examples (on a
 		new line). This might be useful to add a reference or an explanation to the set.
+	\item[\joption{fs=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		Adjusts the font settings of the example text.
+		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+	\item[\joption{fsno=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		Adjusts the font settings of the example number.
+		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+	\item[\joption{fspreamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		Adjusts the font settings of the preamble text.
+		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+	\item[\joption{fspostamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		Adjusts the font settings of the postamble text.
+		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 \end{description}
 %
 For instance,
@@ -642,31 +666,7 @@ to achieve
 
 \subsubsection{Customizing example markup}\label{sec:custexmk}
 
-\noindent You can also customize the markup of the example sentences by redefining the macro
-\jcsmacro{covexamplefs} (which is empty by default). To have all example sentences italicized, for instance, do:
-\begin{lstlisting}[moretexcs={covexamplefs}]
-\renewcommand*{\covexamplefs}{\itshape}
-\end{lstlisting}
-%
-Note that this does, deliberately, not include the numbers, since those are controlled by another font setting macro,
-\jcsmacro{covexamplenofs}, which defaults to \jfcsmacro{normalfont}. Of course you are free to redefine this as well,
-if you wish to do so.
-
-Furthermore, you can customize the markup of the example and subexample preamble text (supplied via the \joption{preamble}
-option or the \jcsmacro{expreamble} or \jcsmacro{subexpreamble} macro) by redefining the macro
-\jcsmacro{expreamblefs} or \jcsmacro{subexpreamblefs}, which also both default to \jfcsmacro{normalfont}.
-To have them italicized, analogously do:
-\begin{lstlisting}[moretexcs={expreamblefs}]
-\renewcommand*{\expreamblefs}{\itshape}
-\end{lstlisting}
-or
-\begin{lstlisting}[moretexcs={subexpreamblefs}]
-\renewcommand*{\subexpreamblefs}{\itshape}
-\end{lstlisting}
-%
-Likewise, you can customize the markup of the example and subexample postamble text (supplied via the
-\joption{postamble[*]} option or the \jcsmacro{expostamble} or \jcsmacro{subexpostamble} macro) by redefining the macro
-\jcsmacro{expostamblefs} or \jcsmacro{subexpostamblefs}, which also both default to \jfcsmacro{normalfont}.
+[remove]
 
 
 \subsection{Referring to examples}\label{sec:ref}
@@ -1348,6 +1348,8 @@ it.
 	      supersedes the two boolean, mutually exclusive options \joption{ownfncounter}
 	      and \joption{ownfncounter*} (which are still supported for backwards
 	      compatibility reasons).
+	\item New example options: \joption{fs}, \joption{fsno}, \joption{fspreamble}, \joption{fspostamble}
+	      (see sec.~\ref{sec:ex}).
 	\item New gloss options: \joption{fspreamble}, \joption{fspostamble}, \joption{fstl},
 		  and \joption{enquotetl} for full customization of glosses via options (see sec.~\ref{sec:gloss}).
 	\item Documentation improvements.

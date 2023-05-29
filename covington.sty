@@ -215,8 +215,8 @@
 %%%
 
 % Font setting possibility for example sentences
-\newcommand*\covexamplefs{}
-\newcommand*\covexamplenofs{\normalfont}
+\newcommand*\covexamplefs{\normalfont\upshape}
+\newcommand*\covexamplenofs{\normalfont\upshape}
 
 % example     is an environment for displaying a single numbered 
 %             example, preceded by its number.  Example of use:
@@ -246,13 +246,6 @@
 
 \newif\if@cov@expst@star\@cov@expst@starfalse
 
-\DeclareKeys[covexpl]
-{
-    preamble.store = \cov@xp,
-    postamble.code = { \def\cov@xpst{#1}\@cov@expst@starfalse },
-    postamble*.code = { \def\cov@xpst{#1}\@cov@expst@startrue }
-}
-
 % 2022-08-20 (v. 2.8): optional preceding example text
 \newcommand*\expreamblefs{\normalfont}
 \newcommand\expreamble[1]{\bgroup\expreamblefs#1\egroup\par}
@@ -260,6 +253,24 @@
 % 2023.05.26 (v. 2.9): optional trailung subexample text
 \newcommand*\expostamblefs{\normalfont}
 \newcommand*\expostamble[1]{\bgroup\expostamblefs#1\egroup}
+
+\DeclareKeys[covexpl]
+{
+    % font settings
+    fs.store = \covexamplefs,
+    % font settings of the ex. number
+    fsno.store = \covexamplenofs,
+    % preamble
+    preamble.store = \cov@xp,
+    % postamble
+    postamble.code = { \def\cov@xpst{#1}\@cov@expst@starfalse },
+    % postamble* (no space)
+    postamble*.code = { \def\cov@xpst{#1}\@cov@expst@startrue },
+    % preamble font settings
+    fspreamble.store = \expreamblefs,
+    % postamble font settings
+    fspostamble.store = \expostamblefs
+}
 
 \newenvironment{covexample}[1][]{%
     \ifx#1\empty\else\SetKeys[covexpl]{#1}\fi%
@@ -319,8 +330,8 @@
 \newcommand*\covexnumber[1]{(#1)}
 \newcommand*\covexnumberfn[1]{\covexnumber{#1}}
 
-\newenvironment{covexamples}%         % define "example" environment
-{%
+\newenvironment{covexamples}[1][]{%         % define "examples" environment
+\ifx#1\empty\else\SetKeys[covexpl]{#1}\fi%
 \begin{list}%
 {%
   \covexamplenofs% font
@@ -386,10 +397,28 @@
 %             \item This is the second subexample.
 %             \end{subexamples}
 
+% 2019-06-21 (v. 2.3): optional preceding subexample text
+\newcommand*\subexpreamblefs{\normalfont}
+\newcommand\subexpreamble[1]{\bgroup\subexpreamblefs#1\egroup\par}
+
+% 2023.05.26 (v. 2.9): optional trailung subexample text
+\newcommand*\subexpostamblefs{\normalfont}
+\newcommand*\subexpostamble[1]{\bgroup\subexpostamblefs#1\egroup}
+
 \DeclareKeys[covsubexpl]
 {
+    % font settings
+    fs.store = \covexamplefs,
+    % font settings
+    fsno.store = \covexamplenofs,
+    % preamble text
     preamble.store = \cov@sxp,
-    postamble.store = \cov@sxpst
+    % postamble text
+    postamble.store = \cov@sxpst,
+    % preamble font settings
+    fspreamble.store = \subexpreamblefs,
+    % postamble font settings
+    fspostamble.store = \subexpostamblefs
 }
 
 \newlength\subexamplenumbersep
@@ -397,21 +426,13 @@
 
 \newcommand*\covsubexnumber[1]{(#1)}
 
-% 2019-06-21 (v. 2.3): optional preceding subexample text
-\newcommand*\subexpreamblefs{\normalfont}
-\newcommand\subexpreamble[1]{\bgroup\subexpreamblefs#1\egroup\par}
-
-% 2023.05.26 (v. 2.9): optional trailung subexample text
-\newcommand*\subexpostamblefs{\normalfont}
-\newcommand*\subexpostamble[1]{\bgroup\expostamblefs#1\egroup}
-
 \let\subexfmt\alph
 
 \newenvironment{covsubexamples}[1][]%         % define "subexamples" environment
 {%
     \ifx#1\empty\else\SetKeys[covsubexpl]{#1}\fi%
     \begin{covexample}%
-    \@ifundefined{cov@sxp}{}{\subexpreamblefs\cov@sxp}% insert preamble if given
+    \@ifundefined{cov@sxp}{}{\bgroup\subexpreamblefs\cov@sxp\egroup}% insert preamble if given
     \begin{enumerate}
     \addtolength{\labelsep}{\subexamplenumbersep}%
     \renewcommand\theenumi{\subexfmt{enumi}}
