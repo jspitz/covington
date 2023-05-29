@@ -329,6 +329,11 @@ The \jenv{example} environment provides the following options:
 	    negative values will decrease the indentation of the example.
 	 \item[\joption{addnumbersep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
 	    Increases or (with negative values) decreases the spacing between example number and example.
+	 \item[\joption{numberformat=\{\jparam{arabic|roman|Roman|alph|Alph}\}}] Default: \emph{arabic}.
+	    The format of the example number.
+	 \item[\joption{fnnumberformat=\{\jparam{arabic|roman|Roman|alph|Alph}\}}] Default: \emph{roman}.
+	    The format of the example number if \joption{fnexamplecounter=own} or \joption{fnexamplecounter=own-reset}
+	    and example is in a footnote.
 \end{description}
 %
 If you want the postamble text be on a line of its own, simply add a line break (i.\,e., \verb|postamble={\\Text}|).
@@ -515,6 +520,13 @@ The \jenv{subexamples}/\jenv{covsubexamples} environment provides the following 
 		Increases or (with negative values) decreases the spacing between example number and subnumber.
 	\item[\joption{addsubnumbersep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
 		Increases or (with negative values) decreases the spacing between example subnumber and example.
+	\item[\joption{numberformat=\{\jparam{arabic|roman|Roman|alph|Alph}\}}] Default: \emph{arabic}.
+		The format of the example number.
+	\item[\joption{subnumberformat=\{\jparam{arabic|roman|Roman|alph|Alph}\}}] Default: \emph{alph}.
+		The format of the sub-example number.
+	\item[\joption{fnnumberformat=\{\jparam{arabic|roman|Roman|alph|Alph}\}}] Default: \emph{roman}.
+		The format of the example number if \joption{fnexamplecounter=own} or \joption{fnexamplecounter=own-reset}
+		and example is in a footnote.
 \end{description}
 %
 For instance,
@@ -585,18 +597,14 @@ Customization possibilities of examples and subexamples are elaborated in the fo
 \subsubsection{Customizing example spacing}\label{sec:custsp}
 
 If you need more space between the example number and the text (or the subnumber in case of subexamples),
-you can increase it by means of the length \jcsmacro{examplenumbersep} (which is preset to \texttt{0pt}).
-Doing \lstinline|\setlength\examplenumbersep{1em}|, for instance, will increase the space by 1\,em
-(negative values will decrease the space accordingly).
+you can increase it by means of the \joption{addnumbersep} example option.
 
 If you need to change the indentation (left margin) of examples and subexamples, you can do so by means of
-the length \jcsmacro{exampleind} (preset to \texttt{0pt}). Doing \lstinline|\setlength\exampleind{1em}|,
+the \joption{leftmargin} example option. Doing \joption{leftmargin=1em},
 for instance, will increase the indentation by 1\,em, negative values will decrease it accordingly.
 So, for instance,
-\begin{lstlisting}[moretexcs={setlength,examplenumbersep,exampleind}]
-\setlength{\exampleind}{-2.2em}
-\setlength{\examplenumbersep}{-0.4em}
-\begin{example}
+\begin{lstlisting}[moretexcs={leftmargin,addnumbersep}]
+\begin{example}[leftmargin={-2.2em},addnumbersep={-0.4em}]
 This is a marginal case.
 \end{example}
 \end{lstlisting}
@@ -606,13 +614,15 @@ will come out like this:
 This is a marginal case.
 \end{example}
 %
-\noindent In case of \jenv{subexamples}, the distance between example subnumber and text can be changed  via the length
-\jcsmacro{subexamplenumbersep} (preset to \texttt{0pt} as well).
+\noindent In case of \jenv{subexamples}, the distance between example subnumber and text can be changed
+via the \joption{addsubnumbersep} option.
 Again, a positive value will increase, a negative value will decrease the distance.
 Doing 
-\begin{lstlisting}[moretexcs={setlength,examplenumbersep,subexamplenumbersep}]
-\setlength{\examplenumbersep}{-0.4em}
-\setlength{\subexamplenumbersep}{0.4em}
+\begin{lstlisting}[moretexcs={addnumbersep,addsubnumbersep}]
+\begin{subexamples}[addnumbersep={-0.4em},addsubnumbersep={0.4em}]
+\item This is the first sentence.
+\item This is the second sentence.
+\end{subexamples}
 \end{lstlisting}
 for instance, will yield:
 
@@ -672,8 +682,25 @@ to achieve
 
 \subsubsection{Customizing example markup}\label{sec:custexmk}
 
-[remove]
-
+Example markup can be customized via the \joption{fs*} example options. This way, all elements
+of examples (number, actual example text, pre- and postamble) can be marked up independently
+from each other. Just to showcase the most common option, the example in italics. This can
+be done by globally or locally setting \verb|fs=\itshape|, as in:
+\begin{lstlisting}[moretexcs={covsubexnumber}]
+\begin{example}[fs=\itshape,preamble={This is the preamble},
+                postamble={(Postamble)}]
+This is the example.
+\end{example}
+\end{lstlisting}
+%
+which results in:
+\begin{example}[fs=\itshape,preamble={This is the preamble},
+	postamble={(Postamble)}]
+	This is the example.
+\end{example}
+%
+Analogously, you can adjust the example number font (\joption{fsno}), the preamble font
+(\joption{fspreamble}), and the postamble font (\joption{fspostamble}).
 
 \subsection{Referring to examples}\label{sec:ref}
 
@@ -1355,8 +1382,8 @@ it.
 	      and \joption{ownfncounter*} (which are still supported for backwards
 	      compatibility reasons).
 	\item New example options: \joption{fs}, \joption{fsno}, \joption{fspreamble}, \joption{fspostamble},
-		  \joption{leftmargin}, \joption{addnumbersep}, \joption{addsubnumbersep}
-	      (see sec.~\ref{sec:ex}).
+		  \joption{leftmargin}, \joption{addnumbersep}, \joption{addsubnumbersep}, \joption{numberformat},
+		  \joption{subnumberformat}, \joption{fnnumberformat} (see sec.~\ref{sec:ex}).
 	\item New gloss options: \joption{fspreamble}, \joption{fspostamble}, \joption{fstl},
 		  and \joption{enquotetl} for full customization of glosses via options (see sec.~\ref{sec:gloss}).
 	\item Documentation improvements.

@@ -273,7 +273,33 @@
     % leftmargin
     leftmargin.code = { \setlength{\exampleind}{#1} },
     % addnumbersep
-    addnumbersep.code = { \setlength{\examplenumbersep}{#1} }
+    addnumbersep.code = { \setlength{\examplenumbersep}{#1} },
+    % numberformat=<arabic|roman|Roman|alph|Alph>
+    numberformat.choice:,
+    % a. arabic
+    numberformat / arabic.code:n = { \let\exfmt\arabic },
+    % b. roman
+    numberformat / roman.code:n = { \let\exfmt\roman },
+    % c. Roman
+    numberformat / Roman.code:n = { \let\exfmt\Roman },
+    % c. alph
+    numberformat / alph.code:n = { \let\exfmt\alph },
+    % c. Alph
+    numberformat / Alph.code:n = { \let\exfmt\Alph },
+    numberformat.default:n = { arabic },
+    % fnnumberformat=<arabic|roman|Roman|alph|Alph>
+    fnnumberformat.choice:,
+    % a. arabic
+    fnnumberformat / arabic.code:n = { \let\fnexfmt\arabic },
+    % b. roman
+    fnnumberformat / roman.code:n = { \let\fnexfmt\roman },
+    % c. Roman
+    fnnumberformat / Roman.code:n = { \let\fnexfmt\Roman },
+    % c. alph
+    fnnumberformat / alph.code:n = { \let\fnexfmt\alph },
+    % c. Alph
+    fnnumberformat / Alph.code:n = { \let\fnexfmt\Alph },
+    fnnumberformat.default:n = { roman }
 }
 
 \newenvironment{covexample}[1][]{%
@@ -334,6 +360,8 @@
 \newcommand*\covexnumber[1]{(#1)}
 \newcommand*\covexnumberfn[1]{\covexnumber{#1}}
 
+\let\exfmt\arabic
+
 \newenvironment{covexamples}[1][]{%         % define "examples" environment
 \ifx#1\empty\else\SetKeys[covexpl]{#1}\fi%
 \begin{list}%
@@ -355,10 +383,12 @@
     \setcounter{covfnex}{\arabic{covexsave}}%
   \else
     \ifownexcounter
+      \renewcommand{\thecovex}{\exfmt{covex}}%
       \setcounter{covexsave}{\arabic{covex}}%
       \usecounter{covex}%                          % sets it to zero, unwantedly
       \setcounter{covex}{\arabic{covexsave}}%   % restores previous value
     \else
+      \renewcommand{\theequation}{\exfmt{equation}}%
       \setcounter{covexsave}{\arabic{equation}}%
       \usecounter{equation}%                          % sets it to zero, unwantedly
       \setcounter{equation}{\arabic{covexsave}}%   % restores previous value
@@ -428,7 +458,46 @@
     % addnumbersep
     addnumbersep.code = { \setlength{\examplenumbersep}{#1} },
     % addnumbersep
-    addsubnumbersep.code = { \setlength{\subexamplenumbersep}{#1} }
+    addsubnumbersep.code = { \setlength{\subexamplenumbersep}{#1} },
+    % numberformat=<arabic|roman|Roman|alph|Alph>
+    numberformat.choice:,
+    % a. arabic
+    numberformat / arabic.code:n = { \let\exfmt\arabic },
+    % b. roman
+    numberformat / roman.code:n = { \let\exfmt\roman },
+    % c. Roman
+    numberformat / Roman.code:n = { \let\exfmt\Roman },
+    % c. alph
+    numberformat / alph.code:n = { \let\exfmt\alph },
+    % c. Alph
+    numberformat / Alph.code:n = { \let\exfmt\Alph },
+    numberformat.default:n = { arabic },
+    % fnnumberformat=<arabic|roman|Roman|alph|Alph>
+    fnnumberformat.choice:,
+    % a. arabic
+    fnnumberformat / arabic.code:n = { \let\fnexfmt\arabic },
+    % b. roman
+    fnnumberformat / roman.code:n = { \let\fnexfmt\roman },
+    % c. Roman
+    fnnumberformat / Roman.code:n = { \let\fnexfmt\Roman },
+    % c. alph
+    fnnumberformat / alph.code:n = { \let\fnexfmt\alph },
+    % c. Alph
+    fnnumberformat / Alph.code:n = { \let\fnexfmt\Alph },
+    fnnumberformat.default:n = { roman },
+    % subnumberformat=<arabic|roman|Roman|alph|Alph>
+    subnumberformat.choice:,
+    % a. arabic
+    subnumberformat / arabic.code:n = { \let\subexfmt\arabic },
+    % b. roman
+    subnumberformat / roman.code:n = { \let\subexfmt\roman },
+    % c. Roman
+    subnumberformat / Roman.code:n = { \let\subexfmt\Roman },
+    % c. alph
+    subnumberformat / alph.code:n = { \let\subexfmt\alph },
+    % c. Alph
+    subnumberformat / Alph.code:n = { \let\subexfmt\Alph },
+    subnumberformat.default:n = { alph }
 }
 
 \newlength\subexamplenumbersep
