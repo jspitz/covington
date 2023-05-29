@@ -269,7 +269,11 @@
     % preamble font settings
     fspreamble.store = \expreamblefs,
     % postamble font settings
-    fspostamble.store = \expostamblefs
+    fspostamble.store = \expostamblefs,
+    % leftmargin
+    leftmargin.code = { \setlength{\exampleind}{#1} },
+    % addnumbersep
+    addnumbersep.code = { \setlength{\examplenumbersep}{#1} }
 }
 
 \newenvironment{covexample}[1][]{%
@@ -418,7 +422,13 @@
     % preamble font settings
     fspreamble.store = \subexpreamblefs,
     % postamble font settings
-    fspostamble.store = \subexpostamblefs
+    fspostamble.store = \subexpostamblefs,
+    % leftmargin
+    leftmargin.code = { \setlength{\exampleind}{#1} },
+    % addnumbersep
+    addnumbersep.code = { \setlength{\examplenumbersep}{#1} },
+    % addnumbersep
+    addsubnumbersep.code = { \setlength{\subexamplenumbersep}{#1} }
 }
 
 \newlength\subexamplenumbersep

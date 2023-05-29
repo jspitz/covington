@@ -324,6 +324,11 @@ The \jenv{example} environment provides the following options:
 	\item[\joption{fspostamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
 		Adjusts the font settings of the postamble text.
 		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+	\item[\joption{leftmargin=\{\jparam{length}\}}] Default: \verb|{0pt}|.
+	    Lets you change the indentation of examples (including number). Positive values will increase,
+	    negative values will decrease the indentation of the example.
+	 \item[\joption{addnumbersep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
+	    Increases or (with negative values) decreases the spacing between example number and example.
 \end{description}
 %
 If you want the postamble text be on a line of its own, simply add a line break (i.\,e., \verb|postamble={\\Text}|).
@@ -432,6 +437,9 @@ which results in:
 	\item[\covexnumber{\exampleno*'}] An alternative proposition.
 \end{examples}
 %
+The \jenv{examples} environments accepts the same options than the \jenv{example} environment. Only \joption{preamble}
+and \joption{postamble[*]} do not have any effect.
+
 Please refer to sec.~\ref{sec:custsp} for ways to adjust the spacing of the environment and to sec.~\ref{sec:custno}
 and \ref{sec:custexmk} for possibilities to customize the appearance.
 
@@ -500,6 +508,13 @@ The \jenv{subexamples}/\jenv{covsubexamples} environment provides the following 
 	\item[\joption{fspostamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
 		Adjusts the font settings of the postamble text.
 		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+	\item[\joption{leftmargin=\{\jparam{length}\}}] Default: \jparam{0pt}.
+		Lets you change the indentation of subexamples (including number). Positive values will increase,
+		negative values will decrease the indentation of the example.
+	\item[\joption{addnumbersep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
+		Increases or (with negative values) decreases the spacing between example number and subnumber.
+	\item[\joption{addsubnumbersep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
+		Increases or (with negative values) decreases the spacing between example subnumber and example.
 \end{description}
 %
 For instance,
@@ -587,13 +602,9 @@ This is a marginal case.
 \end{lstlisting}
 will come out like this:
 
-\bgroup
-\setlength{\exampleind}{-2.2em}
-\setlength{\examplenumbersep}{-0.4em}
-\begin{example}
+\begin{example}[leftmargin={-2.2em},addnumbersep={-0.4em}]
 This is a marginal case.
 \end{example}
-\egroup
 %
 \noindent In case of \jenv{subexamples}, the distance between example subnumber and text can be changed  via the length
 \jcsmacro{subexamplenumbersep} (preset to \texttt{0pt} as well).
@@ -605,15 +616,10 @@ Doing
 \end{lstlisting}
 for instance, will yield:
 
-\bgroup
-\setlength{\examplenumbersep}{-0.4em}
-\setlength{\subexamplenumbersep}{0.4em}
-
-\begin{subexamples}
+\begin{subexamples}[addnumbersep={-0.4em},addsubnumbersep={0.4em}]
 	\item This is the first sentence.
 	\item This is the second sentence.
 \end{subexamples}
-\egroup
 
 \subsubsection{Customizing number display}\label{sec:custno}
 
@@ -1348,7 +1354,8 @@ it.
 	      supersedes the two boolean, mutually exclusive options \joption{ownfncounter}
 	      and \joption{ownfncounter*} (which are still supported for backwards
 	      compatibility reasons).
-	\item New example options: \joption{fs}, \joption{fsno}, \joption{fspreamble}, \joption{fspostamble}
+	\item New example options: \joption{fs}, \joption{fsno}, \joption{fspreamble}, \joption{fspostamble},
+		  \joption{leftmargin}, \joption{addnumbersep}, \joption{addsubnumbersep}
 	      (see sec.~\ref{sec:ex}).
 	\item New gloss options: \joption{fspreamble}, \joption{fspostamble}, \joption{fstl},
 		  and \joption{enquotetl} for full customization of glosses via options (see sec.~\ref{sec:gloss}).
