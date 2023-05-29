@@ -507,16 +507,22 @@
   \def\cov@nopagebreak{\let\reserved@e\vadjust\let\reserved@f\nobreak}
 \fi
 
+\def\cov@emphasized{\normalfont\itshape}%
+\def\cov@normalfont{\normalfont\upshape}%
+
+\def\cov@fsglpreamble@global{\cov@normalfont}
+\def\cov@fsglpostamble@global{\cov@normalfont}
+
 % 2019-05-07: optional preceding gloss text (non-interlinearized)
-\def\fsglpreamble{}
-\newcommand*\glosslinepreamble[1]{\fsglpreamble{}#1}
-\def\cov@glp{}
-\newcommand*\glosspreamble[1]{\def\cov@glp{#1}}
+\def\fsglpreamble{\cov@fsglpreamble@global}
+\newcommand*\glosslinepreamble[1]{\bgroup\fsglpreamble{}#1\egroup}
+\def\cov@gl@preamble@text{}
+\newcommand*\glosspreamble[1]{\def\cov@gl@preamble@text{#1}}
 
 % 2021-09-01: optional trailing gloss text (non-interlinearized)
-\def\fsglpostamble{}
-\newcommand*\glosslinepostamble[1]{\fsglpostamble{}#1}
-\def\cov@glpst{}
+\def\fsglpostamble{\cov@fsglpostamble@global}
+\newcommand*\glosslinepostamble[1]{\bgroup\fsglpostamble{}#1\egroup}
+\def\cov@gl@postamble@text{}
 
 \def\gll{%                  % Introduces 2-line text-and-gloss.
   \begin{flushleft}
@@ -577,8 +583,8 @@
 
 \def\glend{%
    \end{flushleft}%
-   \def\cov@glp{}%
-   \def\cov@glpst{}%
+   \def\cov@gl@preamble@text{}%
+   \def\cov@gl@postamble@text{}%
 }  % Ends the gloss environment.
 
 % The following TeX code is adapted, with permission, from:
@@ -600,9 +606,6 @@
 % \glossglue = 0pt plus 2pt minus 1pt % allow stretch/shrink between words
 \glossglue = 5pt plus 2pt minus 1pt % allow stretch/shrink between words
 \newif\ifnotdone
-
-\def\cov@emphasized{\normalfont\itshape}%
-\def\cov@normalfont{\normalfont\upshape}%
 
 % Font settings for gloss lines
 \newcommand*\glosslineone{\cov@emphasized}
@@ -647,7 +650,10 @@
 \gdef\twosent#1^^M#2^^M% #1 = first line, #2 = second line
    {\getwords(\lineone,\eachwordone)#1 ^^M%
     \getwords(\linetwo,\eachwordtwo)#2 ^^M%
-    \ifx\cov@glp\empty\else\glosslinepreamble{\cov@glp}\cov@nopagebreak\newline\fi%
+    \ifx\cov@gl@preamble@text\empty%
+    \else%
+       \glosslinepreamble{\cov@gl@preamble@text}\cov@nopagebreak\newline%
+    \fi%
     \loop\lastword{\eachwordone}{\lineone}{\wordone}%
          \lastword{\eachwordtwo}{\linetwo}{\wordtwo}%
          \global\setbox\gline=\hbox{\unhbox\gline
@@ -668,7 +674,10 @@
    {\getwords(\lineone,\eachwordone)#1 ^^M%
     \getwords(\linetwo,\eachwordtwo)#2 ^^M%
     \getwords(\linethree,\eachwordthree)#3 ^^M%
-    \ifx\cov@glp\empty\else\glosslinepreamble{\cov@glp}\cov@nopagebreak\newline\fi%
+    \ifx\cov@gl@preamble@text\empty%
+    \else%
+       \glosslinepreamble{\cov@gl@preamble@text}\cov@nopagebreak\newline%
+    \fi%
     \loop\lastword{\eachwordone}{\lineone}{\wordone}%
          \lastword{\eachwordtwo}{\linetwo}{\wordtwo}%
          \lastword{\eachwordthree}{\linethree}{\wordthree}%
@@ -709,7 +718,10 @@
 \gdef\xtwosent#1\xgle#2\xgle% #1 = first line, #2 = second line
    {\xgetwords(\lineone,\eachwordone)#1 \xgle%
     \xgetwords(\linetwo,\eachwordtwo)#2 \xgle%
-    \ifx\cov@glp\empty\else\glosslinepreamble{\cov@glp}\cov@nopagebreak\newline\fi%
+    \ifx\cov@gl@preamble@text\empty%
+    \else%
+       \glosslinepreamble{\cov@gl@preamble@text}\cov@nopagebreak\newline%
+    \fi%
     \loop\lastword{\eachwordone}{\lineone}{\wordone}%
          \lastword{\eachwordtwo}{\linetwo}{\wordtwo}%
          \global\setbox\gline=\hbox{\unhbox\gline%
@@ -730,7 +742,10 @@
    {\xgetwords(\lineone,\eachwordone)#1 \xgle%
     \xgetwords(\linetwo,\eachwordtwo)#2 \xgle%
     \xgetwords(\linethree,\eachwordthree)#3 \xgle%
-    \ifx\cov@glp\empty\else\glosslinepreamble{\cov@glp}\cov@nopagebreak\newline\fi%
+    \ifx\cov@gl@preamble@text\empty%
+    \else%
+       \glosslinepreamble{\cov@gl@preamble@text}\cov@nopagebreak\newline%
+    \fi%
     \loop\lastword{\eachwordone}{\lineone}{\wordone}%
          \lastword{\eachwordtwo}{\linetwo}{\wordtwo}%
          \lastword{\eachwordthree}{\linethree}{\wordthree}%
@@ -766,10 +781,8 @@
 \newif\ifcov@ex@gloss@global\cov@ex@gloss@globalfalse
 \newif\ifcov@tlr\cov@tlrfalse
 \newif\ifcov@tlr@global\cov@tlr@globalfalse
-\def\cov@gglp{}
-\def\cov@gglpst{}
-\def\cov@fsglpreamble@global{}
-\def\cov@fsglpostamble@global{}
+\def\cov@gl@preamble@global{}
+\def\cov@gl@postamble@global{}
 
 \DeclareKeys[covgloss]
 {
@@ -782,9 +795,9 @@
     fsii.store = \lglosslinetwo,
     fsiii.store = \lglosslinethree,
     % 4. Gloss preamble text
-    preamble.code = { \def\cov@lglp{#1} },
+    preamble.code = { \edef\cov@gl@preamble{#1} },
     % 5. Gloss postamble text
-    postamble.store = \cov@lglpst,
+    postamble.store = \cov@gl@postamble,
     % 6. Gloss preamble font settings
     fspreamble.store = \cov@fsglpreamble@local,
     % 7. Gloss postamble font settings
@@ -802,9 +815,9 @@
     fsii.store = \glosslinetwo,
     fsiii.store = \glosslinethree,
     % 4. Gloss preamble text
-    preamble.code = { \def\cov@gglp{#1} },
+    preamble.store = \cov@gl@preamble@global,
     % 5. Gloss postamble text
-    postamble.store = \cov@gglpst,
+    postamble.store = \cov@gl@postamble@global,
     % 6. Gloss preamble font settings
     fspreamble.store = \cov@fsglpreamble@global,
     % 7. Gloss postamble font settings
@@ -827,6 +840,8 @@
   \else
     \SetKeys[covgloss]{tlr=false}
   \fi%
+  \def\cov@gl@preamble{\cov@gl@preamble@global}%
+  \def\cov@gl@postamble{\cov@gl@postamble@global}%
   \ifx#1\empty\else\SetKeys[covgloss]{#1}\fi%
   \ifcov@ex@gloss
     \begin{covexample}
@@ -834,10 +849,8 @@
   \@ifundefined{lglosslineone}{}{\def\glosslineone{\lglosslineone}}%
   \@ifundefined{lglosslinetwo}{}{\def\glosslinetwo{\lglosslinetwo}}%
   \@ifundefined{lglosslinethree}{}{\def\glosslinethree{\lglosslinethree}}%
-  \@ifundefined{cov@lglp}{}{\def\cov@gglp{\cov@lglp}}%
-  \ifx\cov@gglp\empty\else\def\cov@glp{\cov@gglp}\fi%
-  \@ifundefined{cov@lglpst}{}{\def\cov@gglpst{\cov@lglpst}}%
-  \ifx\cov@gglpst\empty\else\def\cov@glpst{\cov@gglpst}\fi%
+  \edef\cov@gl@preamble@text{\cov@gl@preamble}%
+  \def\cov@gl@postamble@text{\cov@gl@postamble}%
   \@ifundefined{cov@fsglpreamble@local}%
        {\let\fsglpreamble\cov@fsglpreamble@global}%
        {\let\fsglpreamble\cov@fsglpreamble@local}%
@@ -851,7 +864,10 @@
   \else
     \glot{#4}%
   \fi
-  \ifx\cov@glpst\empty\else\glosslinepostamble{\cov@glpst}\cov@nopagebreak\fi%
+  \ifx\cov@gl@postamble@text\empty%
+  \else%
+     \glosslinepostamble{\cov@gl@postamble@text}\cov@nopagebreak%
+  \fi%
   \glend
   \ifcov@ex@gloss
     \end{covexample}
@@ -859,7 +875,6 @@
   \let\lglosslineone\relax%
   \let\lglosslinetwo\relax%
   \let\lglosslinethree\relax%
-  \let\cov@lglp\relax%
   \let\cov@fsglpreamble@local\relax%
   \let\cov@fsglpostamble@local\relax%
 }
@@ -876,6 +891,8 @@
   \else
     \SetKeys[covgloss]{tlr=false}
   \fi%
+  \def\cov@gl@preamble{\cov@gl@preamble@global}%
+  \def\cov@gl@postamble{\cov@gl@postamble@global}%
   \ifx#1\empty\else\SetKeys[covgloss]{#1}\fi%
   \ifcov@ex@gloss
     \begin{covexample}
@@ -883,10 +900,8 @@
   \@ifundefined{lglosslineone}{}{\def\glosslineone{\lglosslineone}}%
   \@ifundefined{lglosslinetwo}{}{\def\glosslinetwo{\lglosslinetwo}}%
   \@ifundefined{lglosslinethree}{}{\def\glosslinethree{\lglosslinethree}}%
-  \@ifundefined{cov@lglp}{}{\def\cov@gglp{\cov@lglp}}%
-  \ifx\cov@gglp\empty\else\def\cov@glp{\cov@gglp}\fi%
-  \@ifundefined{cov@lglpst}{}{\def\cov@gglpst{\cov@lglpst}}%
-  \ifx\cov@gglpst\empty\else\def\cov@glpst{\cov@gglpst}\fi%
+  \edef\cov@gl@preamble@text{\cov@gl@preamble}%
+  \def\cov@gl@postamble@text{\cov@gl@postamble}%
   \@ifundefined{cov@fsglpreamble@local}%
        {\let\fsglpreamble\cov@fsglpreamble@global}%
        {\let\fsglpreamble\cov@fsglpreamble@local}%
@@ -901,7 +916,10 @@
   \else
     \glot{#5}%
   \fi
-  \ifx\cov@glpst\empty\else\glosslinepostamble{\cov@glpst}\cov@nopagebreak\fi%
+  \ifx\cov@gl@postamble@text\empty%
+  \else%
+     \glosslinepostamble{\cov@gl@postamble@text}\cov@nopagebreak%
+  \fi%
   \glend
   \ifcov@ex@gloss
     \end{covexample}
