@@ -508,12 +508,14 @@
 \fi
 
 % 2019-05-07: optional preceding gloss text (non-interlinearized)
-\newcommand*\glosslinepreamble[1]{#1}
+\def\fsglpreamble{}
+\newcommand*\glosslinepreamble[1]{\fsglpreamble{}#1}
 \def\cov@glp{}
 \newcommand*\glosspreamble[1]{\def\cov@glp{#1}}
 
 % 2021-09-01: optional trailing gloss text (non-interlinearized)
-\newcommand*\glosslinepostamble[1]{#1}
+\def\fsglpostamble{}
+\newcommand*\glosslinepostamble[1]{\fsglpostamble{}#1}
 \def\cov@glpst{}
 
 \def\gll{%                  % Introduces 2-line text-and-gloss.
@@ -748,7 +750,7 @@
     \egroup % matches \bgroup in \gloss
    }
 
-% V. 2.0: enquotable translation line 
+% V. 2.0: enquotable translation line
 \newcommand*\glosslinetrans[1]{\covenquote{#1}}
 \newcommand*\glot[1]{%
   \def\tempx{#1}%
@@ -766,6 +768,8 @@
 \newif\ifggtright\ggtrightfalse
 \def\cov@gglp{}
 \def\cov@gglpst{}
+\def\cov@fsglpreamble@global{}
+\def\cov@fsglpostamble@global{}
 
 \DeclareKeys[covgloss]
 {
@@ -780,7 +784,11 @@
     % 4. Gloss preamble text
     preamble.code = { \def\cov@lglp{#1} },
     % 5. Gloss postamble text
-    postamble.store = \cov@lglpst
+    postamble.store = \cov@lglpst,
+    % 6. Gloss preamble font settings
+    fspreamble.store = \cov@fsglpreamble@local,
+    % 7. Gloss postamble font settings
+    fspostamble.store = \cov@fsglpostamble@local
 }
 
 \DeclareKeys[gcovgloss]
@@ -796,7 +804,11 @@
     % 4. Gloss preamble text
     preamble.code = { \def\cov@gglp{#1} },
     % 5. Gloss postamble text
-    postamble.store = \cov@gglpst
+    postamble.store = \cov@gglpst,
+    % 6. Gloss preamble font settings
+    fspreamble.store = \cov@fsglpreamble@global,
+    % 7. Gloss postamble font settings
+    fspostamble.store = \cov@fsglpostamble@global
 }
 
 %
@@ -826,6 +838,10 @@
   \ifx\cov@gglp\empty\else\def\cov@glp{\cov@gglp}\fi%
   \@ifundefined{cov@lglpst}{}{\def\cov@gglpst{\cov@lglpst}}%
   \ifx\cov@gglpst\empty\else\def\cov@glpst{\cov@gglpst}\fi%
+  \@ifundefined{cov@fsglpreamble@local}%
+       {\let\fsglpreamble\cov@fsglpreamble@global}%
+       {\let\fsglpreamble\cov@fsglpreamble@local}%
+  \@ifundefined{cov@fsglpostamble@local}{\let\fsglpostamble\cov@fsglpostamble@global}{\let\fsglpostamble\cov@fsglpostamble@local}%
   \xgll #2\xgle
         #3\xgle
   \ifgtright
@@ -842,6 +858,8 @@
   \let\lglosslinetwo\relax%
   \let\lglosslinethree\relax%
   \let\cov@lglp\relax%
+  \let\cov@fsglpreamble@local\relax%
+  \let\cov@fsglpostamble@local\relax%
 }
 
 % 2. \trigloss[<opts>]{<line 1>}{<line 2>}{<line 3>}{<translation>}
@@ -867,6 +885,12 @@
   \ifx\cov@gglp\empty\else\def\cov@glp{\cov@gglp}\fi%
   \@ifundefined{cov@lglpst}{}{\def\cov@gglpst{\cov@lglpst}}%
   \ifx\cov@gglpst\empty\else\def\cov@glpst{\cov@gglpst}\fi%
+  \@ifundefined{cov@fsglpreamble@local}%
+       {\let\fsglpreamble\cov@fsglpreamble@global}%
+       {\let\fsglpreamble\cov@fsglpreamble@local}%
+  \@ifundefined{cov@fsglpostamble@local}%
+       {\let\fsglpostamble\cov@fsglpostamble@global}%
+       {\let\fsglpostamble\cov@fsglpostamble@local}%
   \xglll #2\xgle
          #3\xgle
          #4\xgle
@@ -883,6 +907,8 @@
   \let\lglosslineone\relax%
   \let\lglosslinetwo\relax%
   \let\lglosslinethree\relax%
+  \let\cov@fsglpreamble@local\relax%
+  \let\cov@fsglpostamble@local\relax%
 }
 
 
