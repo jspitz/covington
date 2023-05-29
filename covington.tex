@@ -775,6 +775,9 @@ Note that:
 	\item[\joption{fsiii=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
 		 Adjusts the font settings of the third gloss line (in case of \jcsmacro{trigloss}).
 		 Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+	\item[\joption{fstl=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		 Adjusts the font settings of the translation line.
+		 Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 	\item[\joption{enquotetl=\jparam{true|false}}] Default: \emph{true}.
 	     By default, the translation line is embraced in single quotation marks. Set this option to
 	     \jparam{false} to omit this.
@@ -853,16 +856,18 @@ The following is a complete list of all low-level glossing commands:
 	     (by default: enquotes) the translation line. Also, it does not add an empty line if the
 	     translation is empty. This command has been introduced in \cvt\ 2.0.
 	     The markup can be customized by redefining the following macro:
-\begin{lstlisting}[moretexcs={glosslinetrans,covenquote}]
-\newcommand*\glosslinetrans[1]{\ifcov@enquote@tl\covenquote{#1}\else#1\fi}
+\begin{lstlisting}[moretexcs={glosslinetrans,covenquote,fstl,ifcov@enquote@tl}]
+\newcommand*\glosslinetrans[1]{%
+	\bgroup\fstl\ifcov@enquote@tl\covenquote{#1}\else#1\fi\egroup}
 \end{lstlisting}
 	     Note that for \jcsmacro{covenquote}, as used in the default definition, \cvt\ checks at
 	     document begin whether the \textsf{csquotes} \cite{csquotes} package is loaded. If so,
 	     it uses its language-sensitive \jcsmacro{enquote*} macro for enquoting the translation.
 	     If not, a fallback quotation (using English single quotation marks) is used. The usage of
 	     \textsf{csquotes} is highly recommended! The \jcsmacro{ifcov@enquote@tl} boolean checks 
-	     for the \joption{enquotetl} option of the gloss macro and is relevant also for low-level commands
-	     if you set this option via \jcsmacro{setglossoptions}.
+	     for the \joption{enquotetl} option of the gloss macro. The macro \jcsmacro{fslt} holds the font
+	     settings as set via the \joption{fslt} gloss option. These are both relevant also for low-level
+	     commands if you set the respective options via \jcsmacro{setglossoptions}.
 	\item[\jcsmacro{glosspreamble\{\jparam{arbitrary text}\}}] lets you enter text that is printed immediately
 	     before the interlinearized gloss (on a line of its own). This might be useful, for instance,
 	     to give context information, to specify the language or the source in case of cited glosses.
@@ -1343,8 +1348,8 @@ it.
 	      supersedes the two boolean, mutually exclusive options \joption{ownfncounter}
 	      and \joption{ownfncounter*} (which are still supported for backwards
 	      compatibility reasons).
-	\item New gloss options: \joption{fspreamble}, \joption{fspostamble}, \joption{enquotetl}
-	      for full customization of glosses via options (see sec.~\ref{sec:gloss}).
+	\item New gloss options: \joption{fspreamble}, \joption{fspostamble}, \joption{fstl},
+		  and \joption{enquotetl} for full customization of glosses via options (see sec.~\ref{sec:gloss}).
 	\item Documentation improvements.
 \end{itemize}
 

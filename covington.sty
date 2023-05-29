@@ -512,6 +512,7 @@
 
 \def\cov@fsglpreamble@global{\cov@normalfont}
 \def\cov@fsglpostamble@global{\cov@normalfont}
+\def\cov@fstl@global{\cov@normalfont}
 
 % 2019-05-07: optional preceding gloss text (non-interlinearized)
 \def\fsglpreamble{\cov@fsglpreamble@global}
@@ -767,7 +768,8 @@
 
 % V. 2.0: enquotable translation line
 \newif\ifcov@enquote@tl\cov@enquote@tltrue
-\newcommand*\glosslinetrans[1]{\ifcov@enquote@tl\covenquote{#1}\else#1\fi}
+\def\fstl{\cov@fstl@global}
+\newcommand*\glosslinetrans[1]{\bgroup\fstl\ifcov@enquote@tl\covenquote{#1}\else#1\fi\egroup}
 \newcommand*\glot[1]{%
   \def\tempx{#1}%
   \ifx\tempx\empty\gln
@@ -805,7 +807,9 @@
     % 7. Gloss postamble font settings
     fspostamble.store = \cov@fsglpostamble@local,
     % 8. Enquote translation line
-    enquotetl.if = cov@enquote@tl
+    enquotetl.if = cov@enquote@tl,
+    % 9. translation line font settings
+    fstl.store = \cov@fstl@local
 }
 
 \DeclareKeys[gcovgloss]
@@ -827,8 +831,15 @@
     % 7. Gloss postamble font settings
     fspostamble.store = \cov@fsglpostamble@global,
     % 8. Enquote translation line
-    enquotetl.if = cov@enquote@tl@global
+    enquotetl.if = cov@enquote@tl@global,
+    % 9. translation line font settings
+    fstl.store = \cov@fstl@global
 }
+
+
+\let\cov@fsglpreamble@local\relax%
+\let\cov@fsglpostamble@local\relax%
+\let\cov@fstl@local\relax%
 
 %
 % General setting option
@@ -868,6 +879,9 @@
   \@ifundefined{cov@fsglpostamble@local}%
        {\let\fsglpostamble\cov@fsglpostamble@global}%
        {\let\fsglpostamble\cov@fsglpostamble@local}%
+  \@ifundefined{cov@fstl@local}%
+       {\let\fstl\cov@fstl@global}%
+       {\let\fstl\cov@fstl@local}%
   \xgll #2\xgle
         #3\xgle
   \ifcov@tlr
@@ -888,6 +902,7 @@
   \let\lglosslinethree\relax%
   \let\cov@fsglpreamble@local\relax%
   \let\cov@fsglpostamble@local\relax%
+  \let\cov@fstl@local\relax%
 }
 
 % 2. \trigloss[<opts>]{<line 1>}{<line 2>}{<line 3>}{<translation>}
@@ -924,6 +939,9 @@
   \@ifundefined{cov@fsglpostamble@local}%
        {\let\fsglpostamble\cov@fsglpostamble@global}%
        {\let\fsglpostamble\cov@fsglpostamble@local}%
+  \@ifundefined{cov@fstl@local}%
+       {\let\fstl\cov@fstl@global}%
+       {\let\fstl\cov@fstl@local}%
   \xglll #2\xgle
          #3\xgle
          #4\xgle
@@ -945,6 +963,7 @@
   \let\lglosslinethree\relax%
   \let\cov@fsglpreamble@local\relax%
   \let\cov@fsglpostamble@local\relax%
+  \let\cov@fstl@local\relax%
 }
 
 
