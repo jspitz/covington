@@ -403,40 +403,40 @@
 \let\exfmt\arabic
 
 \newenvironment{covexamples}[1][]{%         % define "examples" environment
-\ifx#1\empty\else\SetKeys[covexpl]{#1}\fi%
-\begin{list}%
-{%
-  \covexamplenofs% font
-  \ifcov@infootnote
-    \covexnumberfn{\thecovfnex}%
-  \else
-    \covexnumber{\@@exampleno}%
-  \fi
-}%
-{%
-  \addtolength{\labelwidth}{\examplenumbersep}%
-  \addtolength{\leftmargin}{\examplenumbersep}%
-  \addtolength{\leftmargin}{\exampleind}%
-  \ifcov@infootnote
-    \setcounter{covexsave}{\arabic{covfnex}}%
-    \usecounter{covfnex}%
-    \setcounter{covfnex}{\arabic{covexsave}}%
-  \else
-    \ifownexcounter
-      \renewcommand{\thecovex}{\exfmt{covex}}%
-      \setcounter{covexsave}{\arabic{covex}}%
-      \usecounter{covex}%                          % sets it to zero, unwantedly
-      \setcounter{covex}{\arabic{covexsave}}%   % restores previous value
+  \ifx#1\empty\else\SetKeys[covexpl]{#1}\fi%
+  \begin{list}%
+  {%
+    \covexamplenofs% font
+    \ifcov@infootnote
+      \covexnumberfn{\thecovfnex}%
     \else
-      \renewcommand{\theequation}{\exfmt{equation}}%
-      \setcounter{covexsave}{\arabic{equation}}%
-      \usecounter{equation}%                          % sets it to zero, unwantedly
-      \setcounter{equation}{\arabic{covexsave}}%   % restores previous value
+      \covexnumber{\@@exampleno}%
     \fi
-  \fi
-  \setlength{\listparindent}{0pt}%
-  \def\makelabel##1{##1\hfil}%       % put labels flushleft in space available
-}%
+  }%
+  {%
+    \addtolength{\labelwidth}{\examplenumbersep}%
+    \addtolength{\leftmargin}{\examplenumbersep}%
+    \addtolength{\leftmargin}{\exampleind}%
+    \ifcov@infootnote
+      \setcounter{covexsave}{\arabic{covfnex}}%
+      \usecounter{covfnex}%
+      \setcounter{covfnex}{\arabic{covexsave}}%
+    \else
+      \ifownexcounter
+        \renewcommand{\thecovex}{\exfmt{covex}}%
+        \setcounter{covexsave}{\arabic{covex}}%
+        \usecounter{covex}%                          % sets it to zero, unwantedly
+        \setcounter{covex}{\arabic{covexsave}}%   % restores previous value
+      \else
+        \renewcommand{\theequation}{\exfmt{equation}}%
+        \setcounter{covexsave}{\arabic{equation}}%
+        \usecounter{equation}%                          % sets it to zero, unwantedly
+        \setcounter{equation}{\arabic{covexsave}}%   % restores previous value
+      \fi
+    \fi
+    \setlength{\listparindent}{0pt}%
+    \def\makelabel##1{##1\hfil}%       % put labels flushleft in space available
+  }%
   \raggedright%  text is flushleft, not justified
   \covexamplefs%
 }%
