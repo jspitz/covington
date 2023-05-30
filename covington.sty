@@ -295,10 +295,14 @@
   \def\cov@tmpfmtright{}%
   \cov@parse@number@loop#1\relax%
   \expandafter\let\csname#2\endcsname\cov@tmpfmt%
+  \expandafter\let\csname cov@tmpfmtleft#3\endcsname\cov@tmpfmtleft%
+  \expandafter\let\csname cov@tmpfmtright#3\endcsname\cov@tmpfmtright%
   \ifcov@have@exno%
-      \expandafter\renewcommand\csname#3\endcsname[1]{\cov@tmpfmtleft##1\cov@tmpfmtright}%
+      \expandafter\renewcommand\csname#3\endcsname[1]{%
+          \csname cov@tmpfmtleft#3\endcsname##1\csname cov@tmpfmtright#3\endcsname}%
   \else%
-      \expandafter\renewcommand\csname#3\endcsname[1]{\cov@tmpfmtleft\cov@tmpfmtright}%
+      \expandafter\renewcommand\csname#3\endcsname[1]{%
+          \csname cov@tmpfmtleft#3\endcsname\csname cov@tmpfmtright#3\endcsname}%
   \fi%
 }
 
