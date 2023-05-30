@@ -329,12 +329,13 @@ The \jenv{example} environment provides the following options:
 	    negative values will decrease the indentation of the example.
 	 \item[\joption{addnumbersep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
 	    Increases or (with negative values) decreases the spacing between example number and example.
-	 \item[\joption{numberformat=\{\jparam{template}\}}] Default: \emph{(1)}.
-	    The format of the example number. The option takes templates as known from the \textsf{enumerate} package.
+	 \item[\joption{numberformat=\{\jparam{template}\}}] Default: \verb|{(1)}|.
+	    The format of the example number. The option takes templates as known from the \textsf{enumerate}
+	    package \cite{enumerate}.
 	    Arabic numbering is represented by \jparam{1}, Roman by \jparam{i} and \jparam{I}, alphabetic by
 	    \jparam{a} and \jparam{A}. Any text before and after the number are inserted as is, e.\,g.,
 	    \verb|numberformat={[a.]}| results in lower alphabetic numbering followed by a dot, embraced in brackets.
-	 \item[\joption{fnnumberformat=\{\jparam{template}\}}] Default: \emph{(i)}.
+	 \item[\joption{fnnumberformat=\{\jparam{template}\}}] Default: \verb|{(i)}|.
 	    The format of the example number if \joption{fnexamplecounter=own} or \joption{fnexamplecounter=own-reset}
 	    and example is in a footnote. For the template format, see \joption{numberformat}.
 \end{description}
@@ -516,22 +517,23 @@ The \jenv{subexamples}/\jenv{covsubexamples} environment provides the following 
 	\item[\joption{fspostamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
 		Adjusts the font settings of the postamble text.
 		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
-	\item[\joption{leftmargin=\{\jparam{length}\}}] Default: \jparam{0pt}.
+	\item[\joption{leftmargin=\{\jparam{length}\}}] Default: \verb|{0pt}|.
 		Lets you change the indentation of subexamples (including number). Positive values will increase,
 		negative values will decrease the indentation of the example.
 	\item[\joption{addnumbersep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
 		Increases or (with negative values) decreases the spacing between example number and subnumber.
 	\item[\joption{addsubnumbersep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
 		Increases or (with negative values) decreases the spacing between example subnumber and example.
-	\item[\joption{numberformat=\{\jparam{template}\}}] Default: \emph{(1)}.
-		The format of the example number. The option takes templates as known from the \textsf{enumerate} package.
+	\item[\joption{numberformat=\{\jparam{template}\}}] Default: \verb|{(1)}|.
+		The format of the example number. The option takes templates as known from the \textsf{enumerate}
+		package \cite{enumerate}.
 		Arabic numbering is represented by \jparam{1}, Roman by \jparam{i} and \jparam{I}, alphabetic by
 		\jparam{a} and \jparam{A}. Any text before and after the number are inserted as is, e.\,g.,
 		\verb|numberformat={[a.]}| results in lower alphabetic numbering followed by a dot, embraced in brackets.
-	\item[\joption{fnnumberformat=\{\jparam{template}\}}] Default: \emph{(i)}.
+	\item[\joption{fnnumberformat=\{\jparam{template}\}}] Default: \verb|{(i)}|.
 		The format of the example number if \joption{fnexamplecounter=own} or \joption{fnexamplecounter=own-reset}
 		and example is in a footnote. For the template format, see \joption{numberformat}.
-	\item[\joption{subnumberformat=\{\jparam{template}\}}] Default: \emph{(a)}.
+	\item[\joption{subnumberformat=\{\jparam{template}\}}] Default: \verb|{(a)}|.
 		The format of the sub-example number. For the template format, see \joption{numberformat}.
 \end{description}
 %
@@ -639,52 +641,32 @@ for instance, will yield:
 
 \subsubsection{Customizing number display}\label{sec:custno}
 
-You can change the display of the example number by redefining (via \jfcsmacro{renewcommand*}) the macro
-\jcsmacro{covexnumber}, which has the following default definition:
-\begin{lstlisting}[moretexcs={covexnumber}]
-\newcommand*\covexnumber[1]{(#1)}
-\end{lstlisting}
-%
-with the variable \texttt{\#1} representing the number.
-If you use \joption{ownfncounter}, example numbers in footnotes use this macro as well. If you want
-a different display, you can redefine
-\begin{lstlisting}[moretexcs={covexnumberfn,covexnumber}]
-\newcommand*\covexnumberfn[1]{\covexnumber{#1}}
-\end{lstlisting}
-%
-The separate footnote example number with \joption{ownfncounter} uses lowercase Roman (\jfcsmacro{roman})
-numbering by default.
-By redefining the macro \jcsmacro{fnexfmt} which links to \jfcsmacro{roman} by
-default, this can be changed. E.\,g., to get an arabic number instead, do:
-\begin{lstlisting}[moretexcs={fnexfmt}]
-\let\fnexfmt\arabic
-\end{lstlisting}
-%
-The display of the subexample letter can be customized by redefining
-the macro \jcsmacro{covsubexnumber}, which has the following default definition:
-\begin{lstlisting}[moretexcs={covsubexnumber}]
-\newcommand*\covsubexnumber[1]{(#1)}
-\end{lstlisting}
-%
-To remove the parentheses from the subexample letter, for instance, to this:
-\begin{lstlisting}[moretexcs={covsubexnumber}]
-\renewcommand*\covsubexnumber[1]{#1}
-\end{lstlisting}
-%
-By default, subexamples use lower alphabetic numbering (\jfcsmacro{alph}). If you want to change that,
-you can redefine the macro \jcsmacro{subexfmt} which links to \jfcsmacro{alph} by default, e.\,g. like so:
-\begin{lstlisting}[moretexcs={subexfmt}]
-\let\subexfmt\roman
-\end{lstlisting}
-%
-to achieve
-\bgroup
-\let\subexfmt\roman
-\begin{subexamples}
-	\item This is a subexample.
-	\item This is another one.
+You can easily change the display of the example number or subnumber globally or locally for only one
+occurrence via the example options. These take a `mini template' as known from the \textsf{enumerate}
+package \cite{enumerate}. In these templates, the first occurrence of the characters \emph{1}, \emph{i},
+\emph{I}, \emph{a}, and \emph{A} represents the numeric system where the respective character marks the first positive
+value. All the rest of the template (including following occurrences of the mentioned characters) is interpreted literally.
+For instance, \emph{(1)} is an alphabetic number in parentheses, (a) a lower alphabetic value, etc.
+
+So if you want the example number to have a dot after the number, simply use the option \joption{numberformat=\{(1.)\}}
+To remove the parentheses from the subexample letter, for instance, use \joption{subnumberformat=\{a\}}:
+\begin{lstlisting}[moretexcs={numberformat,subnumberformat}]
+\begin{subexamples}[numberformat={(1.)}, subnumberformat={a}]
+\item This is a statement
+\item This is an adjacent statement.
 \end{subexamples}
-\egroup
+\end{lstlisting}
+
+\begin{subexamples}[numberformat={(1.)}, subnumberformat={a}]
+	\item This is a statement
+	\item This is an adjacent statement.
+\end{subexamples}
+%
+Note that the \joption{numberformat} option by default also changes the numbers of examples in footnotes, even if
+\joption{fnexamplecounter=own} or \joption{fnexamplecounter=own-reset} is used. This does not apply to the counter format,
+however. So \joption{numberformat=\{[1.])\}} will also make the example numbers in footnote appear in brackets and with the 
+dot, but it will still use the lower Roman numbering. Use \joption{fnnumberformat} to fully change the appearance.
+
 
 \subsubsection{Customizing example markup}\label{sec:custexmk}
 
@@ -1594,6 +1576,8 @@ it.
 		by morpheme glosses}. Revised version of February 2008. Department
 		of Linguistics, Max Plank Institute for Evolutionary Anthropology.
 		\url{http://www.eva.mpg.de/lingua/resources/glossing-rules.php}.
+	\bibitem{enumerate} Carlisle, David: \emph{The enumerate package}. July 23, 2015.
+	    \url{https://www.ctan.org/pkg/enumerate}.
 	\bibitem{drs} Dimitriadis, Alexis: \emph{drs -- Typeset Discourse Representation Structures (DRS)}.
 	     June 10, 2010. \url{https://ctan.org/pkg/drs}.
 	\bibitem{sdrt} Isambert, Paul: \emph{sdrt -- Macros for Segmented Discourse Representation Theory}.
