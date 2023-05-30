@@ -37,6 +37,7 @@ The package consists of the following files:
 	- Introduce new package choice-option fnexamplecounter that supersedes
 	  the two boolean, mutually exclusive options ownfncounter and ownfncounter*
 	  (which are still supported for backwards compatibility reasons).
+	- Allow to globally set example options via the new macro \setexampleoptions.
 	- New example options: fs, fsno, fspreamble, fspostamble, leftmargin,
 	  addnumbersep, addsubnumbersep, numberformat, subnumberformat, fnnumberformat.
 	- New gloss options: fspreamble, fspostamble, fstl, and enquotetl for full

@@ -602,6 +602,11 @@ Customization possibilities of examples and subexamples are elaborated in the fo
 
 \subsection{Customization of examples}\label{sec:custex}
 
+All example environments can be customized in many aspects via the example options. If passed as an
+optional argument to the respective environment, the change only applies to this very environment.
+If passed via \jcsmacro{setexampleoptions}, the change will apply to any subsequent example environment
+unless a local option overrides a setting.
+
 \subsubsection{Customizing example spacing}\label{sec:custsp}
 
 If you need more space between the example number and the text (or the subnumber in case of subexamples),
@@ -1369,6 +1374,7 @@ it.
 	      supersedes the two boolean, mutually exclusive options \joption{ownfncounter}
 	      and \joption{ownfncounter*} (which are still supported for backwards
 	      compatibility reasons).
+	\item Allow to globally set example options via the new macro \jcsmacro{setexampleoptions}.
 	\item New example options: \joption{fs}, \joption{fsno}, \joption{fspreamble}, \joption{fspostamble},
 		  \joption{leftmargin}, \joption{addnumbersep}, \joption{addsubnumbersep}, \joption{numberformat},
 		  \joption{subnumberformat}, \joption{fnnumberformat} (see sec.~\ref{sec:ex}).

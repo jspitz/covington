@@ -516,6 +516,8 @@
 
 \newenvironment{covsubexamples}[1][]%         % define "subexamples" environment
 {%
+    \let\cov@xp\relax%
+    \let\cov@xpst\relax%
     \ifx#1\empty\else\SetKeys[covsubexpl]{#1}\fi%
     \begin{covexample}%
     \@ifundefined{cov@sxp}{}{\bgroup\subexpreamblefs\cov@sxp\egroup}% insert preamble if given
@@ -548,6 +550,47 @@
                  version, or use the force package option.}
   \fi
 }
+
+\DeclareKeys[gcovexamples]
+{
+    % font settings
+    fs.store = \covexamplefs,
+    % font settings
+    fsno.store = \covexamplenofs,
+    % preamble
+    preamble.store = \cov@xp,
+    % postamble
+    postamble.code = { \def\cov@xpst{#1}\@cov@expst@starfalse },
+    % postamble* (no space)
+    postamble*.code = { \def\cov@xpst{#1}\@cov@expst@startrue },
+    % preamble text
+    subpreamble.store = \cov@sxp,
+    % postamble text
+    subpostamble.store = \cov@sxpst,
+    % preamble font settings
+    fspreamble.store = \expreamblefs,
+    % postamble font settings
+    fspostamble.store = \expostamblefs,
+    % preamble font settings
+    fssubpreamble.store = \subexpreamblefs,
+    % postamble font settings
+    fssubpostamble.store = \subexpostamblefs,
+    % leftmargin
+    leftmargin.code = { \setlength{\exampleind}{#1} },
+    % addnumbersep
+    addnumbersep.code = { \setlength{\examplenumbersep}{#1} },
+    % addsubnumbersep
+    addsubnumbersep.code = { \setlength{\subexamplenumbersep}{#1} },
+    % numberformat={template}
+    numberformat.code = { \cov@parse@number@template{#1}{exfmt}{covexnumber} },
+    % fnnumberformat={template}
+    fnumberformat.code = { \cov@parse@number@template{#1}{fnexfmt}{covexnumberfn} },
+    % subnumberformat={template}
+    subnumberformat.code = { \cov@parse@number@template{#1}{subexfmt}{covsubexnumber} }
+}
+
+% General setting option
+\newcommand*\setexampleoptions[1]{\SetKeys[gcovexamples]{#1}}
 
 
 
