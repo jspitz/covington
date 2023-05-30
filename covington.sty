@@ -244,6 +244,64 @@
 %            with packages/classes that roll their own example environment
 %            (such as beamer).
 
+% Helper function for numbering templates
+\newif\ifcov@have@exno\cov@have@exnofalse
+
+\def\cov@parse@number@loop#1{%
+   \ifx\relax#1\else%
+      \cov@parse@number@loop@body{#1}\expandafter\cov@parse@number@loop%
+   \fi%
+}
+
+\newcommand\cov@parse@number@loop@body[1]{%
+  \ifcov@have@exno%
+     \let\cov@@tmpfmtright\cov@tmpfmtright%
+     \edef\cov@tmpfmtright{\cov@@tmpfmtright#1}%
+  \else%
+     \ifx 1#1%
+        \cov@have@exnotrue%
+        \let\cov@tmpfmt\arabic%
+     \else%
+        \ifx i#1%
+           \cov@have@exnotrue%
+           \let\cov@tmpfmt\roman%
+        \else%
+           \ifx I#1%
+               \cov@have@exnotrue%
+               \let\cov@tmpfmt\Roman%
+           \else%
+               \ifx a#1%
+                   \cov@have@exnotrue%
+                   \let\cov@tmpfmt\alph%
+               \else%
+                   \ifx A#1%
+                       \cov@have@exnotrue%
+                       \let\cov@tmpfmt\Alph%
+                   \else%
+                       \let\cov@@tmpfmtleft\cov@tmpfmtleft%
+                       \edef\cov@tmpfmtleft{\cov@@tmpfmtleft#1}%
+                   \fi%
+               \fi%
+           \fi%
+        \fi%
+     \fi%
+  \fi%
+}%
+
+\newcommand\cov@parse@number@template[3]{%
+  \cov@have@exnofalse%
+  \let\cov@tmpfmt\roman%
+  \def\cov@tmpfmtleft{}%
+  \def\cov@tmpfmtright{}%
+  \cov@parse@number@loop#1\relax%
+  \expandafter\let\csname#2\endcsname\cov@tmpfmt%
+  \ifcov@have@exno%
+      \expandafter\renewcommand\csname#3\endcsname[1]{\cov@tmpfmtleft##1\cov@tmpfmtright}%
+  \else%
+      \expandafter\renewcommand\csname#3\endcsname[1]{\cov@tmpfmtleft\cov@tmpfmtright}%
+  \fi%
+}
+
 \newif\if@cov@expst@star\@cov@expst@starfalse
 
 % 2022-08-20 (v. 2.8): optional preceding example text
@@ -274,32 +332,10 @@
     leftmargin.code = { \setlength{\exampleind}{#1} },
     % addnumbersep
     addnumbersep.code = { \setlength{\examplenumbersep}{#1} },
-    % numberformat=<arabic|roman|Roman|alph|Alph>
-    numberformat.choice:,
-    % a. arabic
-    numberformat / arabic.code:n = { \let\exfmt\arabic },
-    % b. roman
-    numberformat / roman.code:n = { \let\exfmt\roman },
-    % c. Roman
-    numberformat / Roman.code:n = { \let\exfmt\Roman },
-    % c. alph
-    numberformat / alph.code:n = { \let\exfmt\alph },
-    % c. Alph
-    numberformat / Alph.code:n = { \let\exfmt\Alph },
-    numberformat.default:n = { arabic },
-    % fnnumberformat=<arabic|roman|Roman|alph|Alph>
-    fnnumberformat.choice:,
-    % a. arabic
-    fnnumberformat / arabic.code:n = { \let\fnexfmt\arabic },
-    % b. roman
-    fnnumberformat / roman.code:n = { \let\fnexfmt\roman },
-    % c. Roman
-    fnnumberformat / Roman.code:n = { \let\fnexfmt\Roman },
-    % c. alph
-    fnnumberformat / alph.code:n = { \let\fnexfmt\alph },
-    % c. Alph
-    fnnumberformat / Alph.code:n = { \let\fnexfmt\Alph },
-    fnnumberformat.default:n = { roman }
+    % numberformat={template}
+    numberformat.code = { \cov@parse@number@template{#1}{exfmt}{covexnumber} },
+    % fnnumberformat={template}
+    fnumberformat.code = { \cov@parse@number@template{#1}{fnexfmt}{covexnumberfn} }
 }
 
 \newenvironment{covexample}[1][]{%
@@ -459,45 +495,12 @@
     addnumbersep.code = { \setlength{\examplenumbersep}{#1} },
     % addnumbersep
     addsubnumbersep.code = { \setlength{\subexamplenumbersep}{#1} },
-    % numberformat=<arabic|roman|Roman|alph|Alph>
-    numberformat.choice:,
-    % a. arabic
-    numberformat / arabic.code:n = { \let\exfmt\arabic },
-    % b. roman
-    numberformat / roman.code:n = { \let\exfmt\roman },
-    % c. Roman
-    numberformat / Roman.code:n = { \let\exfmt\Roman },
-    % c. alph
-    numberformat / alph.code:n = { \let\exfmt\alph },
-    % c. Alph
-    numberformat / Alph.code:n = { \let\exfmt\Alph },
-    numberformat.default:n = { arabic },
-    % fnnumberformat=<arabic|roman|Roman|alph|Alph>
-    fnnumberformat.choice:,
-    % a. arabic
-    fnnumberformat / arabic.code:n = { \let\fnexfmt\arabic },
-    % b. roman
-    fnnumberformat / roman.code:n = { \let\fnexfmt\roman },
-    % c. Roman
-    fnnumberformat / Roman.code:n = { \let\fnexfmt\Roman },
-    % c. alph
-    fnnumberformat / alph.code:n = { \let\fnexfmt\alph },
-    % c. Alph
-    fnnumberformat / Alph.code:n = { \let\fnexfmt\Alph },
-    fnnumberformat.default:n = { roman },
-    % subnumberformat=<arabic|roman|Roman|alph|Alph>
-    subnumberformat.choice:,
-    % a. arabic
-    subnumberformat / arabic.code:n = { \let\subexfmt\arabic },
-    % b. roman
-    subnumberformat / roman.code:n = { \let\subexfmt\roman },
-    % c. Roman
-    subnumberformat / Roman.code:n = { \let\subexfmt\Roman },
-    % c. alph
-    subnumberformat / alph.code:n = { \let\subexfmt\alph },
-    % c. Alph
-    subnumberformat / Alph.code:n = { \let\subexfmt\Alph },
-    subnumberformat.default:n = { alph }
+    % numberformat={template}
+    numberformat.code = { \cov@parse@number@template{#1}{exfmt}{covexnumber} },
+    % fnnumberformat={template}
+    fnumberformat.code = { \cov@parse@number@template{#1}{fnexfmt}{covexnumberfn} },
+    % subnumberformat={template}
+    subnumberformat.code = { \cov@parse@number@template{#1}{subexfmt}{covsubexnumber} }
 }
 
 \newlength\subexamplenumbersep

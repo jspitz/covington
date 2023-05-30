@@ -329,11 +329,14 @@ The \jenv{example} environment provides the following options:
 	    negative values will decrease the indentation of the example.
 	 \item[\joption{addnumbersep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
 	    Increases or (with negative values) decreases the spacing between example number and example.
-	 \item[\joption{numberformat=\{\jparam{arabic|roman|Roman|alph|Alph}\}}] Default: \emph{arabic}.
-	    The format of the example number.
-	 \item[\joption{fnnumberformat=\{\jparam{arabic|roman|Roman|alph|Alph}\}}] Default: \emph{roman}.
+	 \item[\joption{numberformat=\{\jparam{template}\}}] Default: \emph{(1)}.
+	    The format of the example number. The option takes templates as known from the \textsf{enumerate} package.
+	    Arabic numbering is represented by \jparam{1}, Roman by \jparam{i} and \jparam{I}, alphabetic by
+	    \jparam{a} and \jparam{A}. Any text before and after the number are inserted as is, e.\,g.,
+	    \verb|numberformat={[a.]}| results in lower alphabetic numbering followed by a dot, embraced in brackets.
+	 \item[\joption{fnnumberformat=\{\jparam{template}\}}] Default: \emph{(i)}.
 	    The format of the example number if \joption{fnexamplecounter=own} or \joption{fnexamplecounter=own-reset}
-	    and example is in a footnote.
+	    and example is in a footnote. For the template format, see \joption{numberformat}.
 \end{description}
 %
 If you want the postamble text be on a line of its own, simply add a line break (i.\,e., \verb|postamble={\\Text}|).
@@ -520,13 +523,16 @@ The \jenv{subexamples}/\jenv{covsubexamples} environment provides the following 
 		Increases or (with negative values) decreases the spacing between example number and subnumber.
 	\item[\joption{addsubnumbersep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
 		Increases or (with negative values) decreases the spacing between example subnumber and example.
-	\item[\joption{numberformat=\{\jparam{arabic|roman|Roman|alph|Alph}\}}] Default: \emph{arabic}.
-		The format of the example number.
-	\item[\joption{subnumberformat=\{\jparam{arabic|roman|Roman|alph|Alph}\}}] Default: \emph{alph}.
-		The format of the sub-example number.
-	\item[\joption{fnnumberformat=\{\jparam{arabic|roman|Roman|alph|Alph}\}}] Default: \emph{roman}.
+	\item[\joption{numberformat=\{\jparam{template}\}}] Default: \emph{(1)}.
+		The format of the example number. The option takes templates as known from the \textsf{enumerate} package.
+		Arabic numbering is represented by \jparam{1}, Roman by \jparam{i} and \jparam{I}, alphabetic by
+		\jparam{a} and \jparam{A}. Any text before and after the number are inserted as is, e.\,g.,
+		\verb|numberformat={[a.]}| results in lower alphabetic numbering followed by a dot, embraced in brackets.
+	\item[\joption{fnnumberformat=\{\jparam{template}\}}] Default: \emph{(i)}.
 		The format of the example number if \joption{fnexamplecounter=own} or \joption{fnexamplecounter=own-reset}
-		and example is in a footnote.
+		and example is in a footnote. For the template format, see \joption{numberformat}.
+	\item[\joption{subnumberformat=\{\jparam{template}\}}] Default: \emph{(a)}.
+		The format of the sub-example number. For the template format, see \joption{numberformat}.
 \end{description}
 %
 For instance,
