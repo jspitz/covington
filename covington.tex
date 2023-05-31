@@ -97,8 +97,8 @@
 %
 % Titling
 %
-\def\pversion{Version 2.9}
-\def\pdate{May 26, 2023}
+\def\pversion{Version 2.10dev}
+\def\pdate{May 31, 2023}
 
 \title{\textbf{The \cvt\ Package\\\Large Macros for Linguistics}}
 \author{Michael A. Covington \and J\"urgen Spitzm\"uller\thanks{Current maintainer.
@@ -112,7 +112,7 @@
 
 \begin{abstract}
 \noindent This package, initially a collection of Michael A. Covington's private macros, provides
-numerous minor \LaTeX\ enhancements for linguistics, including multiple diacritics on the
+numerous customizable \LaTeX\ macros aimed at linguistics, including multiple diacritics on the
 same letter, interlinear glosses (word-by-word translations), Discourse Representation Structures,
 example numbering, and semantic markup.
 \end{abstract}
@@ -128,11 +128,14 @@ for typing some special notations common in linguistics.%
 \footnote{The package has a long history. It started off as a collection of private macros back in the
 \LaTeX\ 2.09 days and was initially released as \texttt{covingtn.sty} (following the old 8.3 \textsc{fat}
 file name limit). In em\TeX\ under \textsc{ms-dos}, the file was distributed as \texttt{covingto.sty}.
-Eventually, it has been renamed to \cvt\ and adapted to \LaTeXe.}
+Eventually, it has been renamed to \cvt\ and adapted to \LaTeXe. The current version requires a resonably
+recent version of \LaTeXe, as it employs some newer kernel features.}
 
-To use \cvt, load the package by adding the command
-\lstinline"\usepackage{covington}" to your document preamble.
-The package has the following options:
+To use \cvt, load the package as usual by adding the command 
+\begin{lstlisting}
+\usepackage[<options>]{covington}
+\end{lstlisting}
+to your document preamble. The package has the following options to customize its behavior:
 \begin{description}
 	\item{\joption{force=\jparam{true|false}}} Default: \emph{false}.
 		Force the redefinition of environments that have already been defined by other packages or the class.
@@ -145,7 +148,7 @@ The package has the following options:
 		\Cvt\ sets \jfcsmacro{raggedbottom} and redefines the value of the \jfcsmacro{textfloatsep} length.
 		This just follows the preferences of the original package author and is not necessary
 		for the package's functionality. Yet for backwards compatibility reasons, we cannot change this.
-		Thus, we provide the option described here to opt out this presetting.
+		Thus, we provide the option described here to opt out this presetting. And we actually encourage you to use it.
 	\item{\joption{noglossbreaks=\jparam{true|false}}} Default: \emph{false}.
 		If this option is set to \joption{true}, \cvt\ will try hard to prevent page breaks within glosses.
 	
@@ -241,10 +244,11 @@ and alpha-numerically labeled sub-examples (sec.~\ref{sec:subexs}).
 typeset in italics, as common in linguistics, you can adjust the way the numbers
 are displayed, and you can customize the spacing and indentation if the default
 settings do not suit you. This can be achieved via example options that can be set locally to a specific
-environment as opptional arguments or globally via the \jcsmacro{setexampleoptions} macro.
+environment as opptional arguments or globally via the \jcsmacro{setexampleoptions} macro (see sec.~\ref{sec:ex}
+for details).
 
 All numbered examples can be referred to in the text via \jfcsmacro{label} and \jfcsmacro{ref} as usual,
-and with a convenience macro \jcsmacro{pxref} that adds the parentheses that are usually used
+or with a convenience macro \jcsmacro{pxref} that adds the parentheses that are usually used
 in example references (see sec.~\ref{sec:ref} for details).
 
 \subsection{Example numbers}\label{sec:exno}
@@ -315,7 +319,7 @@ The \jenv{example} environment provides the following options which also allow f
 		a space. This might be preferred if you want to add a footnote.
 		Note that \joption{postamble} and \joption{postamble*} are mutually exclusive.
 		
-		If you want the postamble text be on a line of its own, simply add a line break
+		If you want the postamble text to be on a line of its own, simply add a line break
 		(i.\,e., \verb|postamble={\\Text}| or, to the same effect, \verb|postamble*={\\Text}|).
 	\item[\joption{fs=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
 		Adjusts the font settings of the example text.
@@ -400,8 +404,9 @@ To this end, we provide specific macros, namely \jcsmacro{expreamble} and \jcsma
 where they should appear, and which take the same markup than the texts passed via \joption{preamble} or \joption{postamble}
 option in the \jenv{example} environment.
 
-Hence, also here, the advantage over just adding text as is in the example is that an own, globally settable markup, is used.
-This is particularly relevant if you globally set examples to be italicized via the \joption{fs} option.
+Hence, also here, the advantage over just adding text as is in the example is that an own, globally settable markup is used.
+This is particularly relevant if you globally set examples to be italicized via the \joption{fs} option (as we have done it
+in our examples in sec.~\ref{sec:exex}).
 
 Consider:
 \begin{lstlisting}[moretexcs={expreamble}]
@@ -425,9 +430,9 @@ To see the advantage more clearly, let us locally set the markup of the example 
 \begin{lstlisting}[moretexcs={expreamble}]
 \begin{examples}[fs={\itshape}]
 \item \expreamble{Here is Jakobson's famous poetic example:}
-I like Ike!
+      I like Ike!
 \item \expreamble{Here is the less poetic variant:}
-I am in favor of Mr. Eisenhower.
+      I am in favor of Mr. Eisenhower.
 \end{examples}
 \end{lstlisting}
 %
@@ -454,7 +459,7 @@ which results in:
 \end{examples}
 %
 Like in any other \LaTeX\ list, the numbering can be freely set via the optional argument of \jfcsmacro{item}.
-For a somewhat practical example, observe:
+For a somewhat realistic example, observe how:
 \begin{lstlisting}[moretexcs={covexnumber,exampleno}]
 \begin{examples}
 \item A proposition.
@@ -462,7 +467,7 @@ For a somewhat practical example, observe:
 \end{examples}
 \end{lstlisting}
 %
-which results in:
+results in:
 \begin{examples}
 	\item A proposition.
 	\item[\covexnumber{\exampleno*'}] An alternative proposition.
@@ -472,7 +477,7 @@ which results in:
 \subsection[The \texttt{subexamples} environment]{The \jenv{subexamples} environment}\label{sec:subexs}
 
 Sometimes a set of (paradigmatic) sub-examples gets only one main example number with alphabetic sub-numbering,
-as in \pxref{sbex}. An ad-hoc way to achieve this is to use \jfenv{itemize} or \jfenv{enumerate}
+as in \pxref{sbex} below. An ad-hoc way to achieve this is to use \jfenv{itemize} or \jfenv{enumerate}
 within an example with customized items, like this:
 \begin{lstlisting}
 \begin{example}
@@ -513,19 +518,20 @@ prints as:
 	\item This is the second sentence.
 \end{subexamples}
 %
-The \jenv{subexamples}/\jenv{covsubexamples} environment provides the same options than the example and examples
-environment (see sec.~\ref{sec:ex}) with the following deviations and additions:
+The \jenv{subexamples}/\jenv{covsubexamples} environment provides the same options than the \jenv{example}
+and \jenv{examples} environment (see sec.~\ref{sec:ex}) with the following deviations and additions:
 \begin{description}
 	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text is inserted here on the first line
 		(after the main number and before the first sub-example, which then follows on a new line).
 		This might be useful, for instance, to give context information, to specify the language or the source
 		in case of cited sub-examples.
 	\item[\joption{postamble=\{\jparam{arbitrary text}\}}] Arbitrary text is appended here after all sub-examples (on a
-		new line). This might be useful to add a reference or an explanation to the set.
+		new line). This might be useful to add a reference or an explanation to the whole set.
 	\item[\joption{addsubnumbersep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
-		Increases or (with negative values) decreases the spacing between example subnumber and example.
+		Increases or (with negative values) decreases the spacing between example subnumber and example text.
 	\item[\joption{subnumberformat=\{\jparam{template}\}}] Default: \verb|{(a)}|.
-		The format of the sub-example number. For the template format, see \joption{numberformat}.
+		The format of the sub-example number. For the template format, consult the documentation of
+		\joption{numberformat} in sec.~\ref{sec:ex}.
 \end{description}
 %
 Also note that, if you set options globally via \jcsmacro{setexampleoptions}, the following derivating options
@@ -536,12 +542,12 @@ should be used to distinguish the \jenv{subexample} from the \jenv{example} case
 		macro described below.
 		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 	\item[\joption{fssubpostamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
-		Adjusts the font settings of subexample's  postamble text and the \jcsmacro{subexpostamble}
+		Tweaks the sub\-example's postamble text font settings and the \jcsmacro{subexpostamble}
 		macro described below.
 		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 \end{description}
 %
-For convenience, both these options actually also work (as aliases) as optional arguments.
+For convenience, both options actually also work (as aliases) in optional arguments.
 
 To add additional text preceding or following specific subitems, you can principally use the \jcsmacro{expreamble} and
 \jcsmacro{expostamble} macros desribed in sec.~\ref{sec:exs}. To allow for separating the markup of such texts
@@ -565,7 +571,7 @@ you will get:
 	This is the second sentence.
 \end{covsubexamples}
 %
-And on the same line with:
+And, analoguously, with:
 \begin{lstlisting}[moretexcs={subexpostamble}]
 \begin{subexamples}
 \item This is the first sentence. \subexpostamble{(Miller 2022: 15)}
@@ -585,11 +591,11 @@ More customization possibilities of examples and subexamples are elaborated in t
 
 As already noted, all example environments can be customized in many aspects via the example options.
 If passed as an optional argument to the respective environment, the change only applies to this very environment.
-If passed via \jcsmacro{setexampleoptions}, the change will apply to any subsequent example environment
-unless a local option overrides a setting.
+If passed via \jcsmacro{setexampleoptions}, the change will apply to any subsequent \jenv{example}, \jenv{examples},
+or \jenv{subexamples} environment unless a local option overrides a setting.
 
-For this section we globally set the markup of example sentences to italics, as common in linguistics,
-via
+For this section and the purpose of demonstration, we globally set the markup of example sentences to italics,
+as common in linguistics. As you now already know, this is very easy to do, via:
 \begin{lstlisting}[morekeywords=fs,moretexcs={setexampleoptions}]
 \setexampleoptions{fs=\itshape}
 \end{lstlisting}
@@ -610,12 +616,13 @@ We will get:
 %
 And with a similar subexample:
 \begin{lstlisting}
-\begin{subexamples}[preamble={Here are two sentences},postamble={(Doe 1974: 12)}]
+\begin{subexamples}[preamble={Here are two sentences},
+                    postamble={(Doe 1974: 12)}]
 \item This is the first sentence.
 \item This is the second sentence.
 \end{subexamples}
 \end{lstlisting}
-we get this output:
+we get the following output:
 \begin{subexamples}[preamble={Here are two sentences},postamble={(Doe 1974: 12)}]
 	\item This is the first sentence.
 	\item This is the second sentence.
@@ -623,8 +630,7 @@ we get this output:
 %
 In what follows, we demonstrate the adjustment of the spacing of examples.
 The space between the example number and the text (or the subnumber in case of subexamples)
-can be adjusted by means of the \joption{addnumbersep} example option.
-
+can be adjusted, as documented above, by means of the \joption{addnumbersep} example option.
 So, for instance,
 \begin{lstlisting}[moretexcs={addnumbersep}]
 \begin{example}[addnumbersep={2em}]
@@ -640,7 +646,6 @@ will come out like this:
 The indentation (left margin) of examples and subexamples is controlled by the \joption{leftmargin}
 example option. Doing \joption{leftmargin=1em}, for instance, will increase the indentation by 1\,em,
 negative values will decrease it accordingly.
-
 For the latter, consider:
 \begin{lstlisting}[moretexcs={leftmargin}]
 \begin{example}[leftmargin={-2.6em}]
@@ -718,7 +723,8 @@ results in:
 %
 As outlined in sec.~\ref{sec:ex} and \ref{sec:subexs}, all elements of examples and subexamples
 (number, actual example text, pre- and postamble) can be marked up independently via \joption{fsno},
-\joption{fspreamble}, \joption{fspostamble}, etc.
+\joption{fspreamble}, \joption{fspostamble}, etc. Hence, many useful (and also lots of nonsensical)
+example formats are easily achievable.
 
 \subsection{Referring to examples}\label{sec:ref}
 
@@ -779,7 +785,7 @@ Note that:
           quotation marks (using the language-sensitive \textsf{csquotes} \cite{csquotes} macros if
           this package is loaded). This can be customized, though, via the macro options or globally
           (for the latter, see sec.~\ref{sec:glossfc}).
-    \item By default, page breaks might occur within glosses. In order to prevent it, the option
+    \item By default, page breaks might occur within glosses. In order to prevent it, the package option
           \joption{noglossbreaks} (see sec.~\ref{sec:intro}) will help in many cases.
           If it doesn't, you can wrap the whole gloss into a minipage or parbox.
     \item The words do not have to be typed lining up; \TeX\ counts and aligns them.
@@ -811,16 +817,17 @@ Note that:
 
 \begin{description}
 	\item[\joption{ex=\jparam{true|false}}] Default: \emph{false}. Wraps the gloss in an example environment
-	      (i.\,e., it is numbered).
+	      (i.\,e., it is numbered). In this case, any example settings done via \jcsmacro{setexampleoptions}
+	      (sec.~\ref{sec:ex}) apply.
 	\item[\joption{tlr=\jparam{true|false}}] Default: \emph{false}. If set to true, the translation line (content
           of the \jparam{free translation} argument) is set right to the gloss lines, rather than into a new line below.
           Since the gloss itself is set in a box, this means the \jparam{free translation} will appear lined up with the
           first line of the gloss. This can be useful when no translation, but an aligned number or something similar,
           is to be inserted right to the gloss (please refer to sec.~\ref{sec:glossex} for an example).
-	\item[\joption{fsi=\{\jparam{font settings}\}}]. Default: Default: \verb|{\normalfont\itshape}|.
+	\item[\joption{fsi=\{\jparam{font settings}\}}]. Default: \verb|{\normalfont\itshape}|.
 		 Adjusts the font settings of the first gloss line.
 	     Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
-	\item[\joption{fsii=\{\jparam{font settings}\}}] Default: Default: \verb|{\normalfont\upshape}|.
+	\item[\joption{fsii=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
 		 Adjusts the font settings of the second gloss line.
 	     Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 	\item[\joption{fsiii=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
@@ -915,10 +922,15 @@ The following is a complete list of all low-level glossing commands:
 	     document begin whether the \textsf{csquotes} \cite{csquotes} package is loaded. If so,
 	     it uses its language-sensitive \jcsmacro{enquote*} macro for enquoting the translation.
 	     If not, a fallback quotation (using English single quotation marks) is used. The usage of
-	     \textsf{csquotes} is highly recommended! The \jcsmacro{ifcov@enquote@tl} boolean checks 
-	     for the \joption{enquotetl} option of the gloss macro. The macro \jcsmacro{cov@fstl} holds the font
-	     settings as set via the \joption{fstl} gloss option. These are both relevant also for low-level
-	     commands if you set the respective options via \jcsmacro{setglossoptions}.
+	     \textsf{csquotes} is highly recommended! 
+	     
+	     The \jcsmacro{ifcov@enquote@tl} boolean checks for the \joption{enquotetl} option of the gloss
+	     macro. The macro \jcsmacro{cov@fstl} holds the font settings as set via the \joption{fstl} gloss option.
+	     These are both relevant also for low-level commands if you set the respective options via
+	     \jcsmacro{setglossoptions}.
+	     
+	     In general, please take care when redefining this macro that the functioning of some gloss environment
+	     options relies on some of the macros contained in the default definition.
 	\item[\jcsmacro{glosspreamble\{\jparam{arbitrary text}\}}] lets you enter text that is printed immediately
 	     before the interlinearized gloss (on a line of its own). This might be useful, for instance,
 	     to give context information, to specify the language or the source in case of cited glosses.
