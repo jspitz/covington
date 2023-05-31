@@ -763,9 +763,13 @@
 \newif\ifnotdone
 
 % Font settings for gloss lines
-\newcommand*\glosslineone{\cov@emphasized}
-\newcommand*\glosslinetwo{\cov@normalfont}
-\newcommand*\glosslinethree{\cov@normalfont}
+\newcommand*\glosslineone@global{\cov@emphasized}
+\newcommand*\glosslinetwo@global{\cov@normalfont}
+\newcommand*\glosslinethree@global{\cov@normalfont}
+
+\let\glosslineone\glosslineone@global
+\let\glosslinetwo\glosslinetwo@global
+\let\glosslinethree\glosslinethree@global
 
 \def\eachwordone{\glosslineone}
 \def\eachwordtwo{\glosslinetwo}
@@ -973,9 +977,9 @@
     % 2. tlr=<true|false>
     tlr.if = cov@tlr@global,
     % 3. font settings for gloss line i, ii, iii
-    fsi.code = { \global\def\glosslineone{#1} },
-    fsii.code = { \global\def\glosslinetwo{#1} },
-    fsiii.code = { \global\def\glosslinethree{#1} },
+    fsi.code = { \global\def\glosslineone@global{#1} },
+    fsii.code = { \global\def\glosslinetwo@global{#1} },
+    fsiii.code = { \global\def\glosslinethree@global{#1} },
     % 4. Gloss preamble text
     preamble.code = { \global\def\cov@gl@preamble@global{#1} },
     % 5. Gloss postamble text
@@ -1004,6 +1008,9 @@
   \let\lglosslineone\relax%
   \let\lglosslinetwo\relax%
   \let\lglosslinethree\relax%
+  \let\glosslineone\glosslineone@global%
+  \let\glosslinetwo\glosslinetwo@global%
+  \let\glosslinethree\glosslinethree@global%
   \ifcov@ex@gloss@global
     \SetKeys[covgloss]{ex=true}
   \else
@@ -1067,6 +1074,9 @@
   \let\lglosslineone\relax%
   \let\lglosslinetwo\relax%
   \let\lglosslinethree\relax%
+  \let\glosslineone\glosslineone@global%
+  \let\glosslinetwo\glosslinetwo@global%
+  \let\glosslinethree\glosslinethree@global%
   \ifcov@ex@gloss@global
     \SetKeys[covgloss]{ex=true}
   \else
