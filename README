@@ -33,16 +33,19 @@ The package consists of the following files:
 
 * Version 2.10 (forthcoming)
 	- Use LaTeX's own keyval mechanism rather than xkeyval.
-	- Add way to customize subexample number format.
-	- Introduce new package choice-option fnexamplecounter that supersedes
-	  the two boolean, mutually exclusive options ownfncounter and ownfncounter*
-	  (which are still supported for backwards compatibility reasons).
-	- Allow to globally set example options via the new macro \setexampleoptions.
-	- New example options: fs, fsno, fspreamble, fspostamble, leftmargin,
-	  addnumbersep, addsubnumbersep, numberformat, subnumberformat, fnnumberformat.
-	- New gloss options: fspreamble, fspostamble, fstl, and enquotetl for full
-	  customization of glosses via options.
-	- Documentation improvements.
+	- Introduce a better interface to customize the appearance of examples. Now everything can
+	  be easily adjusted globally and locally via key-val options. This entails the following changes:
+	  * Allow to globally set example options via the new macro \setexampleoptions.
+	  * Add way to customize example and subexample number format .
+	  * Add new example options: fs, fsno, fspreamble, fspostamble, leftmargin, addnumbersep,
+	    addsubnumbersep, numberformat, subnumberformat, as well as fnnumberformat.
+	- Add new gloss options: fspreamble, fspostamble, fstl, and enquotetl.
+	  This allows for full customization of glosses via options,  both locally and globally.
+	- Package options now all have a key-value format as well.
+	- Introduce new package choice-option fnexamplecounter that supersedes the two boolean,
+	  mutually exclusive options ownfncounter and ownfncounter* (which are still supported
+	  for backwards compatibility reasons).
+	- Major documentation revisions.
 
 * Version 2.9 (2023-05-26):
 	- Add postamble and postamble* options to example and subexamples environment.

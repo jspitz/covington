@@ -171,7 +171,7 @@ The package has the following options:
 		If you set \joption{fnexamplecounter=own-reset}, examples in footnotes get an own counter as well, but this variant
 		resets the counter at each footnote	(similar to \textsf{linguex} and \textsf{gb4e}).\footnote{The previous option
 			\joption{ownfncounter*} is still supported,	but deprecated.} 
-		Both own counters use lowercase Roman numbering by default (see sec.~\ref{sec:custno} on how to change this)
+		Both own counters use lowercase Roman numbering by default (see sec.~\ref{sec:ex} on how to change this)
 \end{description}
 %
 Please note the following package-related caveats:
@@ -238,9 +238,10 @@ a single numbered example (sec.~\ref{sec:ex}), a consecutive range of numbered e
 and alpha-numerically labeled sub-examples (sec.~\ref{sec:subexs}).
 
 \Cvt's numbered examples can be customized in many ways. For instance, you can make them by default be
-typeset in italics, as common in linguistics (see sec.~\ref{sec:custexmk}), you can adjust the way the numbers
-are displayed (see sec.~\ref{sec:custno}), and you can customize the spacing and indentation if the default
-settings do not suit you (see sec.~\ref{sec:custsp}).
+typeset in italics, as common in linguistics, you can adjust the way the numbers
+are displayed, and you can customize the spacing and indentation if the default
+settings do not suit you. This can be achieved via example options that can be set locally to a specific
+environment as opptional arguments or globally via the \jcsmacro{setexampleoptions} macro.
 
 All numbered examples can be referred to in the text via \jfcsmacro{label} and \jfcsmacro{ref} as usual,
 and with a convenience macro \jcsmacro{pxref} that adds the parentheses that are usually used
@@ -260,7 +261,8 @@ Here's what you get:
 \begin{flushleft}
 This is a sentence. \hfill (\exampleno)
 \end{flushleft}
-If you want to output the (current) number without stepping it, the starred form \jcsmacro{exampleno*} will do that. 
+If you want to output the (current) number without stepping it at the same time, the starred form
+\jcsmacro{exampleno*} will do that. 
 
 Normally, however, you do not need to manually place \jcsmacro{exampleno} yourselves,
 as in the example above. For the common case where example numbers in parentheses are
@@ -296,7 +298,7 @@ This is a sentence.\label{expl}
 \end{example}
 The example can be of any length; it can consist of many lines (separated by \verb"\\"), or even whole paragraphs.
 
-The \jenv{example} environment provides the following options:
+The \jenv{example} environment provides the following options which also allow for customization of their appearance:
 
 \begin{description}
 	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is inserted on an own line
@@ -312,6 +314,9 @@ The \jenv{example} environment provides the following options:
 	\item[\joption{postamble*=\{\jparam{arbitrary text}\}}] A variant of \joption{postamble} that does not add
 		a space. This might be preferred if you want to add a footnote.
 		Note that \joption{postamble} and \joption{postamble*} are mutually exclusive.
+		
+		If you want the postamble text be on a line of its own, simply add a line break
+		(i.\,e., \verb|postamble={\\Text}| or, to the same effect, \verb|postamble*={\\Text}|).
 	\item[\joption{fs=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
 		Adjusts the font settings of the example text.
 		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
@@ -333,31 +338,26 @@ The \jenv{example} environment provides the following options:
 	    The format of the example number. The option takes templates as known from the \textsf{enumerate}
 	    package \cite{enumerate}.
 	    Arabic numbering is represented by \jparam{1}, Roman by \jparam{i} and \jparam{I}, alphabetic by
-	    \jparam{a} and \jparam{A}. Any text before and after the number are inserted as is, e.\,g.,
-	    \verb|numberformat={[a.]}| results in lower alphabetic numbering followed by a dot, embraced in brackets.
+	    \jparam{a} and \jparam{A}. Any text before and after the number are inserted as is.
+	    
+	    For instance, \verb|numberformat={[a.]}| results in lower alphabetic numbering followed by a dot,
+	    embraced in brackets.
 	 \item[\joption{fnnumberformat=\{\jparam{template}\}}] Default: \verb|{(i)}|.
 	    The format of the example number if \joption{fnexamplecounter=own} or \joption{fnexamplecounter=own-reset}
 	    and example is in a footnote. For the template format, see \joption{numberformat}.
 \end{description}
 %
-If you want the postamble text be on a line of its own, simply add a line break (i.\,e., \verb|postamble={\\Text}|).
-\begin{example}[preamble={This example showcases the example options},postamble={(German)}]
-	Das ist ein Satz.
-\end{example}
-%
-It has been typed as:
-\begin{lstlisting}
-\begin{example}[preamble={This example showcases the example options},
-                postamble={(German)}]
-Das ist ein Satz.
-\end{example}
-\end{lstlisting}
-%
-The output of examples can be adjusted globally. You can once and for all set the markup, e.\,g.,
-to set all examples in italics, as common in linguistics, while pre- and postamble text are still
-in upright or any other font you prefer (see sec.~\ref{sec:custexmk}). Also, you can adjust the spacing
-of examples, i.\,e., the indentation of the numbers and the spacing between numbers and example
-text (see sec.~\ref{sec:custsp}).
+If you pass the options as optional argument to an environment, they will only apply to the current environment.
+
+If you want to make a global change, you can use the macro
+\begin{itemize}
+	\item \jcsmacro{setexampleoptions\{\jparam{options}\}}
+\end{itemize}
+and pass either of the above options to it. This will apply to all subsequent examples (the \jenv{example} environment
+described here as well as \jenv{examples}, \jenv{subexamples} and glosses with the \joption{ex} option) until further
+global change and unless the setting is altered locally via macro option.
+
+Please refer to sec.~\ref{sec:exex} for exemplifications of the options.
 
 \subsection[The \texttt{examples} environment]{The \jenv{examples} environment}\label{sec:exs}
 
@@ -391,8 +391,19 @@ This prints as:
 \item This is the second sentence.
 \end{examples}
 %
-To add additional text to specific items (analogous to the \joption{preamble} option of the \jenv{example} environment),
-you can use the \jcsmacro{expreamble} macro, like this:
+The \jenv{examples} environments accepts the same options than the \jenv{example} environment (please refer
+to sec.~\ref{sec:ex} for details).
+
+However, there is one notable exception: \joption{preamble} and \joption{postamble[*]} do not have any effect since,
+if you want to add preceding or trailing text, you will want to add this to specific items in the set.
+To this end, we provide specific macros, namely \jcsmacro{expreamble} and \jcsmacro{expostamble}, which can be placed
+where they should appear, and which take the same markup than the texts passed via \joption{preamble} or \joption{postamble}
+option in the \jenv{example} environment.
+
+Hence, also here, the advantage over just adding text as is in the example is that an own, globally settable markup, is used.
+This is particularly relevant if you globally set examples to be italicized via the \joption{fs} option.
+
+Consider:
 \begin{lstlisting}[moretexcs={expreamble}]
 \begin{examples}
 \item \expreamble{Here is Jakobson's famous poetic example:}
@@ -402,7 +413,7 @@ you can use the \jcsmacro{expreamble} macro, like this:
 \end{examples}
 \end{lstlisting}
 %
-which prints:
+This prints as follows:
 \begin{examples}
 	\item \expreamble{Here is Jakobson's famous poetic example:}
 	      I like Ike!
@@ -410,29 +421,40 @@ which prints:
 	      I am in favor of Mr. Eisenhower.
 \end{examples}
 %
-Again, the advantage over just adding a line manually in the example is that this respects the global markup
-of example sentences and the potentially separate markup of preamble text (see sec.~\ref{sec:custexmk}).
-
-Along the same line, trailing text (analogous to the \joption{postamble} option of the \jenv{example} environment)
-can be added to specific items via the \jcsmacro{expostamble} macro, like this:
+To see the advantage more clearly, let us locally set the markup of the example text:
+\begin{lstlisting}[moretexcs={expreamble}]
+\begin{examples}[fs={\itshape}]
+\item \expreamble{Here is Jakobson's famous poetic example:}
+I like Ike!
+\item \expreamble{Here is the less poetic variant:}
+I am in favor of Mr. Eisenhower.
+\end{examples}
+\end{lstlisting}
+%
+As you can see, the preamble text is untouched:
+\begin{examples}[fs={\itshape}]
+	\item \expreamble{Here is Jakobson's famous poetic example:}
+	I like Ike!
+	\item \expreamble{Here is the less poetic variant:}
+	I am in favor of Mr. Eisenhower.
+\end{examples}
+%
+Along the same line, consider:
 \begin{lstlisting}[moretexcs={expostamble}]
-\begin{examples}
+\begin{examples}[fs={\itshape}]
 \item I like Ike! \expostamble{(Jakobson 1960: 357)}
 \item I am in favor of Mr. Eisenhower.\expostamble{\footnote{He actually wasn't.}}
 \end{examples}
 \end{lstlisting}
 %
 which results in:
-\begin{examples}
+\begin{examples}[fs={\itshape}]
 	\item I like Ike! \expostamble{(Jakobson 1960: 357)}
 	\item I am in favor of Mr. Eisenhower.\expostamble{\footnote{He actually wasn't.}}
 \end{examples}
 %
-Also here, the advantage over just adding text as is in the example is that this has its own, globally settable markup,
-which is particularly relevant if you globally set examples to be italicized (see sec.~\ref{sec:custexmk}).
-
 Like in any other \LaTeX\ list, the numbering can be freely set via the optional argument of \jfcsmacro{item}.
-For a somewhat practical example, consider
+For a somewhat practical example, observe:
 \begin{lstlisting}[moretexcs={covexnumber,exampleno}]
 \begin{examples}
 \item A proposition.
@@ -445,12 +467,6 @@ which results in:
 	\item A proposition.
 	\item[\covexnumber{\exampleno*'}] An alternative proposition.
 \end{examples}
-%
-The \jenv{examples} environments accepts the same options than the \jenv{example} environment. Only \joption{preamble}
-and \joption{postamble[*]} do not have any effect.
-
-Please refer to sec.~\ref{sec:custsp} for ways to adjust the spacing of the environment and to sec.~\ref{sec:custno}
-and \ref{sec:custexmk} for possibilities to customize the appearance.
 
 
 \subsection[The \texttt{subexamples} environment]{The \jenv{subexamples} environment}\label{sec:subexs}
@@ -475,7 +491,7 @@ This prints as:
 \end{example}
 However, the \jenv{subexamples} (or \jenv{covsubexamples}\footnote{The fallback mechanism described in
 	footnote~\ref{fn:fallbacks} for \jfenv{example} apply here, too.%
-}) environment, described in what follows, is usually more convenient for
+}) environment, described in this section, is usually more convenient for
 this task.
 As opposed to \jenv{examples}\slash \jenv{covexamples}, this environment sub-numbers its items. Thus
 \begin{lstlisting}
@@ -497,77 +513,43 @@ prints as:
 	\item This is the second sentence.
 \end{subexamples}
 %
-The \jenv{subexamples}/\jenv{covsubexamples} environment provides the following options:
+The \jenv{subexamples}/\jenv{covsubexamples} environment provides the same options than the example and examples
+environment (see sec.~\ref{sec:ex}) with the following deviations and additions:
 \begin{description}
-	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is inserted on the first line
+	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text is inserted here on the first line
 		(after the main number and before the first sub-example, which then follows on a new line).
 		This might be useful, for instance, to give context information, to specify the language or the source
 		in case of cited sub-examples.
-	\item[\joption{postamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is appended after all sub-examples (on a
+	\item[\joption{postamble=\{\jparam{arbitrary text}\}}] Arbitrary text is appended here after all sub-examples (on a
 		new line). This might be useful to add a reference or an explanation to the set.
-	\item[\joption{fs=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
-		Adjusts the font settings of the example text.
-		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
-	\item[\joption{fsno=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
-		Adjusts the font settings of the example number.
-		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
-	\item[\joption{fspreamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
-		Adjusts the font settings of the preamble text.
-		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
-	\item[\joption{fspostamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
-		Adjusts the font settings of the postamble text.
-		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
-	\item[\joption{leftmargin=\{\jparam{length}\}}] Default: \verb|{0pt}|.
-		Lets you change the indentation of subexamples (including number). Positive values will increase,
-		negative values will decrease the indentation of the example.
-	\item[\joption{addnumbersep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
-		Increases or (with negative values) decreases the spacing between example number and subnumber.
 	\item[\joption{addsubnumbersep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
 		Increases or (with negative values) decreases the spacing between example subnumber and example.
-	\item[\joption{numberformat=\{\jparam{template}\}}] Default: \verb|{(1)}|.
-		The format of the example number. The option takes templates as known from the \textsf{enumerate}
-		package \cite{enumerate}.
-		Arabic numbering is represented by \jparam{1}, Roman by \jparam{i} and \jparam{I}, alphabetic by
-		\jparam{a} and \jparam{A}. Any text before and after the number are inserted as is, e.\,g.,
-		\verb|numberformat={[a.]}| results in lower alphabetic numbering followed by a dot, embraced in brackets.
-	\item[\joption{fnnumberformat=\{\jparam{template}\}}] Default: \verb|{(i)}|.
-		The format of the example number if \joption{fnexamplecounter=own} or \joption{fnexamplecounter=own-reset}
-		and example is in a footnote. For the template format, see \joption{numberformat}.
 	\item[\joption{subnumberformat=\{\jparam{template}\}}] Default: \verb|{(a)}|.
 		The format of the sub-example number. For the template format, see \joption{numberformat}.
 \end{description}
 %
-For instance,
-\begin{lstlisting}
-\begin{subexamples}[preamble={Here are two sentences},postamble={(Doe 1974: 12)}]
-\item This is the first sentence.
-\item This is the second sentence.
-\end{subexamples}
-\end{lstlisting}
-or, respectively:
-\begin{lstlisting}
-\begin{covsubexamples}[preamble={Here are two sentences},postamble={(Doe 1974: 12)}]
-\item This is the first sentence.
-\item This is the second sentence.
-\end{covsubexamples}
-\end{lstlisting}
-prints as:
-\begin{subexamples}[preamble={Here are two sentences},postamble={(Doe 1974: 12)}]
-	\item This is the first sentence.
-	\item This is the second sentence.
-\end{subexamples}
+Also note that, if you set options globally via \jcsmacro{setexampleoptions}, the following derivating options
+should be used to distinguish the \jenv{subexample} from the \jenv{example} case.
+\begin{description}
+	\item[\joption{fssubpreamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		Adjusts the font settings of subexample's preamble text and the \jcsmacro{subexpreamble}
+		macro described below.
+		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+	\item[\joption{fssubpostamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		Adjusts the font settings of subexample's  postamble text and the \jcsmacro{subexpostamble}
+		macro described below.
+		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+\end{description}
 %
-The advantage of these options over just adding text manually in the example is that text which is inserted like
-this uses its own markup as opposed to the markup of the example sentences (sec.~\ref{sec:custexmk} elaborates how
-to adjust this, e.\,g., if you want to follow the convention to set example sentences in italics).
+For convenience, both these options actually also work (as aliases) as optional arguments.
 
-To add additional text to specific subitems, you can use the \jcsmacro{subexpreamble}
-macro, which uses the same markup than the \joption{preamble} option, and thus provides the same advantage
-over adding text as is.\footnote{%
-	You might wonder: Why not use \jcsmacro{expreamble} (sec.~\ref{sec:exs}) here? In fact, you can.
-	We just provide a separate macro for the case that you want to make appear subexample pre- or postamble
-	text different than the one in examples. All these macros actually work in all example environments.%
-} For instance
+To add additional text preceding or following specific subitems, you can principally use the \jcsmacro{expreamble} and
+\jcsmacro{expostamble} macros desribed in sec.~\ref{sec:exs}. To allow for separating the markup of such texts
+in subexample from the example case, we also provide specific macros, \jcsmacro{subexpreamble} and
+\jcsmacro{subexpostamble} which use their own font settings (and the same than the \joption{preamble} and
+\joption{postamble} options of this environment).
+
+So with:
 \begin{lstlisting}[moretexcs={subexpreamble}]
 \begin{covsubexamples}[preamble={Here are two sentences}]
 \item This is the first sentence.
@@ -576,15 +558,14 @@ over adding text as is.\footnote{%
 \end{covsubexamples}
 \end{lstlisting}
 %
-prints:
+you will get:
 \begin{covsubexamples}[preamble={Here are two sentences}]
 	\item This is the first sentence.
 	\item \subexpreamble{Note particular this one}
 	This is the second sentence.
 \end{covsubexamples}
 %
-Along the same line, trailing text (analogous to the \joption{postamble} option)
-can be added to specific subitems via the \jcsmacro{subexpostamble} macro, like this:
+And on the same line with:
 \begin{lstlisting}[moretexcs={subexpostamble}]
 \begin{subexamples}
 \item This is the first sentence. \subexpostamble{(Miller 2022: 15)}
@@ -592,38 +573,83 @@ can be added to specific subitems via the \jcsmacro{subexpostamble} macro, like 
 \end{subexamples}
 \end{lstlisting}
 %
-which results in:
+you will get:
 \begin{subexamples}
 	\item This is the first sentence. \subexpostamble{(Miller 2022: 15)}
 	\item This is the second sentence.\subexpostamble{\footnote{My own.}}
 \end{subexamples}
 %
-Customization possibilities of examples and subexamples are elaborated in the following section.
+More customization possibilities of examples and subexamples are elaborated in the following section.
 
-\subsection{Customization of examples}\label{sec:custex}
+\subsection{Examples of examples}\label{sec:exex}
 
-All example environments can be customized in many aspects via the example options. If passed as an
-optional argument to the respective environment, the change only applies to this very environment.
+As already noted, all example environments can be customized in many aspects via the example options.
+If passed as an optional argument to the respective environment, the change only applies to this very environment.
 If passed via \jcsmacro{setexampleoptions}, the change will apply to any subsequent example environment
 unless a local option overrides a setting.
 
-\subsubsection{Customizing example spacing}\label{sec:custsp}
+For this section we globally set the markup of example sentences to italics, as common in linguistics,
+via
+\begin{lstlisting}[morekeywords=fs,moretexcs={setexampleoptions}]
+\setexampleoptions{fs=\itshape}
+\end{lstlisting}
+\setexampleoptions{fs=\itshape}
+%
+If we now enter
+\begin{lstlisting}
+\begin{example}[preamble={This example showcases the pre- and postamble options:},
+                postamble={(German)}]
+Das ist ein Satz.
+\end{example}
+\end{lstlisting}
+%
+We will get:
+\begin{example}[preamble={This example showcases the pre- and postamble options:},postamble={(German)}]
+	Das ist ein Satz.
+\end{example}
+%
+And with a similar subexample:
+\begin{lstlisting}
+\begin{subexamples}[preamble={Here are two sentences},postamble={(Doe 1974: 12)}]
+\item This is the first sentence.
+\item This is the second sentence.
+\end{subexamples}
+\end{lstlisting}
+we get this output:
+\begin{subexamples}[preamble={Here are two sentences},postamble={(Doe 1974: 12)}]
+	\item This is the first sentence.
+	\item This is the second sentence.
+\end{subexamples}
+%
+In what follows, we demonstrate the adjustment of the spacing of examples.
+The space between the example number and the text (or the subnumber in case of subexamples)
+can be adjusted by means of the \joption{addnumbersep} example option.
 
-If you need more space between the example number and the text (or the subnumber in case of subexamples),
-you can increase it by means of the \joption{addnumbersep} example option.
-
-If you need to change the indentation (left margin) of examples and subexamples, you can do so by means of
-the \joption{leftmargin} example option. Doing \joption{leftmargin=1em},
-for instance, will increase the indentation by 1\,em, negative values will decrease it accordingly.
 So, for instance,
-\begin{lstlisting}[moretexcs={leftmargin,addnumbersep}]
-\begin{example}[leftmargin={-2.2em},addnumbersep={-0.4em}]
-This is a marginal case.
+\begin{lstlisting}[moretexcs={addnumbersep}]
+\begin{example}[addnumbersep={2em}]
+Look, I am shifted right!
 \end{example}
 \end{lstlisting}
 will come out like this:
 
-\begin{example}[leftmargin={-2.2em},addnumbersep={-0.4em}]
+\begin{example}[addnumbersep={2em}]
+	Look, I am shifted right!
+\end{example}
+%
+The indentation (left margin) of examples and subexamples is controlled by the \joption{leftmargin}
+example option. Doing \joption{leftmargin=1em}, for instance, will increase the indentation by 1\,em,
+negative values will decrease it accordingly.
+
+For the latter, consider:
+\begin{lstlisting}[moretexcs={leftmargin}]
+\begin{example}[leftmargin={-2.6em}]
+This is a marginal case.
+\end{example}
+\end{lstlisting}
+which will come out like this:
+
+\begin{example}[leftmargin={-2.6em}]
 This is a marginal case.
 \end{example}
 %
@@ -633,37 +659,37 @@ Again, a positive value will increase, a negative value will decrease the distan
 Doing 
 \begin{lstlisting}[moretexcs={addnumbersep,addsubnumbersep}]
 \begin{subexamples}[addnumbersep={-0.4em},addsubnumbersep={0.4em}]
-\item This is the first sentence.
-\item This is the second sentence.
+\item My numbers are being moved.
+\item Mine as well.
 \end{subexamples}
 \end{lstlisting}
 for instance, will yield:
 
 \begin{subexamples}[addnumbersep={-0.4em},addsubnumbersep={0.4em}]
-	\item This is the first sentence.
-	\item This is the second sentence.
+	\item My numbers are being moved.
+	\item Mine as well.
 \end{subexamples}
-
-\subsubsection{Customizing number display}\label{sec:custno}
-
-You can easily change the display of the example number or subnumber globally or locally for only one
-occurrence via the example options. These take a `mini template' as known from the \textsf{enumerate}
-package \cite{enumerate}. In these templates, the first occurrence of the characters \emph{1}, \emph{i},
+%
+Next, we showcase how to change the display of the example number or subnumber via the \joption{numberformat} and
+\joption{subnumberformat} options. As described in sec.~\ref{sec:ex}, these take a `mini template' as known from
+the \textsf{enumerate} package \cite{enumerate}. In these templates, the first occurrence of the characters \emph{1}, \emph{i},
 \emph{I}, \emph{a}, and \emph{A} represents the numeric system where the respective character marks the first positive
 value. All the rest of the template (including following occurrences of the mentioned characters) is interpreted literally.
-For instance, \emph{(1)} is an alphabetic number in parentheses, (a) a lower alphabetic value, etc.
+For instance, \jparam{(1)} is an alphabetic number in parentheses, \jparam{(a)} a lower alphabetic value, etc.
 
-So if you want the example number to have a dot after the number, simply use the option \joption{numberformat=\{(1.)\}}
-To remove the parentheses from the subexample letter, for instance, use \joption{subnumberformat=\{a\}}:
+So to equip the examples with a dot after the number, we use \joption{numberformat=\{(1.)\}}
+To remove the parentheses from the subexample letter, for instance, we can use \joption{subnumberformat=\{a\}}.
+The following example demonstrates both options:
 \begin{lstlisting}[moretexcs={numberformat,subnumberformat}]
 \begin{subexamples}[numberformat={(1.)}, subnumberformat={a}]
-\item This is a statement
+\item This is a statement.
 \item This is an adjacent statement.
 \end{subexamples}
 \end{lstlisting}
-
+%
+And we get what we want:
 \begin{subexamples}[numberformat={(1.)}, subnumberformat={a}]
-	\item This is a statement
+	\item This is a statement.
 	\item This is an adjacent statement.
 \end{subexamples}
 %
@@ -672,28 +698,27 @@ Note that the \joption{numberformat} option by default also changes the numbers 
 however. So \joption{numberformat=\{[1.])\}} will also make the example numbers in footnote appear in brackets and with the 
 dot, but it will still use the lower Roman numbering. Use \joption{fnnumberformat} to fully change the appearance.
 
+With the last examples, we return to example markup. Remember, we have globally set the markup of example sentences to italics
+at the beginning of this section. Now if we want to have it bold instead for one single occurence, we can reset it for the one
+case via the environment options (if we wanted to change it globally from now on, we would use \jcsmacro{setexampleoptions} once more).
 
-\subsubsection{Customizing example markup}\label{sec:custexmk}
-
-Example markup can be customized via the \joption{fs*} example options. This way, all elements
-of examples (number, actual example text, pre- and postamble) can be marked up independently
-from each other. Just to showcase the most common option, the example in italics. This can
-be done by globally or locally setting \verb|fs=\itshape|, as in:
+Observe how:
 \begin{lstlisting}[moretexcs={covsubexnumber}]
-\begin{example}[fs=\itshape,preamble={This is the preamble},
+\begin{example}[fs=\bfseries,preamble={This is the preamble},
                 postamble={(Postamble)}]
-This is the example.
+This is a bold statement!
 \end{example}
 \end{lstlisting}
 %
-which results in:
-\begin{example}[fs=\itshape,preamble={This is the preamble},
+results in:
+\begin{example}[fs=\bfseries,preamble={This is the preamble},
 	postamble={(Postamble)}]
-	This is the example.
+	This is a bold statement!
 \end{example}
 %
-Analogously, you can adjust the example number font (\joption{fsno}), the preamble font
-(\joption{fspreamble}), and the postamble font (\joption{fspostamble}).
+As outlined in sec.~\ref{sec:ex} and \ref{sec:subexs}, all elements of examples and subexamples
+(number, actual example text, pre- and postamble) can be marked up independently via \joption{fsno},
+\joption{fspreamble}, \joption{fspostamble}, etc.
 
 \subsection{Referring to examples}\label{sec:ref}
 
@@ -1369,18 +1394,24 @@ it.
 \subsection*{2.10 (forthcoming)}
 \begin{itemize}
 	\item Use \LaTeXe's own keyval mechanism rather than \textsf{xkeyval}.
-	\item Add way to customize subexample number format (see sec.~\ref{sec:custno}).
+	\item Introduce a better interface to customize the appearance of examples. Now everything can
+	      be easily adjusted globally and locally via key-val options. This entails the following changes:
+	      \begin{itemize}
+	      	\item Allow to globally set example options via the new macro \jcsmacro{setexampleoptions}.
+	      	\item Add way to customize example and subexample number format (see sec.~\ref{sec:subexs}).
+	      	\item Add new example options: \joption{fs}, \joption{fsno}, \joption{fspreamble}, \joption{fspostamble},
+			      \joption{leftmargin}, \joption{addnumbersep}, \joption{addsubnumbersep}, \joption{numberformat},
+			      \joption{subnumberformat}, as well as \joption{fnnumberformat} (see sec.~\ref{sec:ex}).
+	      \end{itemize}
+	\item Add new gloss options: \joption{fspreamble}, \joption{fspostamble}, \joption{fstl},
+	      and \joption{enquotetl}. This allows for full customization of glosses via options,
+	      both locally and globally (see sec.~\ref{sec:gloss}).
+	\item Package options now all have a key-value format as well.
 	\item Introduce new package choice-option \joption{fnexamplecounter} that
 	      supersedes the two boolean, mutually exclusive options \joption{ownfncounter}
 	      and \joption{ownfncounter*} (which are still supported for backwards
 	      compatibility reasons).
-	\item Allow to globally set example options via the new macro \jcsmacro{setexampleoptions}.
-	\item New example options: \joption{fs}, \joption{fsno}, \joption{fspreamble}, \joption{fspostamble},
-		  \joption{leftmargin}, \joption{addnumbersep}, \joption{addsubnumbersep}, \joption{numberformat},
-		  \joption{subnumberformat}, \joption{fnnumberformat} (see sec.~\ref{sec:ex}).
-	\item New gloss options: \joption{fspreamble}, \joption{fspostamble}, \joption{fstl},
-		  and \joption{enquotetl} for full customization of glosses via options (see sec.~\ref{sec:gloss}).
-	\item Documentation improvements.
+	\item Major documentation revisions.
 \end{itemize}
 
 \subsection*{2.9 (2023 May 26)}
@@ -1444,7 +1475,6 @@ it.
 	\item Add starred \jcsmacro{exampleno*} command that outputs the current example number value without stepping it.
 	      See sec.~\ref{sec:exno}.
 	\item Add macros \jcsmacro{covexamplefs} and \jcsmacro{covexamplenofs} for global setting of example text markup.
-	      See sec.~\ref{sec:custexmk}.
 \end{itemize}
 
 \subsection*{2.1 (2019 May 12)}
@@ -1469,8 +1499,8 @@ it.
 
 \begin{itemize}
 	\item Fix font markup of second gloss line (do not force rm).
-	\item Add possibility to customize gloss line font setting. See sec.~\ref{sec:custexmk}.
-	\item Add possibility to customize example number display. See sec.~\ref{sec:custno}.
+	\item Add possibility to customize gloss line font setting. See sec.~\ref{sec:ex}.
+	\item Add possibility to customize example number display. See sec.~\ref{sec:ex}.
 \end{itemize}
 
 \subsection*{1.7 (2018 September 8)}
