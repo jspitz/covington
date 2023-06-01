@@ -245,7 +245,7 @@ and alpha-numerically labeled sub-examples (sec.~\ref{sec:subexs}).
 typeset in italics, as common in linguistics, you can adjust the way the numbers
 are displayed, and you can customize the spacing and indentation if the default
 settings do not suit you. This can be achieved via example options that can be set locally to a specific
-environment as opptional arguments or globally via the \jcsmacro{setexampleoptions} macro (see sec.~\ref{sec:ex}
+environment as optional arguments or globally via the \jcsmacro{setexampleoptions} macro (see sec.~\ref{sec:ex}
 for details).
 
 All numbered examples can be referred to in the text via \jfcsmacro{label} and \jfcsmacro{ref} as usual,
@@ -358,9 +358,9 @@ If you want to make a global change, you can use the macro
 \begin{itemize}
 	\item \jcsmacro{setexampleoptions\{\jparam{options}\}}
 \end{itemize}
-and pass either of the above options to it. This will apply to all subsequent examples (the \jenv{example} environment
-described here as well as \jenv{examples}, \jenv{subexamples} and glosses with the \joption{ex} option) until further
-global change and unless the setting is altered locally via macro option.
+and pass either of the above options to it (as usual separated by comma). This will apply to all subsequent examples
+(the \jenv{example} environment described here as well as \jenv{examples}, \jenv{subexamples} and glosses with the 
+\joption{ex} option) until further global change and unless an option is altered locally via optional argument.
 
 Please refer to sec.~\ref{sec:exex} for exemplifications of the options.
 
@@ -373,7 +373,7 @@ To display a series of examples together, each with its own example number, use 
 	is always available as a fallback. If you use the package option \joption{force}, \cvt\ will override
 	existing \jfenv{examples} environments. The package will issue a warning if \jenv{examples} is already defined
 	(this is the case, for instance, if you use \cvt\ with the \texttt{beamer} class), telling you
-	how it has dealt with the situation.%
+	how the package has dealt with the situation.%
 }) instead of \jenv{example} or \jenv{covexample}.
 There can be more than one example with this environment, and each of them has to be introduced
 by \jfcsmacro{item}, like this:
@@ -401,9 +401,10 @@ to sec.~\ref{sec:ex} for details).
 
 However, there is one notable exception: \joption{preamble} and \joption{postamble[*]} do not have any effect since,
 if you want to add preceding or trailing text, you will want to add this to specific items in the set.
+
 To this end, we provide specific macros, namely \jcsmacro{expreamble} and \jcsmacro{expostamble}, which can be placed
-where they should appear, and which take the same markup than the texts passed via \joption{preamble} or \joption{postamble}
-option in the \jenv{example} environment.
+where they should appear in the example, and which take the same markup than the texts passed via \joption{preamble}
+or \joption{postamble} option in the \jenv{example} environment.
 
 Hence, also here, the advantage over just adding text as is in the example is that an own, globally settable markup is used.
 This is particularly relevant if you globally set examples to be italicized via the \joption{fs} option (as we have done it
@@ -556,23 +557,22 @@ in subexample from the example case, we also provide specific macros, \jcsmacro{
 \jcsmacro{subexpostamble} which use their own font settings (and the same than the \joption{preamble} and
 \joption{postamble} options of this environment).
 
-So with:
+For example:
 \begin{lstlisting}[moretexcs={subexpreamble}]
-\begin{covsubexamples}[preamble={Here are two sentences}]
-\item This is the first sentence.
-\item \subexpreamble{Note particular this one}
-      This is the second sentence.
+\begin{covsubexamples}[preamble={Here are two sentences:}]
+\item \subexpreamble{English:} This is the first sentence.
+\item \subexpreamble{German:} Das ist der zweite Satz.
 \end{covsubexamples}
 \end{lstlisting}
 %
-you will get:
-\begin{covsubexamples}[preamble={Here are two sentences}]
-	\item This is the first sentence.
-	\item \subexpreamble{Note particular this one}
-	This is the second sentence.
+\begin{covsubexamples}[preamble={Here are two sentences:}]
+	\item \subexpreamble{English:}
+	      This is the first sentence.
+	\item \subexpreamble{German:}
+	      Das ist der zweite Satz.
 \end{covsubexamples}
 %
-And, analoguously, with:
+Analoguously, with:
 \begin{lstlisting}[moretexcs={subexpostamble}]
 \begin{subexamples}
 \item This is the first sentence. \subexpostamble{(Miller 2022: 15)}
@@ -602,7 +602,7 @@ as common in linguistics. As you now already know, this is very easy to do, via:
 \end{lstlisting}
 \setexampleoptions{fs=\itshape}
 %
-If we now enter
+which applies from now on. If we now enter:
 \begin{lstlisting}
 \begin{example}[preamble={This example showcases the pre- and postamble options:},
                 postamble={(German)}]
@@ -654,12 +654,12 @@ This is a marginal case.
 \end{example}
 \end{lstlisting}
 which will come out like this:
-
+%
 \begin{example}[leftmargin={-2.6em}]
 This is a marginal case.
 \end{example}
 %
-\noindent In case of \jenv{subexamples}, the distance between example subnumber and text can be changed
+In case of \jenv{subexamples}, the distance between example subnumber and text can be changed
 via the \joption{addsubnumbersep} option.
 Again, a positive value will increase, a negative value will decrease the distance.
 Doing 
@@ -676,12 +676,17 @@ for instance, will yield:
 	\item Mine as well.
 \end{subexamples}
 %
+The example also demonstrates how, in subexamples, \joption{addnumbersep} alters (here: decreases) the spacing
+between main number and subnumber.
+
 Next, we showcase how to change the display of the example number or subnumber via the \joption{numberformat} and
 \joption{subnumberformat} options. As described in sec.~\ref{sec:ex}, these take a `mini template' as known from
-the \textsf{enumerate} package \cite{enumerate}. In these templates, the first occurrence of the characters \emph{1}, \emph{i},
-\emph{I}, \emph{a}, and \emph{A} represents the numeric system where the respective character marks the first positive
-value. All the rest of the template (including following occurrences of the mentioned characters) is interpreted literally.
-For instance, \jparam{(1)} is an alphabetic number in parentheses, \jparam{(a)} a lower alphabetic value, etc.
+the \textsf{enumerate} package \cite{enumerate}. In these templates, the first occurrence of the characters \jparam{1},
+\jparam{i}, \jparam{I}, \jparam{a}, and \jparam{A} represents the numeric system where the respective character marks
+the first positive value. All the rest of the template (including following occurrences of the mentioned characters)
+is interpreted literally.
+For instance, \jparam{(1)} is an alphabetic number in parentheses, \jparam{a.} a lower alphabetic value followed by a dot,
+etc.
 
 So to equip the examples with a dot after the number, we use \joption{numberformat=\{(1.)\}}
 To remove the parentheses from the subexample letter, for instance, we can use \joption{subnumberformat=\{a\}}.
@@ -785,7 +790,7 @@ Note that:
           line is in italics, subsequent lines are set upright, and the free translation in single
           quotation marks (using the language-sensitive \textsf{csquotes} \cite{csquotes} macros if
           this package is loaded). This can be customized, though, via the macro options or globally
-          (for the latter, see sec.~\ref{sec:glossfc}).
+          via the macro \jcsmacro{setglossoptions} which will be documented below.
     \item By default, page breaks might occur within glosses. In order to prevent it, the package option
           \joption{noglossbreaks} (see sec.~\ref{sec:intro}) will help in many cases.
           If it doesn't, you can wrap the whole gloss into a minipage or parbox.
@@ -936,8 +941,8 @@ The following is a complete list of all low-level glossing commands:
 	     before the interlinearized gloss (on a line of its own). This might be useful, for instance,
 	     to give context information, to specify the language or the source in case of cited glosses.
 	     The advantages over just adding a line manually above the gloss are that you can globally set the markup
-	     (see sec.~\ref{sec:glossfc})   and that such lines are kept on the same page than the gloss with the option
-	     \joption{noglossbreaks}. Note, however, that page breaks might occur if this text spans multiple lines.
+	     and that such lines are kept on the same page than the gloss with the option \joption{noglossbreaks}.
+	     Note, however, that page breaks might occur if this text spans multiple lines.
 	     In this case, you can wrap the whole gloss into a minipage.
 	     This command has been introduced in \cvt\ 2.1.
 	\item[\jcsmacro{glend}] ends the special \jfenv{flushleft}-like environment.
@@ -969,7 +974,7 @@ This is not so if you use \jcsmacro{glot}:
 %
 The advantage of \jcsmacro{glot} is that you can easily customize the translation markup globally.
 Also, \jcsmacro{glot} uses the language-sensitive \textsf{csquotes} \cite{csquotes} macros if
-this package is loaded (see sec.~\ref{sec:glossfc}).
+this package is loaded (see sec.~\ref{sec:gmacros}).
 
 Since \jcsmacro{gll} and \jcsmacro{glll} locally activate the end of line in glosses in order to
 identify the different lines of the gloss (via category code change), they do not work inside macros
@@ -994,17 +999,10 @@ To sum up: With low-level commands, every glossed sentence begins with either \j
 Layout is critical in the part preceding \jcsmacro{glt} or \jcsmacro{gln}, and fairly free afterward.
 
 
-\subsection{Customization of glosses}\label{sec:glossfc}
-
-Glosses (font settings and markup for different elements) can be adjusted locally
-via gloss options of globally by way of the global options macro
-\jcsmacro{setglossoptions} (see sec.~\ref{sec:gmacros}).
-
-
 \subsection{Example glosses}\label{sec:glossex}
 
-This section gives some further examples. First, a sentence with three lines aligned, 
-instead of just two:
+This section gives some further examples and showcases some options.
+First, a sentence with three lines aligned, instead of just two:
 \trigloss[fsii={\normalfont\scshape}]
          {Hoc est aliud exemplum}
          {n.sg.nom 3sg n.sg.nom n.sg.nom}
@@ -1012,7 +1010,8 @@ instead of just two:
          {This is another example.}
 In order to produce this, we use the \jcsmacro{trigloss} macro for a three-line gloss
 and pass the \joption{fsii} option with the respective font switches in order to
-get small capitals in the second line:
+get small capitals in the second line (\jcsmacro{normalfont} is needed here to
+disable the italics set for the first line):
 \begin{lstlisting}[moretexcs={trigloss}]
 \trigloss[fsii={\normalfont\scshape}]
          {Hoc est aliud exemplum}
@@ -1449,7 +1448,7 @@ it.
 \begin{itemize}
 \item Add \joption{postamble} gloss macro option for arbitrary text that is appended to the free
       translation line (after closing quotation marks). See sec.~\ref{sec:gmacros}.
-\item Add \jcsmacro{glosslinepostamble} command to markup this text. See sec.~\ref{sec:glossfc}.
+\item Add \jcsmacro{glosslinepostamble} command to markup this text.
 \end{itemize}
 
 \subsection*{2.6 (2021 May 19)}
