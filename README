@@ -36,9 +36,9 @@ The package consists of the following files:
 	- Introduce a better interface to customize the appearance of examples. Now everything can
 	  be easily adjusted globally and locally via key-val options. This entails the following changes:
 	  * Allow to globally set example options via the new macro \setexampleoptions.
-	  * Add way to customize example and subexample number format .
+	  * Add way to customize example and subexample number format.
 	  * Add new example options: fs, fsno, fspreamble, fspostamble, leftmargin, addnumbersep,
-	    addsubnumbersep, numberformat, subnumberformat, as well as fnnumberformat.
+	    addsubnumbersep, numberformat, subnumberformat, and fnnumberformat.
 	- Add new gloss options: fspreamble, fspostamble, fstl, and enquotetl.
 	  This allows for full customization of glosses via options,  both locally and globally.
 	- Package options now all have a key-value format as well.
