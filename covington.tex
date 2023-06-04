@@ -465,7 +465,7 @@ This prints as follows:
 \end{examples}
 %
 To see the advantage more clearly, let us locally set the markup of the example text:
-\begin{lstlisting}[moretexcs={expreamble}]
+\begin{lstlisting}[moretexcs={expreamble},morekeywords=fs]
 \begin{examples}[fs={\itshape}]
 \item \expreamble{Here is Jakobson's famous poetic example:}
       I like Ike!
@@ -483,7 +483,7 @@ As you can see, the preamble text is untouched:
 \end{examples}
 %
 Along the same line, consider:
-\begin{lstlisting}[moretexcs={expostamble}]
+\begin{lstlisting}[moretexcs={expostamble},morekeywords=fs]
 \begin{examples}[fs={\itshape}]
 \item I like Ike! \expostamble{(Jakobson 1960: 357)}
 \item I am in favor of Mr. Eisenhower.\expostamble{\footnote{He actually wasn't.}}
@@ -616,7 +616,7 @@ in subexample from the example case, we also provide specific macros, \jcsmacro{
 \joption{postamble} options of this environment).
 
 For example:
-\begin{lstlisting}[moretexcs={subexpreamble}]
+\begin{lstlisting}[moretexcs={subexpreamble},morekeywords=preamble]
 \begin{covsubexamples}[preamble={Here are two sentences:}]
 \item \subexpreamble{English:} This is the first sentence.
 \item \subexpreamble{German:} Das ist der zweite Satz.
@@ -661,20 +661,21 @@ as common in linguistics. As you now already know, this is very easy to do, via:
 \setexampleoptions{fs=\itshape}
 %
 which applies from now on. If we now enter:
-\begin{lstlisting}
-\begin{example}[preamble={This example showcases the pre- and postamble options:},
+\begin{lstlisting}[morekeywords={preamble,postamble}]
+\begin{example}[preamble={Consider this example:},
                 postamble={(German)}]
 Das ist ein Satz.
 \end{example}
 \end{lstlisting}
 %
 We will get:
-\begin{example}[preamble={This example showcases the pre- and postamble options:},postamble={(German)}]
+\begin{example}[preamble={Consider this example:},
+	            postamble={(German)}]
 	Das ist ein Satz.
 \end{example}
 %
 And with a similar subexample:
-\begin{lstlisting}
+\begin{lstlisting}[morekeywords={preamble,postamble}]
 \begin{subexamples}[preamble={Here are two sentences},
                     postamble={(Doe 1974: 12)}]
 \item This is the first sentence.
@@ -689,14 +690,14 @@ we get the following output:
 %
 Let us briefly demonstrate the judgment feature. If we want to mark an example as being ungrammatical,
 we use the conventional asterisk mark, like this:
-\begin{lstlisting}
+\begin{lstlisting}[morekeywords=judge]
 \begin{example}[judge=*]
 Ein ungrammatischem Satz.
 \end{example}
 \end{lstlisting}
 %
 or, shorter:
-\begin{lstlisting}
+\begin{lstlisting}[morekeywords={*}, alsoletter={*}]
 \begin{example}[*]
 Ein ungrammatischem Satz.
 \end{example}
@@ -724,23 +725,23 @@ angular argument instead, as already demonstrated in sec.~\ref{sec:exs}:
 With wider markers, we need to adjust the marker width via \joption{judgewidth}, and
 since we have a larger count of examples now, we also adjust \joption{addnumbersep}
 to have a good space to the number:
-\begin{lstlisting}
+\begin{lstlisting}[morekeywords={judgewidth,addnumbersep}]
 \begin{examples}[judgewidth={??},addnumbersep={1ex}]
-\item<??> Ein ungrammatisch Satz.
-\item Ein grammatischer Satz.
+\item<??> Kann ich ein gratis Bier haben?
+\item Kann ich ein Bier gratis haben?
 \end{examples}
 \end{lstlisting}
 %
 \begin{examples}[judgewidth={??},addnumbersep={1ex}]
-	\item<??> Ein ungrammatisch Satz.
-	\item Ein grammatischer Satz.
+	\item<??> Kann ich ein gratis Bier haben?
+	\item Kann ich ein Bier gratis haben?
 \end{examples}
 %
-In what follows, we demonstrate the adjustment of the spacing of examples.
+In what follows, we demonstrate further adjustments of the spacing of examples.
 The space between the example number and the text (or the subnumber in case of subexamples)
 can be adjusted, as documented above, by means of the \joption{addnumbersep} example option.
 So, for instance,
-\begin{lstlisting}[moretexcs={addnumbersep}]
+\begin{lstlisting}[morekeywords={addnumbersep}]
 \begin{example}[addnumbersep={2em}]
 Look, I am shifted right!
 \end{example}
@@ -755,7 +756,7 @@ The indentation (left margin) of examples and subexamples is controlled by the \
 example option. Doing \joption{leftmargin=1em}, for instance, will increase the indentation by 1\,em,
 negative values will decrease it accordingly.
 For the latter, consider:
-\begin{lstlisting}[moretexcs={leftmargin}]
+\begin{lstlisting}[morekeywords={leftmargin}]
 \begin{example}[leftmargin={-2.6em}]
 This is a marginal case.
 \end{example}
@@ -770,7 +771,7 @@ In case of \jenv{subexamples}, the distance between example subnumber and text c
 via the \joption{addsubnumbersep} option.
 Again, a positive value will increase, a negative value will decrease the distance.
 Doing 
-\begin{lstlisting}[moretexcs={addnumbersep,addsubnumbersep}]
+\begin{lstlisting}[morekeywords={addnumbersep,addsubnumbersep}]
 \begin{subexamples}[addnumbersep={-0.4em},addsubnumbersep={0.4em}]
 \item My numbers have been moved.
 \item Mine as well.
@@ -798,8 +799,8 @@ etc.
 So to equip the examples with a dot after the number, we use \joption{numberformat=\{(1.)\}}
 To remove the parentheses from the subexample letter, for instance, we can use \joption{subnumberformat=\{a\}}.
 The following example demonstrates both options:
-\begin{lstlisting}[moretexcs={numberformat,subnumberformat}]
-\begin{subexamples}[numberformat={(1.)}, subnumberformat={a}]
+\begin{lstlisting}[morekeywords={numberformat,subnumberformat}]
+\begin{subexamples}[numberformat={(1.)},subnumberformat={a}]
 \item This is a statement.
 \item This is an adjacent statement.
 \end{subexamples}
@@ -820,16 +821,16 @@ With the last examples, we return to example markup. Remember, we have globally 
 at the beginning of this section. Now if we want to have it bold instead for one single occurence, we can reset it for the one
 case via the environment options (if we wanted to change it globally from now on, we would use \jcsmacro{setexampleoptions} once more).
 Observe how:
-\begin{lstlisting}[moretexcs={covsubexnumber}]
-\begin{example}[fs=\bfseries,preamble={This is the preamble},
-                postamble={(Postamble)}]
+\begin{lstlisting}[morekeywords={fs,preamble,postamble}]
+\begin{example}[fs=\bfseries,preamble={Note:},
+                postamble={(in any respect)}]
 This is a bold statement!
 \end{example}
 \end{lstlisting}
 %
 results in:
-\begin{example}[fs=\bfseries,preamble={This is the preamble},
-	postamble={(Postamble)}]
+\begin{example}[fs=\bfseries,preamble={Note:},
+	postamble={(in any respect)}]
 	This is a bold statement!
 \end{example}
 %
@@ -958,7 +959,7 @@ Note that:
 		 If not, a fallback quotation (using English single quotation marks) is used. The usage of
 	     \textsf{csquotes} is highly recommended!
 	\item[\joption{judge=\{\jparam{arbitrary text}\}}] Insert grammaticality judgments (such as * or ?)
-		to a the gloss. This will be inserted before the first gloss line with a small space and uses its own
+		to the gloss. This will be prepended to the first gloss line with a small space and uses its own
 		markup. For convenience, the following shorthand options are also provided:
 		\joption{*}, \joption{?}, \joption{*?}, \joption{??}, and \joption{\#} (as alias to
 		\joption{judge=*} etc.).
@@ -988,7 +989,7 @@ Note that:
 		 Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 \end{description}
 %
-If given as optional arguments to a \jcsmacro{digloss} or \jcsmacro{trigloss} macro, the options will only apply to
+If passed to a \jcsmacro{digloss} or \jcsmacro{trigloss} macro, the options will only apply to
 this very gloss. If you want to make a permanent change, you can use the macro
 \begin{lstlisting}[moretexcs={setglossoptions}]
 \setglossoptions{<options>}
@@ -1134,7 +1135,7 @@ In order to produce this, we use the \jcsmacro{trigloss} macro for a three-line 
 and pass the \joption{fsii} option with the respective font switches in order to
 get small capitals in the second line (\jcsmacro{normalfont} is needed here to
 disable the italics set for the first line):
-\begin{lstlisting}[moretexcs={trigloss}]
+\begin{lstlisting}[moretexcs={trigloss},morekeywords=fsii]
 \trigloss[fsii={\normalfont\scshape}]
          {Hoc est aliud exemplum}
          {n.sg.nom 3sg n.sg.nom n.sg.nom}
@@ -1149,7 +1150,7 @@ at the right:
              {\hfill (\exampleno)}
 %
 That one was typed using the option \joption{tlr}:
-\begin{lstlisting}[moretexcs={digloss,exampleno}]
+\begin{lstlisting}[moretexcs={digloss,exampleno},morekeywords=tlr]
 \digloss[tlr]{Hoc habet numerum}
              {This has number}
              {\hfill (\exampleno)}
@@ -1161,7 +1162,7 @@ environment, which is a very common way of using it:
             {This has number preposed}
             {This one has a number in front of it.}
 This last example was, of course, typed as:
-\begin{lstlisting}[moretexcs={digloss}]
+\begin{lstlisting}[moretexcs={digloss},morekeywords=ex]
 \digloss[ex]{Hoc habet numerum praepositum}
             {This has number preposed}
             {This one has a number in front of it.}
@@ -1182,7 +1183,8 @@ cited example: p.~2) and also exemplifies the use of \joption{preamble}:
             {now  they-\textsc{obl-gen} farm  forever       behind     stay-\textsc{fut-neg}}
             {Now their farm will not stay behind forever.}
 This has been input as follows:
-\begin{lstlisting}[moretexcs={digloss},basicstyle={\footnotesize\ttfamily}]
+\begin{lstlisting}[moretexcs={digloss},basicstyle={\footnotesize\ttfamily},
+	               morekeywords={ex,preamble}]
 \digloss[ex,preamble={Lezgian (Haspelmath 1993:207)}]
         {Gila abur-u-n              ferma hami¨alu\v{g} gü\v{g}üna amuq'-da-\v{c}.}
         {now  they-\textsc{obl-gen} farm  forever       behind     stay-\textsc{fut-neg}}
@@ -1196,7 +1198,8 @@ been entered and marked-up manually here.
 
 Next, we showcase grammatical judgment. Similar to how this is done in examples, we
 simply pass the respective \joption{judge} option or shorthand:
-\begin{lstlisting}[moretexcs={digloss},basicstyle={\footnotesize\ttfamily}]
+\begin{lstlisting}[moretexcs={digloss},basicstyle={\footnotesize\ttfamily},
+	               alsoletter={??}, morekeywords={ex,??}]
 \digloss[ex,??]
   {Hier werden                           Sie                  geholfen!}
   {Here become.\textsc{aux.pass.2sg.pst} you.\textsc{2sg.acc} help.\textsc{pass.ptcp}}
@@ -1215,7 +1218,8 @@ translation line, but outside the translation (as marked-up by quotation marks):
 {My   hovercraft     is  {full of} eels}
 {Do you have matches?}
 This has been input as follows:
-\begin{lstlisting}[moretexcs={digloss},basicstyle={\footnotesize\ttfamily}]
+\begin{lstlisting}[moretexcs={digloss},basicstyle={\footnotesize\ttfamily},
+	               morekeywords={ex,postamble}]
 \digloss[ex, postamble={\footnote{Yes, really!}}]
         {Mein Luftkissenboot ist voller    Aale}
         {My   hovercraft     is  {full of} eels}
