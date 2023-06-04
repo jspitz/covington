@@ -316,6 +316,9 @@
 \newcommand*\expostamblefs{\normalfont}
 \newcommand*\expostamble[1]{\bgroup\expostamblefs#1\egroup}
 
+% 2023.06.04 (v. 2.11): judge marks
+\newcommand*\cov@judge@fs{\normalfont\upshape}
+
 \DeclareKeys[covexpl]
 {
     % font settings
@@ -339,13 +342,28 @@
     % numberformat={template}
     numberformat.code = { \cov@parse@number@template{#1}{exfmt}{covexnumber} },
     % fnnumberformat={template}
-    fnumberformat.code = { \cov@parse@number@template{#1}{fnexfmt}{covexnumberfn} }
+    fnumberformat.code = { \cov@parse@number@template{#1}{fnexfmt}{covexnumberfn} },
+    % judgement=text
+    judge.code = { \def\cov@judge@ex@text{#1} \settowidth\cov@judge@width{\cov@judge@fs#1} },
+    % judgement shorthands: *, ?, *?, ??, #
+    *.code = { \def\cov@judge@ex@text{*} \settowidth\cov@judge@width{\cov@judge@fs*} },
+    ?.code = { \def\cov@judge@ex@text{?} \settowidth\cov@judge@width{\cov@judge@fs?} },
+    *?.code = { \def\cov@judge@ex@text{*?} \settowidth\cov@judge@width{\cov@judge@fs*?} },
+    ??.code = { \def\cov@judge@ex@text{??} \settowidth\cov@judge@width{\cov@judge@fs??} },
+    #.code = { \def\cov@judge@ex@text{\#} \settowidth\cov@judge@width{\cov@judge@fs\#} },
+    % judgement font settings
+    fsjudge.store = \cov@judge@fs,
+    % judgewith=<text>
+    judgewidth.code = { \settowidth\cov@judge@width{\cov@judge@fs#1} },
+    % addjudgesep=length
+    addjudgesep.code = { \addtolength\cov@judge@sep{#1} }
 }
 
 \newenvironment{covexample}[1][]{%
-    \ifx#1\empty\else\SetKeys[covexpl]{#1}\fi%
+    \SetKeys[covexpl]{#1}%
     \begin{covexamples}
-       \item\@ifundefined{cov@xp}{}{\expreamble{\cov@xp}}% insert preamble if given
+       \@ifundefined{cov@judge@ex@text}{\item}{\item<\cov@judge@ex@text>}%
+       \ifx\cov@xp\empty\else\expreamble{\cov@xp}\fi% insert preamble if given
 }{%
    \@ifundefined{cov@xpst}{}{\if@cov@expst@star\unskip\fi\expostamble{\cov@xpst}}%
    \end{covexamples}%
@@ -402,16 +420,48 @@
 
 \let\exfmt\arabic
 
+% Allow for \item<judgment>[label]
+\def\cov@judge@item<#1>{%
+    \global\def\cov@judge{#1}%
+    \@ifnextchar[%
+      {\@item}%
+      {\cov@item}%
+}%
+
+\newlength\cov@judge@width
+\settowidth\cov@judge@width{?}
+\newlength\cov@judge@sep
+\setlength\cov@judge@sep{.1em}
+\newlength\cov@judge@extra
+\setlength\cov@judge@extra{0pt}
+
 \newenvironment{covexamples}[1][]{%         % define "examples" environment
   \ifx#1\empty\else\SetKeys[covexpl]{#1}\fi%
+  \addtolength\cov@judge@extra{\cov@judge@width}%
+  \addtolength\cov@judge@extra{\cov@judge@sep}%
+  % parse <...> item argument
+  \let\cov@item\item%
+  \let\cov@@item\@item%
+  \def\@item[##1]{%
+     \cov@@item[##1] \@ifundefined{cov@judge}{}{%
+         \hspace*{-\cov@judge@extra}%
+         \makebox[\cov@judge@width]{\cov@judge@fs\cov@judge}%
+         \hspace{\cov@judge@sep}\ignorespaces%
+     }%
+  }
+  \def\item{%
+    \@inmatherr\item
+    \@ifnextchar<{\cov@judge@item}%
+                 {\global\let\cov@judge\relax\cov@item}%
+  }%
   \begin{list}%
   {%
     \covexamplenofs% font
-    \ifcov@infootnote
+    \ifcov@infootnote%
       \covexnumberfn{\thecovfnex}%
-    \else
+    \else%
       \covexnumber{\@@exampleno}%
-    \fi
+    \fi%
   }%
   {%
     \addtolength{\labelwidth}{\examplenumbersep}%
@@ -508,7 +558,13 @@
     % fnnumberformat={template}
     fnumberformat.code = { \cov@parse@number@template{#1}{fnexfmt}{covexnumberfn} },
     % subnumberformat={template}
-    subnumberformat.code = { \cov@parse@number@template{#1}{subexfmt}{covsubexnumber} }
+    subnumberformat.code = { \cov@parse@number@template{#1}{subexfmt}{covsubexnumber} },
+    % judgement font settings
+    fsjudge.store = \cov@judge@fs,
+    % judgewith=<text>
+    judgewidth.code = { \settowidth\cov@judge@width{\cov@judge@fs#1} },
+    % addjudgesep=length
+    addjudgesep.code = { \addtolength\cov@judge@sep{#1} }
 }
 
 \newlength\subexamplenumbersep
@@ -518,6 +574,44 @@
 
 \let\subexfmt\alph
 
+% Allow for \item<judgment>[label]
+\def\cov@judge@subitem<#1>{%
+    \global\def\cov@subjudge{#1}%
+    \@ifnextchar[%
+      {\@item}%
+      {\cov@subitem}%
+}%
+
+% Copied from the kernel (enumerate) and adapted
+% to accept <...> item arguments
+\def\covsubexs{%
+  \setlength\cov@judge@extra{\cov@judge@width}%
+  \addtolength\cov@judge@extra{\cov@judge@sep}%
+  \let\cov@subitem\item%
+  \let\cov@@subitem\@item%
+  \def\@item[##1]{%
+     \cov@@subitem[##1] \@ifundefined{cov@subjudge}{}{%
+         \hspace*{-\cov@judge@extra}%
+         \makebox[\cov@judge@width]{\cov@judge@fs\cov@subjudge}%
+         \hspace{\cov@judge@sep}\ignorespaces%
+     }%
+  }%
+  \def\item{%
+    \@inmatherr\item
+    \@ifnextchar<{\cov@judge@subitem}%
+                 {\global\let\cov@subjudge\relax\cov@subitem}%
+  }%
+  \ifnum \@enumdepth >\thr@@\@toodeep\else
+    \advance\@enumdepth\@ne
+    \edef\@enumctr{enum\romannumeral\the\@enumdepth}%
+      \expandafter
+      \list
+        \csname label\@enumctr\endcsname
+        {\usecounter\@enumctr\def\makelabel##1{\hss\llap{##1}}}%
+  \fi}
+\let\endcovsubexs =\endlist
+
+
 \newenvironment{covsubexamples}[1][]%         % define "subexamples" environment
 {%
     \let\cov@xp\relax%
@@ -525,7 +619,7 @@
     \ifx#1\empty\else\SetKeys[covsubexpl]{#1}\fi%
     \begin{covexample}%
     \@ifundefined{cov@sxp}{}{\bgroup\subexpreamblefs\cov@sxp\egroup}% insert preamble if given
-    \begin{enumerate}
+    \begin{covsubexs}
     \addtolength{\labelsep}{\subexamplenumbersep}%
     \renewcommand\theenumi{\subexfmt{enumi}}
     \renewcommand\labelenumi{\covexamplenofs\covsubexnumber{\theenumi}}
@@ -535,7 +629,7 @@
 }%
 {%
     \let\cov@sxp\relax
-    \end{enumerate}
+    \end{covsubexs}
     \@ifundefined{cov@sxpst}{}{\subexpostamble{\cov@sxpst}}% insert postamble if given
     \let\cov@sxpst\relax
     \end{covexample}
@@ -590,7 +684,21 @@
     % fnnumberformat={template}
     fnumberformat.code = { \cov@parse@number@template{#1}{fnexfmt}{covexnumberfn} },
     % subnumberformat={template}
-    subnumberformat.code = { \cov@parse@number@template{#1}{subexfmt}{covsubexnumber} }
+    subnumberformat.code = { \cov@parse@number@template{#1}{subexfmt}{covsubexnumber} },
+    % judge=text
+    judge.code = { \def\cov@judge@ex@text{#1} \settowidth\cov@judge@width{#1} },
+    % judgement shorthands: *, ?, *?, ??, #
+    *.code = { \def\cov@judge@ex@text{*} \settowidth\cov@judge@width{\cov@judge@fs*} },
+    ?.code = { \def\cov@judge@ex@text{?} \settowidth\cov@judge@width{\cov@judge@fs?} },
+    *?.code = { \def\cov@judge@ex@text{*?} \settowidth\cov@judge@width{\cov@judge@fs*?} },
+    ??.code = { \def\cov@judge@ex@text{??} \settowidth\cov@judge@width{\cov@judge@fs??} },
+    #.code = { \def\cov@judge@ex@text{\#} \settowidth\cov@judge@width{\cov@judge@fs\#} },
+    % judgement font settings
+    fsjudge.store = \cov@judge@fs,
+    % judgewith=<text>
+    judgewidth.code = { \settowidth\cov@judge@width{#1} },
+    % addjudgesep=length
+    addjudgesep.code = { \addtolength\cov@judge@sep{#1} }
 }
 
 % General setting option

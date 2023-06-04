@@ -312,6 +312,14 @@ The \jenv{example} environment provides the following options which also allow f
 	\item[\joption{fsno=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
 		Adjusts the font settings of the example number.
 		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+	\item[\joption{judge=\{\jparam{arbitrary text}\}}] Insert grammaticality judgments (such as * or ?)
+	    to an example. This will be inserted before the example text with a small space and uses its own
+	    markup. For convenience, the following shorthand options are also provided:
+	    \joption{*}, \joption{?}, \joption{*?}, \joption{??}, and \joption{\#} (as alias to
+	    \joption{judge=*} etc.).
+	\item[\joption{fsjudge=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		Adjusts the font settings of the grammaticality judgment.
+		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is inserted on an own line
 		after the example number (preceding the example text). This might be useful, for instance,
 		to give context information, to specify the language or the source in case of cited examples.
@@ -339,6 +347,14 @@ The \jenv{example} environment provides the following options which also allow f
 	    negative values will decrease the indentation of the example.
 	 \item[\joption{addnumbersep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
 	    Increases or (with negative values) decreases the spacing between example number and example.
+	 \item[\joption{judgewidth=\{\jparam{text}\}}] 
+	 	Sets the width that is reserved for the judgment marker. This is automatically set to the input
+	 	of \joption{judge}. By default and notably in the \jenv{examples} and \jenv{examples} environments
+	 	which use an angular \jcsmacro{item} argument rather than the \joption{judge} option,
+	 	this is preset to \verb|{?}|.
+	 \item[\joption{addjudgesep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
+	    Increases or (with negative values) decreases the spacing between judgment mark and example
+	    (which amounts to 0.2\,em by default).
 	 \item[\joption{numberformat=\{\jparam{template}\}}] Default: \verb|{(1)}|.
 	    The format of the example number. The option takes templates as known from the \textsf{enumerate}
 	    package \cite{enumerate}.
@@ -352,12 +368,11 @@ The \jenv{example} environment provides the following options which also allow f
 	    and example is in a footnote. For the template format, see \joption{numberformat}.
 \end{description}
 %
-If you pass the options as optional argument to an environment, they will only apply to the current environment.
-
+If you pass these as optional argument to an environment, they will only apply to the current environment.
 If you want to make a global change, you can use the macro
-\begin{itemize}
-	\item \jcsmacro{setexampleoptions\{\jparam{options}\}}
-\end{itemize}
+\begin{lstlisting}[moretexcs={setexampleoptions}]
+\setexampleoptions{<options>}
+\end{lstlisting}
 and pass either of the above options to it (as usual separated by comma). This will apply to all subsequent examples
 (the \jenv{example} environment described here as well as \jenv{examples}, \jenv{subexamples} and glosses with the 
 \joption{ex} option) until further global change and unless an option is altered locally via optional argument.
@@ -368,12 +383,7 @@ Please refer to sec.~\ref{sec:exex} for exemplifications of the options.
 
 To display a series of examples together, each with its own example number, use \jenv{examples}
 (or \jenv{covexamples}\footnote{%
-	As for \jenv{example}, \cvt\ checks if there is already an \jfenv{examples} environment defined,
-	and if this is the case, \cvt\ does not define its own one. The alias environment \jenv{covexamples}
-	is always available as a fallback. If you use the package option \joption{force}, \cvt\ will override
-	existing \jfenv{examples} environments. The package will issue a warning if \jenv{examples} is already defined
-	(this is the case, for instance, if you use \cvt\ with the \texttt{beamer} class), telling you
-	how the package has dealt with the situation.%
+	The fallback mechanism described in	footnote~\ref{fn:fallbacks} for \jfenv{example} apply here, too.%
 }) instead of \jenv{example} or \jenv{covexample}.
 There can be more than one example with this environment, and each of them has to be introduced
 by \jfcsmacro{item}, like this:
@@ -396,12 +406,39 @@ This prints as:
 \item This is the second sentence.
 \end{examples}
 %
-The \jenv{examples} environments accepts the same options than the \jenv{example} environment (please refer
-to sec.~\ref{sec:ex} for details).
-However, there is one notable exception: \joption{preamble} and \joption{postamble[*]} do not have any effect since,
-if you want to add preceding or trailing text, you will want to add this to specific items in the set.
+Besides to the normal optional item argument (see below), the examples environment provides an optional angular
+argument which allows you to pass a judgment marker. Consider:
+\begin{lstlisting}
+\begin{examples}
+\item<*> Ein ungrammatischem Satz.
+\item Ein grammatischer Satz.
+\end{examples}
+\end{lstlisting}
+%
+This is printed as:
+\begin{examples}
+	\item<*> Ein ungrammatischem Satz.
+	\item Ein grammatischer Satz.
+\end{examples}
+%
+If you use a wider marker such as \jparam{??}, you need to adjust the width of the reserved space for the marker.
+To this end, the option \joption{judgewidth=\{\jparam{text}\}} is provided (e.\,g., \verb|judgewidth={??}|).
+With even wider markers, you might also need to adjust \joption{addnumbersep} to prevent the marker from coming too
+close to the example number.
 
-To this end, we provide specific macros, namely \jcsmacro{expreamble} and \jcsmacro{expostamble}, which can be placed
+The \jenv{examples} environments accepts the same options than the \jenv{example} environment (please refer to
+sec.~\ref{sec:ex} for details).
+However, there are some notable exceptions due to the fact that we are dealing with multiple examples in a row
+here:
+\begin{itemize}
+	\item \joption{judge} and its shorthand aliases (\joption{*}, \joption{?}, \joption{*?}, \joption{??}, and
+		  \joption{\#}) do not have any effect since judgments only apply to specific items in the set.
+		  Use the aforementioned angular \jcsmacro{item} option instead. 
+	\item For the same reason, \joption{preamble} and \joption{postamble[*]} do not have any effect; 
+		  if you want to add preceding or trailing text, you will want to add this to specific items in the set.
+\end{itemize}
+%
+For the latter task, we provide specific macros, namely \jcsmacro{expreamble} and \jcsmacro{expostamble}, which can be placed
 where they should appear in the example, and which take the same markup than the texts passed via \joption{preamble}
 or \joption{postamble} option in the \jenv{example} environment.
 
@@ -473,7 +510,9 @@ results in:
 	\item A proposition.
 	\item[\covexnumber{\exampleno*'}] An alternative proposition.
 \end{examples}
-
+%
+If you need an angular (judgment) argument and an optional argument, pass the judgment argument first
+(i.\,e., \verb|\item<judgment>[custom label]|).
 
 \subsection[The \jenv{subexamples} environment]{The \jenv{subexamples} environment}\label{sec:subexs}
 
@@ -519,6 +558,25 @@ prints as:
 	\item This is the second sentence.
 \end{subexamples}
 %
+Similar to the \jenv{examples} environment, the \jenv{subexamples} environment's item has an angular argument
+to pass grammaticality judgment markers, as in:
+%
+\begin{subexamples}
+	\item This is a well-formed sentence.
+	\item<*> This not well-formed is.
+\end{subexamples}
+%
+which was typed as:
+\begin{lstlisting}
+\begin{subexamples}
+\item This is a well-formed sentence.
+\item<*> This not well-formed is.
+\end{subexamples}
+\end{lstlisting}
+%
+The settings of the judgment markers (spacing and markup) is done via the options described in
+sec.~\ref{sec:ex}.
+
 The \jenv{subexamples}/\jenv{covsubexamples} environment provides the same options than the \jenv{example}
 and \jenv{examples} environment (see sec.~\ref{sec:ex}) with the following deviations and additions:
 \begin{description}
@@ -548,7 +606,8 @@ should be used to distinguish the \jenv{subexample} from the \jenv{example} case
 		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 \end{description}
 %
-For convenience, both options actually also work (as aliases) in optional arguments.
+For convenience, both these options actually also work (as aliases) in optional arguments passed to
+\jenv{subexamples} environment.
 
 To add additional text preceding or following specific subitems, you can principally use the \jcsmacro{expreamble} and
 \jcsmacro{expostamble} macros desribed in sec.~\ref{sec:exs}. To allow for separating the markup of such texts
@@ -627,6 +686,55 @@ we get the following output:
 	\item This is the first sentence.
 	\item This is the second sentence.
 \end{subexamples}
+%
+Let us briefly demonstrate the judgment feature. If we want to mark an example as being ungrammatical,
+we use the conventional asterisk mark, like this:
+\begin{lstlisting}
+\begin{example}[judge=*]
+Ein ungrammatischem Satz.
+\end{example}
+\end{lstlisting}
+%
+or, shorter:
+\begin{lstlisting}
+\begin{example}[*]
+Ein ungrammatischem Satz.
+\end{example}
+\end{lstlisting}
+%
+to get:
+\begin{example}[judge=*]
+	Ein ungrammatischem Satz.
+\end{example}
+%
+With the \jenv{examples} and \jenv{subexamples} environment, we need to pass the marker to the item's
+angular argument instead, as already demonstrated in sec.~\ref{sec:exs}:
+\begin{lstlisting}
+\begin{examples}
+\item<*> Ein ungrammatischem Satz.
+\item Ein grammatischer Satz.
+\end{examples}
+\end{lstlisting}
+%
+\begin{examples}
+	\item<*> Ein ungrammatischem Satz.
+	\item Ein grammatischer Satz.
+\end{examples}
+%
+With wider markers, we need to adjust the marker width via \joption{judgewidth}, and
+since we have a larger count of examples now, we also adjust \joption{addnumbersep}
+to have a good space to the number:
+\begin{lstlisting}
+\begin{examples}[judgewidth={??},addnumbersep={1ex}]
+\item<??> Ein ungrammatisch Satz.
+\item Ein grammatischer Satz.
+\end{examples}
+\end{lstlisting}
+%
+\begin{examples}[judgewidth={??},addnumbersep={1ex}]
+	\item<??> Ein ungrammatisch Satz.
+	\item Ein grammatischer Satz.
+\end{examples}
 %
 In what follows, we demonstrate the adjustment of the spacing of examples.
 The space between the example number and the text (or the subnumber in case of subexamples)
@@ -872,9 +980,9 @@ Note that:
 %
 If given as optional arguments to a \jcsmacro{digloss} or \jcsmacro{trigloss} macro, the options will only apply to
 this very gloss. If you want to make a permanent change, you can use the macro
-\begin{itemize}
-	\item \jcsmacro{setglossoptions\{\jparam{options}\}}
-\end{itemize}
+\begin{lstlisting}[moretexcs={setglossoptions}]
+\setglossoptions{<options>}
+\end{lstlisting}
 and pass either of the above options to it. This will apply to all subsequent glosses (until further global
 change and unless the setting is altered locally via macro option).
 
@@ -1401,6 +1509,11 @@ software, and the authors make no commitment to do any further work on
 it.
 
 \section{Release history}
+
+\subsection*{2.11 (forthcoming)}
+\begin{itemize}
+	\item Add support for judgment markers in examples.
+\end{itemize}
 
 \subsection*{2.10 (2023 June 2)}
 \begin{itemize}
