@@ -343,7 +343,7 @@
     numberformat.code = { \cov@parse@number@template{#1}{exfmt}{covexnumber} },
     % fnnumberformat={template}
     fnumberformat.code = { \cov@parse@number@template{#1}{fnexfmt}{covexnumberfn} },
-    % judgement=text
+    % judge=text
     judge.code = { \def\cov@judge@ex@text{#1} \settowidth\cov@judge@width{\cov@judge@fs#1} },
     % judgement shorthands: *, ?, *?, ??, #
     *.code = { \def\cov@judge@ex@text{*} \settowidth\cov@judge@width{\cov@judge@fs*} },
@@ -816,23 +816,31 @@
 % Inspired by this post of David Carlisle to the mentioned stackexchange thread:
 % http://tex.stackexchange.com/a/169744/19291
 % These macros require the gloss lines to be ended explicitly with \xgle
-\def\xgll{%                 % Introduces 2-line text-and-gloss.
+\newcommand*\xgll[1][]{%                 % Introduces 2-line text-and-gloss.
    \begin{flushleft}
    \vskip\baselineskip%      % Added 1992 Nov 8 to force single spacing
    \def\baselinestretch{1}%
    \cov@selfnt%
    \vskip-\baselineskip%
    \bgroup
+   \ifx#1\empty\else%
+       \bgroup\cov@judge@fs#1\egroup%
+       \hspace{\cov@judge@sep}\ignorespaces%
+   \fi%
    \ignorespaces\xtwosent
 }
 
-\def\xglll{%                 % Introduces 3-line text-and-gloss.
+\newcommand*\xglll[1][]{%                 % Introduces 3-line text-and-gloss.
    \begin{flushleft}
    \vskip\baselineskip%      % Added 1992 Nov 8 to force single spacing
    \def\baselinestretch{1}%
    \cov@selfnt%
    \vskip-\baselineskip%
    \bgroup
+   \ifx#1\empty\else%
+       \bgroup\cov@judge@fs#1\egroup%
+       \hspace{\cov@judge@sep}\ignorespaces%
+   \fi%
    \ignorespaces\xthreesent
 }
 
@@ -1036,10 +1044,18 @@
 \newif\ifcov@enquote@tl\cov@enquote@tltrue
 \def\cov@fstl{\cov@fstl@global}
 \newcommand*\glosslinetrans[1]{\bgroup\cov@fstl\ifcov@enquote@tl\covenquote{#1}\else#1\fi\egroup}
-\newcommand*\glot[1]{%
-  \def\tempx{#1}%
-  \ifx\tempx\empty\gln
-  \else\glt\glosslinetrans{#1}\fi%
+\newcommand*\glot[2][]{%
+  \def\tempx{#2}%
+  \ifx\tempx\empty%
+     \gln
+  \else%
+     \glt%
+      \ifx#1\empty\else%
+        \hphantom{\cov@judge@fs#1}%
+        \hspace{\cov@judge@sep}\ignorespaces%
+      \fi%
+     \glosslinetrans{#2}%
+  \fi%
 }
 
 % V. 2.0: More convenient gloss macros
@@ -1075,7 +1091,19 @@
     % 8. Enquote translation line
     enquotetl.if = cov@enquote@tl,
     % 9. translation line font settings
-    fstl.store = \cov@fstl@local
+    fstl.store = \cov@fstl@local,
+    % judge=text
+    judge.code = { \def\cov@judge@gloss@text{#1} },
+    % judgement shorthands: *, ?, *?, ??, #
+    *.code = { \def\cov@judge@gloss@text{*} },
+    ?.code = { \def\cov@judge@gloss@text{?} },
+    *?.code = { \def\cov@judge@gloss@text{*?} },
+    ??.code = { \def\cov@judge@gloss@text{??} },
+    #.code = { \def\cov@judge@gloss@text{\#} },
+    % judgement font settings
+    fsjudge.store = \cov@judge@fs,
+    % addjudgesep=length
+    addjudgesep.code = { \addtolength\cov@judge@sep{#1} }
 }
 
 \DeclareKeys[gcovgloss]
@@ -1099,7 +1127,19 @@
     % 8. Enquote translation line
     enquotetl.if = cov@enquote@tl@global,
     % 9. translation line font settings
-    fstl.code = { \global\def\cov@fstl@global{#1} }
+    fstl.code = { \global\def\cov@fstl@global{#1} },
+    % judge=text
+    judge.code = { \def\cov@judge@gloss@text@global{#1} },
+    % judgement shorthands: *, ?, *?, ??, #
+    *.code = { \def\cov@judge@gloss@text@global{*} },
+    ?.code = { \def\cov@judge@gloss@text@global{?} },
+    *?.code = { \def\cov@judge@gloss@text@global{*?} },
+    ??.code = { \def\cov@judge@gloss@text@global{??} },
+    #.code = { \def\cov@judge@gloss@text@global{\#} },
+    % judgement font settings
+    fsjudge.store = \cov@judge@fs,
+    % addjudgesep=length
+    addjudgesep.code = { \addtolength\cov@judge@sep{#1} }
 }
 
 
@@ -1112,7 +1152,10 @@
 \newcommand*\setglossoptions[1]{\SetKeys[gcovgloss]{#1}}
 %
 % 1. \digloss[<opts>]{<line 1>}{<line 2>}{<translation>}
-\newcommand*\digloss[4][\empty]{%
+\newcommand*\digloss[4][]{%
+  \@ifundefined{cov@judge@gloss@text@global}%
+     {\let\cov@judge@gloss@text\relax}%
+     {\let\cov@judge@gloss@text\cov@judge@gloss@text@global}%
   \let\lglosslineone\relax%
   \let\lglosslinetwo\relax%
   \let\lglosslinethree\relax%
@@ -1136,7 +1179,7 @@
   \fi%
   \def\cov@gl@preamble{\cov@gl@preamble@global}%
   \def\cov@gl@postamble{\cov@gl@postamble@global}%
-  \ifx#1\empty\else\SetKeys[covgloss]{#1}\fi%
+  \SetKeys[covgloss]{#1}%
   \ifcov@ex@gloss
     \begin{covexample}
   \fi%
@@ -1154,12 +1197,20 @@
   \@ifundefined{cov@fstl@local}%
        {\let\cov@fstl\cov@fstl@global}%
        {\let\cov@fstl\cov@fstl@local}%
-  \xgll #2\xgle
-        #3\xgle
+  \ifx\cov@judge@gloss@text\empty%
+     \xgll%
+  \else%
+     \xgll[\cov@judge@gloss@text]%
+  \fi #2\xgle
+      #3\xgle
   \ifcov@tlr
     \gln #4%
   \else
-    \glot{#4}%
+    \ifx\cov@judge@gloss@text\empty%
+      \glot{#4}%
+    \else%
+       \glot[\cov@judge@gloss@text]{#4}%
+    \fi%
   \fi
   \ifx\cov@gl@postamble@text\empty%
   \else%
@@ -1175,10 +1226,14 @@
   \let\cov@fsglpreamble@local\relax%
   \let\cov@fsglpostamble@local\relax%
   \let\cov@fstl@local\relax%
+  \let\cov@judge@gloss@text\relax%
 }
 
 % 2. \trigloss[<opts>]{<line 1>}{<line 2>}{<line 3>}{<translation>}
-\newcommand\trigloss[5][\empty]{%
+\newcommand\trigloss[5][]{%
+  \@ifundefined{cov@judge@gloss@text@global}%
+     {\let\cov@judge@gloss@text\relax}%
+     {\let\cov@judge@gloss@text\cov@judge@gloss@text@global}%
   \let\lglosslineone\relax%
   \let\lglosslinetwo\relax%
   \let\lglosslinethree\relax%
@@ -1202,7 +1257,7 @@
   \fi%
   \def\cov@gl@preamble{\cov@gl@preamble@global}%
   \def\cov@gl@postamble{\cov@gl@postamble@global}%
-  \ifx#1\empty\else\SetKeys[covgloss]{#1}\fi%
+  \SetKeys[covgloss]{#1}%
   \ifcov@ex@gloss
     \begin{covexample}
   \fi%
@@ -1220,13 +1275,21 @@
   \@ifundefined{cov@fstl@local}%
        {\let\cov@fstl\cov@fstl@global}%
        {\let\cov@fstl\cov@fstl@local}%
-  \xglll #2\xgle
-         #3\xgle
-         #4\xgle
+  \ifx\cov@judge@gloss@text\empty%
+     \xglll%
+  \else%
+     \xglll[\cov@judge@gloss@text]%
+  \fi #2\xgle
+      #3\xgle
+      #4\xgle
   \ifcov@tlr
     \gln #5%
   \else
-    \glot{#5}%
+    \ifx\cov@judge@gloss@text\empty%
+      \glot{#5}%
+    \else%
+       \glot[\cov@judge@gloss@text]{#5}%
+    \fi%
   \fi
   \ifx\cov@gl@postamble@text\empty%
   \else%
@@ -1242,6 +1305,7 @@
   \let\cov@fsglpreamble@local\relax%
   \let\cov@fsglpostamble@local\relax%
   \let\cov@fstl@local\relax%
+  \let\cov@judge@gloss@text\relax%
 }
 
 

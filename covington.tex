@@ -812,14 +812,13 @@ And we get what we want:
 \end{subexamples}
 %
 Note that the \joption{numberformat} option by default also changes the numbers of examples in footnotes, even if
-\joption{fnexamplecounter=own} or \joption{fnexamplecounter=own-reset} is used. This does not apply to the counter format,
+\joption{fnexamplecounter=own[-reset]} is used. This does not apply to the counter format,
 however. So \joption{numberformat=\{[1.])\}} will also make the example numbers in footnote appear in brackets and with the 
 dot, but it will still use the lower Roman numbering. Use \joption{fnnumberformat} to fully change the appearance.
 
 With the last examples, we return to example markup. Remember, we have globally set the markup of example sentences to italics
 at the beginning of this section. Now if we want to have it bold instead for one single occurence, we can reset it for the one
 case via the environment options (if we wanted to change it globally from now on, we would use \jcsmacro{setexampleoptions} once more).
-
 Observe how:
 \begin{lstlisting}[moretexcs={covsubexnumber}]
 \begin{example}[fs=\bfseries,preamble={This is the preamble},
@@ -958,6 +957,17 @@ Note that:
 		 for enquoting the translation.
 		 If not, a fallback quotation (using English single quotation marks) is used. The usage of
 	     \textsf{csquotes} is highly recommended!
+	\item[\joption{judge=\{\jparam{arbitrary text}\}}] Insert grammaticality judgments (such as * or ?)
+		to a the gloss. This will be inserted before the first gloss line with a small space and uses its own
+		markup. For convenience, the following shorthand options are also provided:
+		\joption{*}, \joption{?}, \joption{*?}, \joption{??}, and \joption{\#} (as alias to
+		\joption{judge=*} etc.).
+	\item[\joption{fsjudge=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		Adjusts the font settings of the grammaticality judgment.
+		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+	\item[\joption{addjudgesep=\{\jparam{length}\}}] Default: \verb|{0pt}|.
+		Increases or (with negative values) decreases the spacing between judgment mark and gloss
+		(which amounts to 0.2\,em by default).
 	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is inserted on an own line
 	     before the interlinearized gloss. This might be useful, for instance, to give context information,
 	     to specify the language or the source in case of cited glosses.
@@ -1011,9 +1021,11 @@ The following is a complete list of all low-level glossing commands:
 	\item[\jcsmacro{xgll}] is similar to \jcsmacro{gll} except that it does not make
 	       the line ending active. It thus works inside macros such as footnotes but
 	       requires explicit gloss line termination via \jcsmacro{xgle}.
+	       This macro takes an optional argument where a judgment marker can be passed. 
 	\item[\jcsmacro{xglll}] is similar to \jcsmacro{glll} except that it does not make
 	      the line ending active. It thus works inside macros such as footnotes but
 	      requires explicit gloss line termination via \jcsmacro{xgle}.
+	      This macro takes an optional argument where a judgment marker can be passed.
 	\item[\jcsmacro{xgle}] is a gloss line ending marker to be used with \jcsmacro{xgll}
 	      and \jcsmacro{xglll}.
 	\item[\jcsmacro{glt}] ends the set of lined-up lines and introduces a line 
@@ -1025,7 +1037,10 @@ The following is a complete list of all low-level glossing commands:
 	\item[\jcsmacro{glot\{\jparam{free translation}\}}] is an alternative to \jcsmacro{glt}
 	     and a smarter way to insert a translation line. Other than \jcsmacro{glt}, it marks up
 	     (by default: enquotes) the translation line. Also, it does not add an empty line if the
-	     translation is empty. This command has been introduced in \cvt\ 2.0.
+	     translation is empty. 
+	     This macro also takes an optional argument where a judgment marker can be passed.
+	     This is for nice alignment with the gloss lines if such a marker is used.
+	     
 	     The markup can be customized by redefining the following macro:
 \begin{lstlisting}[moretexcs={glosslinetrans,covenquote,cov@fstl,ifcov@enquote@tl}]
 \newcommand*\glosslinetrans[1]{%
@@ -1179,6 +1194,20 @@ Also, if you adhere to the \emph{Leipzig glossing rules}, you might want to chec
 \LaTeX\ package \cite{leipzig-ltx} that facilitates the use of the gloss abbreviations that have
 been entered and marked-up manually here.
 
+Next, we showcase grammatical judgment. Similar to how this is done in examples, we
+simply pass the respective \joption{judge} option or shorthand:
+\begin{lstlisting}[moretexcs={digloss},basicstyle={\footnotesize\ttfamily}]
+\digloss[ex,??]
+  {Hier werden                           Sie                  geholfen!}
+  {Here become.\textsc{aux.pass.2sg.pst} you.\textsc{2sg.acc} help.\textsc{pass.ptcp}}
+  {Here you will be helped!}
+\end{lstlisting}
+%
+resulting in:
+\digloss[ex,??]{Hier werden                           Sie                  geholfen!}
+               {Here become.\textsc{aux.pass.2sg.pst} you.\textsc{2sg.acc} help.\textsc{pass.ptcp}}
+               {You will be helped here!}
+%
 The final example exemplifies the use of \joption{postamble}. In what follows we add a footnote to the
 translation line, but outside the translation (as marked-up by quotation marks):
 \digloss[ex, postamble={\footnote{Yes, really!}}]
@@ -1512,7 +1541,7 @@ it.
 
 \subsection*{2.11 (forthcoming)}
 \begin{itemize}
-	\item Add support for judgment markers in examples.
+	\item Add support for judgment markers in examples and glosses.
 \end{itemize}
 
 \subsection*{2.10 (2023 June 2)}
