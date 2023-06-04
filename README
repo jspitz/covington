@@ -31,6 +31,9 @@ The package consists of the following files:
 
 == CHANGES ==
 
+* Version 2.11 (forthcoming)
+	- Add support for judgment markers in examples and glosses.
+
 * Version 2.10 (2023-06-02)
 	- Use LaTeX's own keyval mechanism rather than xkeyval.
 	- Introduce a better interface to customize the appearance of examples. Now everything can
