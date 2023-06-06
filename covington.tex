@@ -324,7 +324,7 @@ The \jenv{example} environment provides the following options which also allow f
 		after the example number (preceding the example text). This might be useful, for instance,
 		to give context information, to specify the language or the source in case of cited examples.
 		The advantage over just adding a line manually in the example is that you can globally or locally
-		set the markup with the \joption{fspreamble} option. Also, judgement markers are properly set
+		set the markup with the \joption{fspreamble} option. Also, judgment markers are properly set
 		after the preamble.
 	\item[\joption{postamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is appended to the example
 	    (on the	same line after a space).
@@ -448,7 +448,7 @@ via \joption{preamble} or \joption{postamble} option in the \jenv{example} envir
 
 Hence, also here, the advantage over just adding text as is in the example is that an own, globally settable markup is used.
 This is particularly relevant if you globally set examples to be italicized via the \joption{fs} option (as we have done it
-in our examples in sec.~\ref{sec:exex}).  Also, judgement markers are properly set after the preamble.
+in our examples in sec.~\ref{sec:exex}).  Also, judgment markers are properly set after the preamble.
 
 Consider:
 \begin{lstlisting}[moretexcs={expreamble}]
@@ -627,7 +627,7 @@ To add additional text preceding or following specific subitems, you can princip
 \jcsmacro{expostamble} macros desribed in sec.~\ref{sec:exs}. To allow for separating the markup of such texts
 in subexample from the example case, we also provide specific macros, \jcsmacro{subexpreamble} and
 \jcsmacro{subexpostamble} which use their own font settings (and the same than the \joption{preamble} and
-\joption{postamble} options of this environment).  With all these macros, judgement markers are properly set after
+\joption{postamble} options of this environment).  With all these macros, judgment markers are properly set after
 the preamble.
 
 For example:
@@ -750,6 +750,26 @@ to have a good space to the number:
 \begin{examples}[judgewidth={??},addnumbersep={1ex}]
 	\item<??> Kann ich ein gratis Bier haben?
 	\item Kann ich ein Bier gratis haben?
+\end{examples}
+%
+\Cvt\ takes care that judgment markers are also properly set with preambles (with the preamble
+markup, this requires extra \LaTeX\ passes). Observe how:
+%
+\begin{lstlisting}[moretexcs={expreamble}]
+\begin{examples}
+\item \expreamble{Compare this:}
+      Oh, I am so well-formed!
+\item<*> \expreamble{with this:}
+      Lucky are you!
+\end{examples}
+\end{lstlisting}
+%
+comes out as expected:
+\begin{examples}
+	\item \expreamble{Compare this:}
+	      Oh, I am so well-formed!
+	\item<*> \expreamble{with this:}
+	      Lucky are you!
 \end{examples}
 %
 In what follows, we demonstrate further adjustments of the spacing of examples.
