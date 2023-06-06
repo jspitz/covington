@@ -186,11 +186,14 @@
 %             This is a sentence.  \hfill (\exampleno)
 %             \end{flushleft}
 
+% Counter to generate unique example ID
+\newcounter{explid}
+
 \ifownexcounter
   \newcounter{covex}
-  \newcommand{\@exampleno}{\refstepcounter{covex}\thecovex}
+  \newcommand{\@exampleno}{\stepcounter{explid}\refstepcounter{covex}\thecovex}
 \else
-  \newcommand{\@exampleno}{\refstepcounter{equation}\theequation}
+  \newcommand{\@exampleno}{\stepcounter{explid}\refstepcounter{equation}\theequation}
 \fi
 \newcommand*\@@exampleno{\ifownexcounter\thecovex\else\theequation\fi}
 \newcommand*\exampleno{\@ifstar{\@@exampleno}{\@exampleno}}
@@ -308,9 +311,29 @@
 
 \newif\if@cov@expst@star\@cov@expst@starfalse
 
+% Commands to register and check preamble in (sub-)examples
+% Adapted from etoolbox
+\DeclareRobustCommand*{\RegisterExPreamble}[1]{%
+   \expandafter\gdef\csname cov@havepreamble:#1\endcsname{}%
+}
+
+\newcommand*{\IfExPreamble}[1]{%
+  \ifcsname cov@havepreamble:#1\endcsname
+    \expandafter\@firstoftwo
+  \else
+    \expandafter\@secondoftwo
+  \fi%
+}
+
 % 2022-08-20 (v. 2.8): optional preceding example text
 \newcommand*\expreamblefs{\normalfont}
-\newcommand\expreamble[1]{\bgroup\expreamblefs#1\egroup\par}
+\newcommand\expreamble[1]{%
+   \bgroup\expreamblefs#1\egroup\par\cov@judge@marker%
+   \if@filesw%
+      \protected@write\@auxout{}{\protect\RegisterExPreamble{\theexplid}}%
+   \fi%
+   \ignorespaces%
+}
 
 % 2023.05.26 (v. 2.9): optional trailung subexample text
 \newcommand*\expostamblefs{\normalfont}
@@ -359,14 +382,19 @@
     addjudgesep.code = { \addtolength\cov@judge@sep{#1} }
 }
 
+\newif\if@cov@insingleex\@cov@insingleexfalse
+
 \newenvironment{covexample}[1][]{%
+    \@cov@insingleextrue%
+    \let\cov@judge@ex@text\cov@judge@ex@text@global%
     \SetKeys[covexpl]{#1}%
     \begin{covexamples}
        \@ifundefined{cov@judge@ex@text}{\item}{\item<\cov@judge@ex@text>}%
-       \ifx\cov@xp\empty\else\expreamble{\cov@xp}\fi% insert preamble if given
+       \ifx\cov@xp\empty\cov@judge@marker\else\expreamble{\cov@xp}\fi% insert preamble if given
 }{%
    \@ifundefined{cov@xpst}{}{\if@cov@expst@star\unskip\fi\expostamble{\cov@xpst}}%
    \end{covexamples}%
+   \@cov@insingleexfalse%
 }
 
 \@ifundefined{example}{%
@@ -430,13 +458,26 @@
 
 \newlength\cov@judge@width
 \settowidth\cov@judge@width{?}
+\newlength\cov@subjudge@width
+\settowidth\cov@subjudge@width{?}
 \newlength\cov@judge@sep
 \setlength\cov@judge@sep{.1em}
 \newlength\cov@judge@extra
 \setlength\cov@judge@extra{0pt}
 
+\newif\if@cov@insubex\@cov@insubexfalse
+
+\def\cov@judge@marker{}
+
 \newenvironment{covexamples}[1][]{%         % define "examples" environment
-  \ifx#1\empty\else\SetKeys[covexpl]{#1}\fi%
+  \if@cov@insubex%
+     \let\cov@judge@ex@text\relax%
+  \else%
+     \if@cov@insingleex\else%
+        \let\cov@judge@ex@text\cov@judge@ex@text@global%
+      \fi%
+  \fi%
+  \ifx{#1}{\empty}\else\SetKeys[covexpl]{#1}\fi%
   \addtolength\cov@judge@extra{\cov@judge@width}%
   \addtolength\cov@judge@extra{\cov@judge@sep}%
   % parse <...> item argument
@@ -444,15 +485,19 @@
   \let\cov@@item\@item%
   \def\@item[##1]{%
      \cov@@item[##1] \@ifundefined{cov@judge}{}{%
-         \hspace*{-\cov@judge@extra}%
-         \makebox[\cov@judge@width]{\cov@judge@fs\cov@judge}%
-         \hspace{\cov@judge@sep}\ignorespaces%
+         \def\cov@judge@marker{\hspace*{-\cov@judge@extra}%
+             \makebox[\cov@judge@width][r]{\cov@judge@fs\cov@judge}%
+             \hspace{\cov@judge@sep}\ignorespaces}%
+          \IfExPreamble{\theexplid}{}{\cov@judge@marker\ignorespaces}%
      }%
   }
   \def\item{%
     \@inmatherr\item
     \@ifnextchar<{\cov@judge@item}%
-                 {\global\let\cov@judge\relax\cov@item}%
+                 {\@ifundefined{cov@judge@ex@text}%
+                     {\global\let\cov@judge\relax}%
+                     {\global\let\cov@judge\cov@judge@ex@text}%
+                  \cov@item}%
   }%
   \begin{list}%
   {%
@@ -467,6 +512,7 @@
     \addtolength{\labelwidth}{\examplenumbersep}%
     \addtolength{\leftmargin}{\examplenumbersep}%
     \addtolength{\leftmargin}{\exampleind}%
+    \stepcounter{explid}%
     \ifcov@infootnote
       \setcounter{covexsave}{\arabic{covfnex}}%
       \usecounter{covfnex}%
@@ -523,7 +569,13 @@
 
 % 2019-06-21 (v. 2.3): optional preceding subexample text
 \newcommand*\subexpreamblefs{\normalfont}
-\newcommand\subexpreamble[1]{\bgroup\subexpreamblefs#1\egroup\par}
+\newcommand\subexpreamble[1]{%
+   \bgroup\subexpreamblefs#1\egroup\par\cov@judge@marker%
+   \if@filesw%
+      \protected@write\@auxout{}{\protect\RegisterExPreamble{\theexplid}}%
+   \fi%
+   \ignorespaces%
+}
 
 % 2023.05.26 (v. 2.9): optional trailung subexample text
 \newcommand*\subexpostamblefs{\normalfont}
@@ -559,10 +611,20 @@
     fnumberformat.code = { \cov@parse@number@template{#1}{fnexfmt}{covexnumberfn} },
     % subnumberformat={template}
     subnumberformat.code = { \cov@parse@number@template{#1}{subexfmt}{covsubexnumber} },
+    % judge=text
+    judge.code = { \def\cov@subjudge@ex@text{#1} \settowidth\cov@subjudge@width{\cov@judge@fs#1} },
+    % subjudge=text
+    subjudge.code = { \def\cov@subjudge@ex@text{#1} \settowidth\cov@judge@width{#1} },
+    % judgement shorthands: *, ?, *?, ??, #
+    *.code = { \def\cov@subjudge@ex@text{*} \settowidth\cov@subjudge@width{\cov@judge@fs*} },
+    ?.code = { \def\cov@subjudge@ex@text{?} \settowidth\cov@subjudge@width{\cov@judge@fs?} },
+    *?.code = { \def\cov@subjudge@ex@text{*?} \settowidth\cov@subjudge@width{\cov@judge@fs*?} },
+    ??.code = { \def\cov@subjudge@ex@text{??} \settowidth\cov@subjudge@width{\cov@judge@fs??} },
+    #.code = { \def\cov@subjudge@ex@text{\#} \settowidth\cov@subjudge@width{\cov@judge@fs\#} },
     % judgement font settings
     fsjudge.store = \cov@judge@fs,
     % judgewith=<text>
-    judgewidth.code = { \settowidth\cov@judge@width{\cov@judge@fs#1} },
+    judgewidth.code = { \settowidth\cov@subjudge@width{\cov@judge@fs#1} },
     % addjudgesep=length
     addjudgesep.code = { \addtolength\cov@judge@sep{#1} }
 }
@@ -585,21 +647,25 @@
 % Copied from the kernel (enumerate) and adapted
 % to accept <...> item arguments
 \def\covsubexs{%
-  \setlength\cov@judge@extra{\cov@judge@width}%
+  \setlength\cov@judge@extra{\cov@subjudge@width}%
   \addtolength\cov@judge@extra{\cov@judge@sep}%
   \let\cov@subitem\item%
   \let\cov@@subitem\@item%
   \def\@item[##1]{%
      \cov@@subitem[##1] \@ifundefined{cov@subjudge}{}{%
-         \hspace*{-\cov@judge@extra}%
-         \makebox[\cov@judge@width]{\cov@judge@fs\cov@subjudge}%
-         \hspace{\cov@judge@sep}\ignorespaces%
+         \def\cov@judge@marker{\hspace*{-\cov@judge@extra}%
+            \makebox[\cov@subjudge@width][r]{\cov@judge@fs\cov@subjudge}%
+            \hspace{\cov@judge@sep}\ignorespaces}%
+          \IfExPreamble{\theexplid}{}{\cov@judge@marker\ignorespaces}%
      }%
   }%
   \def\item{%
     \@inmatherr\item
     \@ifnextchar<{\cov@judge@subitem}%
-                 {\global\let\cov@subjudge\relax\cov@subitem}%
+                 {\@ifundefined{cov@subjudge@ex@text}%
+                     {\global\let\cov@subjudge\relax}%
+                     {\global\let\cov@subjudge\cov@subjudge@ex@text}%
+                  \cov@subitem}%
   }%
   \ifnum \@enumdepth >\thr@@\@toodeep\else
     \advance\@enumdepth\@ne
@@ -607,16 +673,18 @@
       \expandafter
       \list
         \csname label\@enumctr\endcsname
-        {\usecounter\@enumctr\def\makelabel##1{\hss\llap{##1}}}%
+        {\stepcounter{explid}\usecounter\@enumctr\def\makelabel##1{\hss\llap{##1}}}%
   \fi}
 \let\endcovsubexs =\endlist
 
 
 \newenvironment{covsubexamples}[1][]%         % define "subexamples" environment
 {%
+    \@cov@insubextrue%
     \let\cov@xp\relax%
     \let\cov@xpst\relax%
-    \ifx#1\empty\else\SetKeys[covsubexpl]{#1}\fi%
+    \let\cov@judge@ex@text\relax%
+    \ifx{#1}{\empty}\else\SetKeys[covsubexpl]{#1}\fi%
     \begin{covexample}%
     \@ifundefined{cov@sxp}{}{\bgroup\subexpreamblefs\cov@sxp\egroup}% insert preamble if given
     \begin{covsubexs}
@@ -633,6 +701,7 @@
     \@ifundefined{cov@sxpst}{}{\subexpostamble{\cov@sxpst}}% insert postamble if given
     \let\cov@sxpst\relax
     \end{covexample}
+    \@cov@insubexfalse%
 }
 
 \@ifundefined{subexamples}{%
@@ -686,13 +755,35 @@
     % subnumberformat={template}
     subnumberformat.code = { \cov@parse@number@template{#1}{subexfmt}{covsubexnumber} },
     % judge=text
-    judge.code = { \def\cov@judge@ex@text{#1} \settowidth\cov@judge@width{#1} },
+    judge.code = { \def\cov@judge@ex@text@global{#1} \settowidth\cov@judge@width{#1} },
+    % subjudge=text
+    subjudge.code = { \def\cov@subjudge@ex@text{#1} \settowidth\cov@judge@width{#1} },
     % judgement shorthands: *, ?, *?, ??, #
-    *.code = { \def\cov@judge@ex@text{*} \settowidth\cov@judge@width{\cov@judge@fs*} },
-    ?.code = { \def\cov@judge@ex@text{?} \settowidth\cov@judge@width{\cov@judge@fs?} },
-    *?.code = { \def\cov@judge@ex@text{*?} \settowidth\cov@judge@width{\cov@judge@fs*?} },
-    ??.code = { \def\cov@judge@ex@text{??} \settowidth\cov@judge@width{\cov@judge@fs??} },
-    #.code = { \def\cov@judge@ex@text{\#} \settowidth\cov@judge@width{\cov@judge@fs\#} },
+    *.code = 
+       { \def\cov@judge@ex@text@global{*}
+         \def\cov@subjudge@ex@text{*}
+         \settowidth\cov@judge@width{\cov@judge@fs*}
+       },
+    ?.code =
+       { \def\cov@judge@ex@text@global{?} 
+         \def\cov@subjudge@ex@text{?} 
+         \settowidth\cov@judge@width{\cov@judge@fs?}
+       },
+    *?.code =
+       { \def\cov@judge@ex@text@global{*?}
+         \def\cov@subjudge@ex@text{*?}
+         \settowidth\cov@judge@width{\cov@judge@fs*?}
+       },
+    ??.code =
+       { \def\cov@judge@ex@text@global{??}
+         \def\cov@subjudge@ex@text{??}
+         \settowidth\cov@judge@width{\cov@judge@fs??}
+       },
+    #.code =
+      { \def\cov@judge@ex@text@global{\#}
+        \def\cov@subjudge@ex@text{\#}
+        \settowidth\cov@judge@width{\cov@judge@fs\#}
+      },
     % judgement font settings
     fsjudge.store = \cov@judge@fs,
     % judgewith=<text>
@@ -816,31 +907,23 @@
 % Inspired by this post of David Carlisle to the mentioned stackexchange thread:
 % http://tex.stackexchange.com/a/169744/19291
 % These macros require the gloss lines to be ended explicitly with \xgle
-\newcommand*\xgll[1][]{%                 % Introduces 2-line text-and-gloss.
+\def\xgll{%                 % Introduces 2-line text-and-gloss.
    \begin{flushleft}
    \vskip\baselineskip%      % Added 1992 Nov 8 to force single spacing
    \def\baselinestretch{1}%
    \cov@selfnt%
    \vskip-\baselineskip%
    \bgroup
-   \ifx#1\empty\else%
-       \bgroup\cov@judge@fs#1\egroup%
-       \hspace{\cov@judge@sep}\ignorespaces%
-   \fi%
    \ignorespaces\xtwosent
 }
 
-\newcommand*\xglll[1][]{%                 % Introduces 3-line text-and-gloss.
+\def\xglll{%                 % Introduces 3-line text-and-gloss.
    \begin{flushleft}
    \vskip\baselineskip%      % Added 1992 Nov 8 to force single spacing
    \def\baselinestretch{1}%
    \cov@selfnt%
    \vskip-\baselineskip%
    \bgroup
-   \ifx#1\empty\else%
-       \bgroup\cov@judge@fs#1\egroup%
-       \hspace{\cov@judge@sep}\ignorespaces%
-   \fi%
    \ignorespaces\xthreesent
 }
 
@@ -997,6 +1080,11 @@
     \else%
        \glosslinepreamble{\cov@gl@preamble@text}\cov@nopagebreak\newline%
     \fi%
+    \ifx\cov@judge@gloss@text\empty%
+    \else
+       \bgroup\cov@judge@fs\cov@judge@gloss@text\egroup%
+       \hspace{\cov@judge@sep}\ignorespaces%
+    \fi
     \loop\lastword{\eachwordone}{\lineone}{\wordone}%
          \lastword{\eachwordtwo}{\linetwo}{\wordtwo}%
          \global\setbox\gline=\hbox{\unhbox\gline%
@@ -1021,6 +1109,11 @@
     \else%
        \glosslinepreamble{\cov@gl@preamble@text}\cov@nopagebreak\newline%
     \fi%
+    \ifx\cov@judge@gloss@text\empty%
+    \else
+       \bgroup\cov@judge@fs\cov@judge@gloss@text\egroup%
+       \hspace{\cov@judge@sep}\ignorespaces%
+    \fi
     \loop\lastword{\eachwordone}{\lineone}{\wordone}%
          \lastword{\eachwordtwo}{\linetwo}{\wordtwo}%
          \lastword{\eachwordthree}{\linethree}{\wordthree}%
@@ -1153,6 +1246,7 @@
 %
 % 1. \digloss[<opts>]{<line 1>}{<line 2>}{<translation>}
 \newcommand*\digloss[4][]{%
+  \@cov@insubextrue%
   \@ifundefined{cov@judge@gloss@text@global}%
      {\let\cov@judge@gloss@text\relax}%
      {\let\cov@judge@gloss@text\cov@judge@gloss@text@global}%
@@ -1197,12 +1291,8 @@
   \@ifundefined{cov@fstl@local}%
        {\let\cov@fstl\cov@fstl@global}%
        {\let\cov@fstl\cov@fstl@local}%
-  \ifx\cov@judge@gloss@text\empty%
-     \xgll%
-  \else%
-     \xgll[\cov@judge@gloss@text]%
-  \fi #2\xgle
-      #3\xgle
+  \xgll #2\xgle
+        #3\xgle
   \ifcov@tlr
     \gln #4%
   \else
@@ -1227,10 +1317,12 @@
   \let\cov@fsglpostamble@local\relax%
   \let\cov@fstl@local\relax%
   \let\cov@judge@gloss@text\relax%
+  \@cov@insubexfalse%
 }
 
 % 2. \trigloss[<opts>]{<line 1>}{<line 2>}{<line 3>}{<translation>}
 \newcommand\trigloss[5][]{%
+  \@cov@insubextrue%
   \@ifundefined{cov@judge@gloss@text@global}%
      {\let\cov@judge@gloss@text\relax}%
      {\let\cov@judge@gloss@text\cov@judge@gloss@text@global}%
@@ -1275,13 +1367,9 @@
   \@ifundefined{cov@fstl@local}%
        {\let\cov@fstl\cov@fstl@global}%
        {\let\cov@fstl\cov@fstl@local}%
-  \ifx\cov@judge@gloss@text\empty%
-     \xglll%
-  \else%
-     \xglll[\cov@judge@gloss@text]%
-  \fi #2\xgle
-      #3\xgle
-      #4\xgle
+  \xglll #2\xgle
+         #3\xgle
+         #4\xgle
   \ifcov@tlr
     \gln #5%
   \else
@@ -1306,6 +1394,7 @@
   \let\cov@fsglpostamble@local\relax%
   \let\cov@fstl@local\relax%
   \let\cov@judge@gloss@text\relax%
+  \@cov@insubexfalse%
 }
 
 

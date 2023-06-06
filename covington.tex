@@ -324,7 +324,8 @@ The \jenv{example} environment provides the following options which also allow f
 		after the example number (preceding the example text). This might be useful, for instance,
 		to give context information, to specify the language or the source in case of cited examples.
 		The advantage over just adding a line manually in the example is that you can globally or locally
-		set the markup with the \joption{fspreamble} option.
+		set the markup with the \joption{fspreamble} option. Also, judgement markers are properly set
+		after the preamble.
 	\item[\joption{postamble=\{\jparam{arbitrary text}\}}] Arbitrary text that is appended to the example
 	    (on the	same line after a space).
 	    This might be useful to add a reference or an explanation to the translation.
@@ -428,23 +429,26 @@ close to the example number.
 
 The \jenv{examples} environments accepts the same options than the \jenv{example} environment (please refer to
 sec.~\ref{sec:ex} for details).
-However, there are some notable exceptions due to the fact that we are dealing with multiple examples in a row
-here:
+However, there are some notable deviations and exceptions due to the fact that we are dealing with multiple examples
+in a row here:
 \begin{itemize}
 	\item \joption{judge} and its shorthand aliases (\joption{*}, \joption{?}, \joption{*?}, \joption{??}, and
-		  \joption{\#}) do not have any effect since judgments only apply to specific items in the set.
-		  Use the aforementioned angular \jcsmacro{item} option instead. 
-	\item For the same reason, \joption{preamble} and \joption{postamble[*]} do not have any effect; 
-		  if you want to add preceding or trailing text, you will want to add this to specific items in the set.
+		  \joption{\#}) set the default judgment marker for all items in the environment. It also sets the appropriate
+		  \joption{judgewith} for the selected marker.
+		  Use the aforementioned angular \jcsmacro{item} option to overwrite the preset marker or to set
+		  one for indivual examples only.
+	\item \joption{preamble} and \joption{postamble[*]} do not have any effect at all, as such text needs to
+	      be set for individual examples in the set; to this end, we provide a specific solution, as documented
+	      in what follows.
 \end{itemize}
 %
-For the latter task, we provide specific macros, namely \jcsmacro{expreamble} and \jcsmacro{expostamble}, which can be placed
-where they should appear in the example, and which take the same markup than the texts passed via \joption{preamble}
-or \joption{postamble} option in the \jenv{example} environment.
+For preambles and postambles, we provide specific macros, namely \jcsmacro{expreamble} and \jcsmacro{expostamble},
+which can be placed where they should appear in the example, and which take the same markup than the texts passed
+via \joption{preamble} or \joption{postamble} option in the \jenv{example} environment.
 
 Hence, also here, the advantage over just adding text as is in the example is that an own, globally settable markup is used.
 This is particularly relevant if you globally set examples to be italicized via the \joption{fs} option (as we have done it
-in our examples in sec.~\ref{sec:exex}).
+in our examples in sec.~\ref{sec:exex}).  Also, judgement markers are properly set after the preamble.
 
 Consider:
 \begin{lstlisting}[moretexcs={expreamble}]
@@ -580,6 +584,11 @@ sec.~\ref{sec:ex}.
 The \jenv{subexamples}/\jenv{covsubexamples} environment provides the same options than the \jenv{example}
 and \jenv{examples} environment (see sec.~\ref{sec:ex}) with the following deviations and additions:
 \begin{description}
+	\item \joption{judge} and its shorthand aliases (\joption{*}, \joption{?}, \joption{*?}, \joption{??}, and
+		\joption{\#}) set the default judgment marker for all items in the environment. It also sets the appropriate
+		\joption{judgewith} for the selected marker.
+		Use the aforementioned angular \jcsmacro{item} option to overwrite the preset marker or to set
+		one for indivual subexamples only. 
 	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text is inserted here on the first line
 		(after the main number and before the first sub-example, which then follows on a new line).
 		This might be useful, for instance, to give context information, to specify the language or the source
@@ -596,6 +605,7 @@ and \jenv{examples} environment (see sec.~\ref{sec:ex}) with the following devia
 Also note that, if you set options globally via \jcsmacro{setexampleoptions}, the following derivating options
 should be used to distinguish the \jenv{subexample} from the \jenv{example} case.
 \begin{description}
+	\item[\joption{subjudge=\{\jparam{text}\}}] sets the default judge marker for subexamples.
 	\item[\joption{fssubpreamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
 		Adjusts the font settings of subexample's preamble text and the \jcsmacro{subexpreamble}
 		macro described below.
@@ -604,16 +614,21 @@ should be used to distinguish the \jenv{subexample} from the \jenv{example} case
 		Tweaks the sub\-example's postamble text font settings and the \jcsmacro{subexpostamble}
 		macro described below.
 		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+	\item[\joption{fssubpostamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		Tweaks the sub\-example's postamble text font settings and the \jcsmacro{subexpostamble}
+		macro described below.
+		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 \end{description}
 %
-For convenience, both these options actually also work (as aliases) in optional arguments passed to
+For convenience, all these options actually also work (as aliases) in optional arguments passed to
 \jenv{subexamples} environment.
 
 To add additional text preceding or following specific subitems, you can principally use the \jcsmacro{expreamble} and
 \jcsmacro{expostamble} macros desribed in sec.~\ref{sec:exs}. To allow for separating the markup of such texts
 in subexample from the example case, we also provide specific macros, \jcsmacro{subexpreamble} and
 \jcsmacro{subexpostamble} which use their own font settings (and the same than the \joption{preamble} and
-\joption{postamble} options of this environment).
+\joption{postamble} options of this environment).  With all these macros, judgement markers are properly set after
+the preamble.
 
 For example:
 \begin{lstlisting}[moretexcs={subexpreamble},morekeywords=preamble]
@@ -1022,11 +1037,9 @@ The following is a complete list of all low-level glossing commands:
 	\item[\jcsmacro{xgll}] is similar to \jcsmacro{gll} except that it does not make
 	       the line ending active. It thus works inside macros such as footnotes but
 	       requires explicit gloss line termination via \jcsmacro{xgle}.
-	       This macro takes an optional argument where a judgment marker can be passed. 
 	\item[\jcsmacro{xglll}] is similar to \jcsmacro{glll} except that it does not make
 	      the line ending active. It thus works inside macros such as footnotes but
 	      requires explicit gloss line termination via \jcsmacro{xgle}.
-	      This macro takes an optional argument where a judgment marker can be passed.
 	\item[\jcsmacro{xgle}] is a gloss line ending marker to be used with \jcsmacro{xgll}
 	      and \jcsmacro{xglll}.
 	\item[\jcsmacro{glt}] ends the set of lined-up lines and introduces a line 
