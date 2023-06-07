@@ -994,6 +994,14 @@ Note that:
 		 for enquoting the translation.
 		 If not, a fallback quotation (using English single quotation marks) is used. The usage of
 	     \textsf{csquotes} is highly recommended!
+	\item[\joption{addlinesepi=\{\jparam{length}\}}]. Default: \verb|{0pt}|.
+	     Increases or (with negative values) decreases the vertical spacing after the first gloss line.
+	\item[\joption{addlinesepii=\{\jparam{length}\}}] Default: \verb|{0pt}|.
+		 Increases or (with negative values) decreases the vertical spacing after the second gloss line
+		 (in \jcsmacro{digloss}, this is only done if a translation line follows).
+	\item[\joption{addlinesepiii=\{\jparam{length}\}}] Default: \verb|{0pt}|.
+		 Increases or (with negative values) decreases the vertical spacing after the third gloss line
+		 if a translation line follows (in case of \jcsmacro{trigloss}).
 	\item[\joption{judge=\{\jparam{arbitrary text}\}}] Insert grammaticality judgments (such as * or ?)
 		to the gloss. This will be prepended to the first gloss line with a small space and uses its own
 		markup. For convenience, the following shorthand options are also provided:
@@ -1580,6 +1588,7 @@ it.
 \subsection*{2.11 (forthcoming)}
 \begin{itemize}
 	\item Add support for judgment markers in examples and glosses.
+	\item Add support for customization of spacing between gloss lines.
 \end{itemize}
 
 \subsection*{2.10 (2023 June 2)}

@@ -878,6 +878,20 @@
 \newcommand*\glosslinepostamble[1]{\bgroup\fsglpostamble{}#1\egroup}
 \def\cov@gl@postamble@text{}
 
+% Optional extra space between gloss lines
+\newlength\cov@glossline@sepi
+\setlength\cov@glossline@sepi{0pt}
+\newlength\cov@glossline@sepii
+\setlength\cov@glossline@sepii{0pt}
+\newlength\cov@glossline@sepiii
+\setlength\cov@glossline@sepiii{0pt}
+\newlength\cov@glossline@sepi@local
+\setlength\cov@glossline@sepi@local{0pt}
+\newlength\cov@glossline@sepii@local
+\setlength\cov@glossline@sepii@local{0pt}
+\newlength\cov@glossline@sepiii@local
+\setlength\cov@glossline@sepiii@local{0pt}
+
 \def\gll{%                  % Introduces 2-line text-and-gloss.
   \begin{flushleft}
   \vskip\baselineskip%      % Added 1992 Nov 8 to force single spacing
@@ -1091,6 +1105,7 @@
                                     \hskip\glossglue%
                                     \vtop{% vtop was vbox
                                           \box\wordone
+                                          \vspace{\cov@glossline@sepi@local}
                                           \nointerlineskip
                                           \box\wordtwo
                                          }%
@@ -1103,6 +1118,7 @@
 
 \gdef\xthreesent#1\xgle#2\xgle#3\xgle% #1 = first line, #2 = second line, #3 = third
    {\xgetwords(\lineone,\eachwordone)#1 \xgle%
+    \vspace{\cov@glossline@sepi}%
     \xgetwords(\linetwo,\eachwordtwo)#2 \xgle%
     \xgetwords(\linethree,\eachwordthree)#3 \xgle%
     \ifx\cov@gl@preamble@text\empty%
@@ -1121,8 +1137,10 @@
                                     \hskip\glossglue
                                     \vtop{% vtop was vbox
                                           \box\wordone
+                                          \vspace{\cov@glossline@sepi@local}
                                           \nointerlineskip
                                           \box\wordtwo
+                                          \vspace{\cov@glossline@sepii@local}
                                           \nointerlineskip
                                           \box\wordthree
                                          }%
@@ -1165,25 +1183,25 @@
 
 \DeclareKeys[covgloss]
 {
-    % 1. ex=<true|false>
+    % ex=<true|false>
     ex.if = cov@ex@gloss,
-    % 2. tlr=<true|false>
+    % tlr=<true|false>
     tlr.if = cov@tlr,
-    % 3. font settings for gloss line i, ii, iii
+    % font settings for gloss line i, ii, iii
     fsi.store = \lglosslineone,
     fsii.store = \lglosslinetwo,
     fsiii.store = \lglosslinethree,
-    % 4. Gloss preamble text
+    % Gloss preamble text
     preamble.code = { \edef\cov@gl@preamble{#1} },
-    % 5. Gloss postamble text
+    % Gloss postamble text
     postamble.store = \cov@gl@postamble,
-    % 6. Gloss preamble font settings
+    % Gloss preamble font settings
     fspreamble.store = \cov@fsglpreamble@local,
-    % 7. Gloss postamble font settings
+    % Gloss postamble font settings
     fspostamble.store = \cov@fsglpostamble@local,
-    % 8. Enquote translation line
+    % Enquote translation line
     enquotetl.if = cov@enquote@tl,
-    % 9. translation line font settings
+    % translation line font settings
     fstl.store = \cov@fstl@local,
     % judge=text
     judge.code = { \def\cov@judge@gloss@text{#1} },
@@ -1196,7 +1214,13 @@
     % judgement font settings
     fsjudge.store = \cov@judge@fs,
     % addjudgesep=length
-    addjudgesep.code = { \addtolength\cov@judge@sep{#1} }
+    addjudgesep.code = { \addtolength\cov@judge@sep{#1} },
+    % addlinesepi=length
+    addlinesepi.code = { \addtolength\cov@glossline@sepi@local{#1} },
+    % addlinesepii=length
+    addlinesepii.code = { \addtolength\cov@glossline@sepii@local{#1} },
+    % addlinesepiii=length
+    addlinesepiii.code = { \addtolength\cov@glossline@sepiii@local{#1} }
 }
 
 \DeclareKeys[gcovgloss]
@@ -1232,7 +1256,15 @@
     % judgement font settings
     fsjudge.store = \cov@judge@fs,
     % addjudgesep=length
-    addjudgesep.code = { \addtolength\cov@judge@sep{#1} }
+    addjudgesep.code = { \addtolength\cov@judge@sep{#1} },
+    % addjudgesep=length
+    addjudgesep.code = { \addtolength\cov@judge@sep{#1} },
+    % addlinesepi=length
+    addlinesepi.code = { \addtolength\cov@glossline@sepi{#1} },
+    % addlinesepii=length
+    addlinesepii.code = { \addtolength\cov@glossline@sepii{#1} },
+    % addlinesepiii=length
+    addlinesepiii.code = { \addtolength\cov@glossline@sepiii{#1} }
 }
 
 
@@ -1256,6 +1288,9 @@
   \let\glosslineone\glosslineone@global%
   \let\glosslinetwo\glosslinetwo@global%
   \let\glosslinethree\glosslinethree@global%
+  \setlength\cov@glossline@sepi@local{\cov@glossline@sepi}%
+  \setlength\cov@glossline@sepii@local{\cov@glossline@sepii}%
+  \setlength\cov@glossline@sepiii@local{\cov@glossline@sepiii}%
   \ifcov@ex@gloss@global
     \SetKeys[covgloss]{ex=true}
   \else
@@ -1296,6 +1331,9 @@
   \ifcov@tlr
     \gln #4%
   \else
+    \ifx#4\empty\else%
+       \vspace{\cov@glossline@sepii@local}%
+    \fi%
     \ifx\cov@judge@gloss@text\empty%
       \glot{#4}%
     \else%
@@ -1332,6 +1370,9 @@
   \let\glosslineone\glosslineone@global%
   \let\glosslinetwo\glosslinetwo@global%
   \let\glosslinethree\glosslinethree@global%
+  \setlength\cov@glossline@sepi@local{\cov@glossline@sepi}%
+  \setlength\cov@glossline@sepii@local{\cov@glossline@sepii}%
+  \setlength\cov@glossline@sepiii@local{\cov@glossline@sepiii}%
   \ifcov@ex@gloss@global
     \SetKeys[covgloss]{ex=true}
   \else
@@ -1373,6 +1414,9 @@
   \ifcov@tlr
     \gln #5%
   \else
+    \ifx#5\empty\else%
+       \vspace{\cov@glossline@sepiii@local}%
+    \fi%
     \ifx\cov@judge@gloss@text\empty%
       \glot{#5}%
     \else%
