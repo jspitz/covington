@@ -906,18 +906,28 @@ Both are described in turn.
 \subsection{Gloss macros}\label{sec:gmacros}
 
 \Cvt\ provides two gloss macros:
-\begin{itemize}
-	\item \jcsmacro{digloss[\jparam{options}]\{\jparam{gloss line 1}\}\{\jparam{gloss line 2}\}\{\jparam{free translation}\}}\\
-	       typesets two-line glosses with a translation line (the macro name
-	       puns on Greek \lexp{diglossía}, lit. \lmean{two tongues}, \lmean{bilingualism})
-	\item \jcsmacro{trigloss[\jparam{options}]\{\jparam{gloss l.\,1}\}\{\jparam{gloss l.\,2}\}\{\jparam{gloss l.\,3}\}\{\jparam{free tr.}\}}\\
-	       typesets three-line\footnote{The additional line can be useful for instance
-	       to gloss cited forms, morphology, or an additional translation.
-	       See sec.~\ref{sec:glossex} for examples.}
-       	   glosses with a translation line (cf. Greek \lexp{triglossía},
-       	   lit. \lmean{three tongues}, \lmean{trilingualism})
-\end{itemize}
-%
+\begin{lstlisting}[moretexcs={digloss}]
+\digloss[<options>]
+        {<gloss line 1>}[<optional comment line 1>]
+        {<gloss line 2>}[<optional comment line 2>]
+        {<free translation>}
+\end{lstlisting}
+typesets two-line glosses with a translation line, and optionally comments to the right side
+of the gloss lines (the macro name puns on Greek \lexp{diglossía}, lit. \lmean{two tongues},
+\lmean{bilingualism}).
+\begin{lstlisting}[moretexcs={trigloss}]
+\trigloss[<options>]
+         {<gloss line 1>}[<optional comment line 1>]
+         {<gloss line 2>}[<optional comment line 2>]
+         {<gloss line 3>}[<optional comment line 3>]
+         {<free translation>}
+\end{lstlisting}
+typesets three-line\footnote{The additional line can be useful for instance
+to gloss cited forms, morphology, or an additional translation.
+See sec.~\ref{sec:glossex} for examples.}
+glosses with a translation line and optional comments (cf. Greek \lexp{triglossía},
+lit. \lmean{three tongues}, \lmean{trilingualism}).
+
 The example given above would thus be typed as:
 \begin{lstlisting}[moretexcs={digloss}]
 \digloss{Dit is een Nederlands voorbeeld}
@@ -929,11 +939,11 @@ Note that:
 \begin{itemize}
 	\item The \jparam{free translation} argument can be left empty. In this case, no translation line is added
 	      (and no extra space taken).
-	\item The macros automatically markup the lines. By default, the first gloss
-          line is in italics, subsequent lines are set upright, and the free translation in single
-          quotation marks (using the language-sensitive \textsf{csquotes} \cite{csquotes} macros if
-          this package is loaded). This can be customized, though, via the macro options or globally
-          via the macro \jcsmacro{setglossoptions} which will be documented below.
+	\item The macros automatically markup the lines.
+		  By default, the first gloss line is in italics, subsequent lines are set upright, and the
+		  free translation in single quotation marks (using the language-sensitive \textsf{csquotes}
+		  \cite{csquotes} macros if this package is loaded). This can be customized, though, via the
+		  macro options or globally via the macro \jcsmacro{setglossoptions} which will be documented below.
     \item By default, page breaks might occur within glosses. In order to prevent it, the package option
           \joption{noglossbreaks} (see sec.~\ref{sec:intro}) will help in many cases.
           If it doesn't, you can wrap the whole gloss into a minipage or parbox.
@@ -973,6 +983,8 @@ Note that:
           Since the gloss itself is set in a box, this means the \jparam{free translation} will appear lined up with the
           first line of the gloss. This can be useful when no translation, but an aligned number or something similar,
           is to be inserted right to the gloss (please refer to sec.~\ref{sec:glossex} for an example).
+          
+          Note that this option defuncts the optional gloss line comments.
 	\item[\joption{fsi=\{\jparam{font settings}\}}]. Default: \verb|{\normalfont\itshape}|.
 		 Adjusts the font settings of the first gloss line.
 	     Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
@@ -1031,6 +1043,16 @@ Note that:
 	\item[\joption{fspostamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
 		 Adjusts the font settings of the postamble line.
 		 Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
+     \item[\joption{glosswidth=\{\jparam{length}\}}] Default: \verb|{0.6\textwidth}|.
+		 Sets the maximum width the gloss takes if optional comments are used.
+     \item[\joption{glosssep=\{\jparam{length}\}}] Default: \verb|{1em}|.
+		 Sets space between gloss and optional comments.
+     \item[\joption{glosscommentwith=\{\jparam{length}\}}] 
+		 Sets the maximum width of gloss comments. By default this is automatically calculated from the above
+		 two lengths.
+	\item[\joption{fscomments=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
+		Adjusts the font settings of the gloss comments.
+		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 \end{description}
 %
 If passed to a \jcsmacro{digloss} or \jcsmacro{trigloss} macro, the options will only apply to
@@ -1253,12 +1275,24 @@ resulting in:
                {Here become.\textsc{aux.pass.2sg.pst} you.\textsc{2sg.acc} help.\textsc{pass.ptcp}}
                {You will be helped here!}
 %
+Gloss line comments allow you to set arbitrary text right to specific gloss lines, as in:
+\digloss[ex]{Gut Ding will Weile haben}[(German proverb)]
+            {Good thing want while have}
+            {Slow and steady wins the race}
+%
+This was typed in with the help of the optional gloss arguments:
+\begin{lstlisting}[moretexcs={digloss},basicstyle={\footnotesize\ttfamily}, morekeywords={ex}]
+\digloss[ex]{Gut Ding will Weile haben}[(German proverb)]
+            {Good thing want while have}
+            {Slow and steady wins the race}
+\end{lstlisting}
+%
 The final example exemplifies the use of \joption{postamble}. In what follows we add a footnote to the
 translation line, but outside the translation (as marked-up by quotation marks):
 \digloss[ex, postamble={\footnote{Yes, really!}}]
-{Mein Luftkissenboot ist voller    Aale}
-{My   hovercraft     is  {full of} eels}
-{Do you have matches?}
+		{Mein Luftkissenboot ist voller    Aale}
+		{My   hovercraft     is  {full of} eels}
+		{Do you have matches?}
 This has been input as follows:
 \begin{lstlisting}[moretexcs={digloss},basicstyle={\footnotesize\ttfamily},
 	               morekeywords={ex,postamble}]
@@ -1589,6 +1623,7 @@ it.
 \begin{itemize}
 	\item Add support for judgment markers in examples and glosses.
 	\item Add support for customization of spacing between gloss lines.
+	\item Add support for gloss comment lines via optional arguments.
 \end{itemize}
 
 \subsection*{2.10 (2023 June 2)}

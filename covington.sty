@@ -581,6 +581,8 @@
 \newcommand*\subexpostamblefs{\normalfont}
 \newcommand*\subexpostamble[1]{\bgroup\subexpostamblefs#1\egroup}
 
+\newcommand*\cov@closscomments@fs{\normalfont\upshape}
+
 \DeclareKeys[covsubexpl]
 {
     % font settings
@@ -892,6 +894,13 @@
 \newlength\cov@glossline@sepiii@local
 \setlength\cov@glossline@sepiii@local{0pt}
 
+\newlength\cov@glosswidth@local
+\newlength\cov@glosssep@local
+\newlength\cov@glosspwidth@local
+\setlength\cov@glosswidth@local{0pt}
+\setlength\cov@glosssep@local{0pt}
+\setlength\cov@glosspwidth@local{0pt}
+
 \def\gll{%                  % Introduces 2-line text-and-gloss.
   \begin{flushleft}
   \vskip\baselineskip%      % Added 1992 Nov 8 to force single spacing
@@ -941,7 +950,31 @@
    \ignorespaces\xthreesent
 }
 
-\def\glt{{\hskip -\glossglue}\cov@nopagebreak\unhbox\gline\smallskip\cov@nopagebreak\newline}  % \newline was \\
+\newsavebox{\pline} % the constructed preamble line (hbox)
+
+\RequirePackage{varwidth}
+
+\newlength\glosswidth
+\newlength\glosssep
+\setlength\glosssep{1em}
+\newlength\glosspwidth
+
+\AtBeginDocument{\setlength\glosswidth{.6\textwidth}}%
+
+\def\glt{%
+    \setlength\glosswidth{.6\linewidth}%
+    \if@cov@glosspline%
+      %
+      \begin{varwidth}[t]{\cov@glosswidth@local}
+      	{\hskip -\glossglue}\unhbox\gline%
+      \end{varwidth}%
+      \hspace{\cov@glosssep@local}%
+      \usebox{\pline}%
+    \else%
+       {\hskip -\glossglue}\cov@nopagebreak\unhbox\gline%
+    \fi%
+    \smallskip\cov@nopagebreak\newline% % \newline was \\
+}  
                            % Introduces translation.
                            % Required even if no translation follows.
 
@@ -1220,7 +1253,15 @@
     % addlinesepii=length
     addlinesepii.code = { \addtolength\cov@glossline@sepii@local{#1} },
     % addlinesepiii=length
-    addlinesepiii.code = { \addtolength\cov@glossline@sepiii@local{#1} }
+    addlinesepiii.code = { \addtolength\cov@glossline@sepiii@local{#1} },
+    % glosswidth=length
+    glosswidth.code = { \setlength\cov@glosswidth@local{#1} },
+    % glosssep=length
+    glosssep.code = { \setlength\cov@glosssep@local{#1} },
+    % glosscommentwith=length
+    glosscommentwith.code = { \setlength\cov@glosspwidth@local{#1} },
+    % comment font settings
+    fscomments.store = \cov@closscomments@fs
 }
 
 \DeclareKeys[gcovgloss]
@@ -1264,7 +1305,15 @@
     % addlinesepii=length
     addlinesepii.code = { \addtolength\cov@glossline@sepii{#1} },
     % addlinesepiii=length
-    addlinesepiii.code = { \addtolength\cov@glossline@sepiii{#1} }
+    addlinesepiii.code = { \addtolength\cov@glossline@sepiii{#1} },
+    % glosswidth=length
+    glosswidth.code = { \setlength\glosswidth{#1} },
+    % glosssep=length
+    glosssep.code = { \setlength\glosssep{#1} },
+    % glosscommentwith=length
+    glosscommentwith.code = { \setlength\glosspwidth{#1} },
+    % judgement font settings
+    fscomments.store = \cov@closscomments@fs
 }
 
 
@@ -1272,12 +1321,18 @@
 \let\cov@fsglpostamble@local\relax%
 \let\cov@fstl@local\relax%
 
+\newif\if@cov@glosspline
+
 %
 % General setting option
 \newcommand*\setglossoptions[1]{\SetKeys[gcovgloss]{#1}}
 %
-% 1. \digloss[<opts>]{<line 1>}{<line 2>}{<translation>}
-\newcommand*\digloss[4][]{%
+% 1. \digloss[<opts>]{<line 1>}[linepostamble1]
+%                    {<line 2>}[linepostamble2]
+%                    {<translation>}
+\NewDocumentCommand\digloss{ o m o m o m }
+{
+  \@cov@glossplinefalse%
   \@cov@insubextrue%
   \@ifundefined{cov@judge@gloss@text@global}%
      {\let\cov@judge@gloss@text\relax}%
@@ -1291,6 +1346,12 @@
   \setlength\cov@glossline@sepi@local{\cov@glossline@sepi}%
   \setlength\cov@glossline@sepii@local{\cov@glossline@sepii}%
   \setlength\cov@glossline@sepiii@local{\cov@glossline@sepiii}%
+  \setlength\cov@glosswidth@local{\glosswidth}%
+  \setlength\cov@glosssep@local{\glosssep}%
+  \setlength\glosspwidth{\textwidth}%
+  \addtolength\glosspwidth{-\glosswidth}%
+  \addtolength\glosspwidth{-\glosssep}%
+  \setlength\cov@glosspwidth@local{\glosspwidth}%
   \ifcov@ex@gloss@global
     \SetKeys[covgloss]{ex=true}
   \else
@@ -1308,7 +1369,7 @@
   \fi%
   \def\cov@gl@preamble{\cov@gl@preamble@global}%
   \def\cov@gl@postamble{\cov@gl@postamble@global}%
-  \SetKeys[covgloss]{#1}%
+  \IfNoValueF{#1}{\SetKeys[covgloss]{#1}}%
   \ifcov@ex@gloss
     \begin{covexample}
   \fi%
@@ -1326,18 +1387,29 @@
   \@ifundefined{cov@fstl@local}%
        {\let\cov@fstl\cov@fstl@global}%
        {\let\cov@fstl\cov@fstl@local}%
+  \IfNoValueTF{#3}{\def\lineonepa{\strut}}{\@cov@glossplinetrue\def\lineonepa{\cov@closscomments@fs#3}}%
+  \IfNoValueTF{#5}{\def\linetwopa{\strut}}{\@cov@glossplinetrue\def\linetwopa{\cov@closscomments@fs#5}}%
+  \if@cov@glosspline%
+      \savebox{\pline}{%
+           \begin{varwidth}[t]{\cov@glosspwidth@local}
+            \lineonepa\par
+            \vspace{\cov@glossline@sepi@local}
+            \linetwopa
+           \end{varwidth}
+       }%
+  \fi
   \xgll #2\xgle
-        #3\xgle
+        #4\xgle
   \ifcov@tlr
-    \gln #4%
+    \gln #6%
   \else
-    \ifx#4\empty\else%
+    \IfBlankF{#6}{%
        \vspace{\cov@glossline@sepii@local}%
-    \fi%
+    }%
     \ifx\cov@judge@gloss@text\empty%
-      \glot{#4}%
+      \glot{#6}%
     \else%
-       \glot[\cov@judge@gloss@text]{#4}%
+       \glot[\cov@judge@gloss@text]{#6}%
     \fi%
   \fi
   \ifx\cov@gl@postamble@text\empty%
@@ -1358,8 +1430,12 @@
   \@cov@insubexfalse%
 }
 
-% 2. \trigloss[<opts>]{<line 1>}{<line 2>}{<line 3>}{<translation>}
-\newcommand\trigloss[5][]{%
+% 2. \trigloss[<opts>]{<line 1>}[linepostamble1]
+%                    {<line 2>}[linepostamble2]
+%                    {<line 3>}[linepostamble3]
+%                    {<translation>}
+\NewDocumentCommand\trigloss{ o m o m o m o m }
+{%
   \@cov@insubextrue%
   \@ifundefined{cov@judge@gloss@text@global}%
      {\let\cov@judge@gloss@text\relax}%
@@ -1373,6 +1449,12 @@
   \setlength\cov@glossline@sepi@local{\cov@glossline@sepi}%
   \setlength\cov@glossline@sepii@local{\cov@glossline@sepii}%
   \setlength\cov@glossline@sepiii@local{\cov@glossline@sepiii}%
+  \setlength\cov@glosswidth@local{\glosswidth}%
+  \setlength\cov@glosssep@local{\glosssep}%
+  \setlength\glosspwidth{\textwidth}%
+  \addtolength\glosspwidth{-\glosswidth}%
+  \addtolength\glosspwidth{-\glosssep}%
+  \setlength\cov@glosspwidth@local{\glosspwidth}%
   \ifcov@ex@gloss@global
     \SetKeys[covgloss]{ex=true}
   \else
@@ -1390,7 +1472,7 @@
   \fi%
   \def\cov@gl@preamble{\cov@gl@preamble@global}%
   \def\cov@gl@postamble{\cov@gl@postamble@global}%
-  \SetKeys[covgloss]{#1}%
+  \IfNoValueF{#1}{\SetKeys[covgloss]{#1}}%
   \ifcov@ex@gloss
     \begin{covexample}
   \fi%
@@ -1408,19 +1490,33 @@
   \@ifundefined{cov@fstl@local}%
        {\let\cov@fstl\cov@fstl@global}%
        {\let\cov@fstl\cov@fstl@local}%
+  \IfNoValueTF{#3}{\def\lineonepa{\strut}}{\@cov@glossplinetrue\def\lineonepa{\cov@closscomments@fs#3}}%
+  \IfNoValueTF{#5}{\def\linetwopa{\strut}}{\@cov@glossplinetrue\def\linetwopa{\cov@closscomments@fs#5}}%
+  \IfNoValueTF{#7}{\def\linethreepa{\strut}}{\@cov@glossplinetrue\def\linethreepa{\cov@closscomments@fs#7}}%
+  \if@cov@glosspline%
+      \savebox{\pline}{%
+           \begin{varwidth}[t]{\cov@glosspwidth@local}
+            \lineonepa\par
+            \vspace{\cov@glossline@sepi@local}
+            \linetwopa\par
+            \vspace{\cov@glossline@sepii@local}
+            \linethreepa
+            \end{varwidth}
+       }%
+  \fi
   \xglll #2\xgle
-         #3\xgle
          #4\xgle
+         #6\xgle
   \ifcov@tlr
-    \gln #5%
+    \gln #8%
   \else
-    \ifx#5\empty\else%
+    \IfBlankF{#8}{%
        \vspace{\cov@glossline@sepiii@local}%
-    \fi%
+    }%
     \ifx\cov@judge@gloss@text\empty%
-      \glot{#5}%
+      \glot{#8}%
     \else%
-       \glot[\cov@judge@gloss@text]{#5}%
+       \glot[\cov@judge@gloss@text]{#8}%
     \fi%
   \fi
   \ifx\cov@gl@postamble@text\empty%
