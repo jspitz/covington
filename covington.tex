@@ -985,6 +985,9 @@ Note that:
           is to be inserted right to the gloss (please refer to sec.~\ref{sec:glossex} for an example).
           
           Note that this option defuncts the optional gloss line comments.
+	\item[\joption{tlr*=\jparam{true|false}}] Default: \emph{false}. A variant of \joption{tlr} which is
+	     suitable for setting real free translations (enquoted) right to the gloss. the place of
+	     gloss line comments and also the widths described below.
 	\item[\joption{fsi=\{\jparam{font settings}\}}]. Default: \verb|{\normalfont\itshape}|.
 		 Adjusts the font settings of the first gloss line.
 	     Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
@@ -1220,7 +1223,26 @@ That one was typed using the option \joption{tlr}:
              {\hfill (\exampleno)}
 \end{lstlisting}
 %
-Third, we'll put a glossed sentence inside the \texttt{example} 
+Third, we showcase the \joption{tlr*} option which is usable if
+you want the free translation to the right:
+\digloss[tlr*,glosscommentwidth={.6\textwidth}]
+              {Tres facet collegium}
+              {Three make society}
+	          {Three persons constitute a group.}
+%
+This has been entered like this:
+\begin{lstlisting}[moretexcs={digloss,exampleno},morekeywords=tlr]
+\digloss[tlr*,glosscommentwidth={.6\textwidth}]
+		{Tres facet collegium}
+		{Three make society}
+		{Three persons constitute a group.}
+\end{lstlisting}
+%
+As you note, we also used the \joption{glosscommentwidth} option to
+make the box which holds the translation line in this case a bit
+wider (as the translation is rather long and the gloss itself rather short).
+
+Now, we'll put a glossed sentence inside the \texttt{example} 
 environment, which is a very common way of using it:
 \digloss[ex]{Hoc habet numerum praepositum}
             {This has number preposed}
@@ -1624,6 +1646,8 @@ it.
 	\item Add support for judgment markers in examples and glosses.
 	\item Add support for customization of spacing between gloss lines.
 	\item Add support for gloss comment lines via optional arguments.
+	\item Add support for translation lines on the right side of glosses
+	      (via new \joption{tlr*} option).
 \end{itemize}
 
 \subsection*{2.10 (2023 June 2)}

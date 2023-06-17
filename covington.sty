@@ -974,9 +974,23 @@
        {\hskip -\glossglue}\cov@nopagebreak\unhbox\gline%
     \fi%
     \smallskip\cov@nopagebreak\newline% % \newline was \\
-}  
+}
                            % Introduces translation.
                            % Required even if no translation follows.
+
+\def\glnx{%
+    \setlength\glosswidth{.6\linewidth}%
+    \if@cov@glosspline%
+      %
+      \begin{varwidth}[t]{\cov@glosswidth@local}
+      	{\hskip -\glossglue}\unhbox\gline%
+      \end{varwidth}%
+      \hspace{\cov@glosssep@local}%
+      \usebox{\pline}%
+    \else%
+       {\hskip -\glossglue}\cov@nopagebreak\unhbox\gline%
+    \fi%
+}  
 
 \def\gln{{\hskip -\glossglue}\unhbox\gline\hfill}
                            % Alternative to glt, when one wants to
@@ -1191,7 +1205,11 @@
 \newcommand*\glot[2][]{%
   \def\tempx{#2}%
   \ifx\tempx\empty%
-     \gln
+     \ifcov@tlr@star%
+        \glnx
+     \else%
+        \gln
+     \fi%
   \else%
      \glt%
       \ifx#1\empty\else%
@@ -1210,6 +1228,8 @@
 \newif\ifcov@ex@gloss@global\cov@ex@gloss@globalfalse
 \newif\ifcov@tlr\cov@tlrfalse
 \newif\ifcov@tlr@global\cov@tlr@globalfalse
+\newif\ifcov@tlr@star\cov@tlr@starfalse
+\newif\ifcov@tlr@star@global\cov@tlr@star@globalfalse
 \newif\ifcov@enquote@tl@global\cov@enquote@tl@globaltrue
 \def\cov@gl@preamble@global{}
 \def\cov@gl@postamble@global{}
@@ -1220,6 +1240,8 @@
     ex.if = cov@ex@gloss,
     % tlr=<true|false>
     tlr.if = cov@tlr,
+    % tlr*=<true|false>
+    tlr*.if = cov@tlr@star,
     % font settings for gloss line i, ii, iii
     fsi.store = \lglosslineone,
     fsii.store = \lglosslinetwo,
@@ -1258,8 +1280,8 @@
     glosswidth.code = { \setlength\cov@glosswidth@local{#1} },
     % glosssep=length
     glosssep.code = { \setlength\cov@glosssep@local{#1} },
-    % glosscommentwith=length
-    glosscommentwith.code = { \setlength\cov@glosspwidth@local{#1} },
+    % glosscommentwidth=length
+    glosscommentwidth.code = { \setlength\cov@glosspwidth@local{#1} },
     % comment font settings
     fscomments.store = \cov@closscomments@fs
 }
@@ -1270,6 +1292,8 @@
     ex.if = cov@ex@gloss@global,
     % 2. tlr=<true|false>
     tlr.if = cov@tlr@global,
+    % 2. tlr*=<true|false>
+    tlr*.if = cov@tlr@star@global,
     % 3. font settings for gloss line i, ii, iii
     fsi.code = { \global\def\glosslineone@global{#1} },
     fsii.code = { \global\def\glosslinetwo@global{#1} },
@@ -1310,8 +1334,8 @@
     glosswidth.code = { \setlength\glosswidth{#1} },
     % glosssep=length
     glosssep.code = { \setlength\glosssep{#1} },
-    % glosscommentwith=length
-    glosscommentwith.code = { \setlength\glosspwidth{#1} },
+    % glosscommentwidth=length
+    glosscommentwidth.code = { \setlength\glosspwidth{#1} },
     % judgement font settings
     fscomments.store = \cov@closscomments@fs
 }
@@ -1362,6 +1386,11 @@
   \else
     \SetKeys[covgloss]{tlr=false}
   \fi%
+  \ifcov@tlr@star@global
+    \SetKeys[covgloss]{tlr*=true}
+  \else
+    \SetKeys[covgloss]{tlr*=false}
+  \fi%
   \ifcov@enquote@tl@global
     \SetKeys[covgloss]{enquotetl=true}
   \else
@@ -1387,8 +1416,19 @@
   \@ifundefined{cov@fstl@local}%
        {\let\cov@fstl\cov@fstl@global}%
        {\let\cov@fstl\cov@fstl@local}%
-  \IfNoValueTF{#3}{\def\lineonepa{\strut}}{\@cov@glossplinetrue\def\lineonepa{\cov@closscomments@fs#3}}%
-  \IfNoValueTF{#5}{\def\linetwopa{\strut}}{\@cov@glossplinetrue\def\linetwopa{\cov@closscomments@fs#5}}%
+  \ifcov@tlr@star%
+     \@cov@glossplinetrue\def\lineonepa{%
+        \glosslinetrans{#6}%
+         \ifx\cov@gl@postamble@text\empty%
+         \else%
+           \glosslinepostamble{\cov@gl@postamble@text}\cov@nopagebreak%
+         \fi%
+     }%
+     \def\linetwopa{\strut}%
+  \else%
+    \IfNoValueTF{#3}{\def\lineonepa{\strut}}{\@cov@glossplinetrue\def\lineonepa{\cov@closscomments@fs#3}}%
+    \IfNoValueTF{#5}{\def\linetwopa{\strut}}{\@cov@glossplinetrue\def\linetwopa{\cov@closscomments@fs#5}}%
+  \fi%
   \if@cov@glosspline%
       \savebox{\pline}{%
            \begin{varwidth}[t]{\cov@glosspwidth@local}
@@ -1400,21 +1440,23 @@
   \fi
   \xgll #2\xgle
         #4\xgle
-  \ifcov@tlr
-    \gln #6%
-  \else
-    \IfBlankF{#6}{%
-       \vspace{\cov@glossline@sepii@local}%
-    }%
-    \ifx\cov@judge@gloss@text\empty%
-      \glot{#6}%
-    \else%
-       \glot[\cov@judge@gloss@text]{#6}%
+  \ifcov@tlr@star\glot{}\else%
+    \ifcov@tlr
+      \gln #6%
+    \else
+      \IfBlankF{#6}{%
+         \vspace{\cov@glossline@sepii@local}%
+      }%
+      \ifx\cov@judge@gloss@text\empty%
+        \glot{#6}%
+      \else%
+         \glot[\cov@judge@gloss@text]{#6}%
+      \fi%
     \fi%
-  \fi
-  \ifx\cov@gl@postamble@text\empty%
-  \else%
-     \glosslinepostamble{\cov@gl@postamble@text}\cov@nopagebreak%
+    \ifx\cov@gl@postamble@text\empty%
+    \else%
+       \glosslinepostamble{\cov@gl@postamble@text}\cov@nopagebreak%
+    \fi%
   \fi%
   \glend
   \ifcov@ex@gloss
@@ -1465,6 +1507,11 @@
   \else
     \SetKeys[covgloss]{tlr=false}
   \fi%
+  \ifcov@tlr@star@global
+    \SetKeys[covgloss]{tlr*=true}
+  \else
+    \SetKeys[covgloss]{tlr*=false}
+  \fi%
   \ifcov@enquote@tl@global
     \SetKeys[covgloss]{enquotetl=true}
   \else
@@ -1490,9 +1537,20 @@
   \@ifundefined{cov@fstl@local}%
        {\let\cov@fstl\cov@fstl@global}%
        {\let\cov@fstl\cov@fstl@local}%
-  \IfNoValueTF{#3}{\def\lineonepa{\strut}}{\@cov@glossplinetrue\def\lineonepa{\cov@closscomments@fs#3}}%
-  \IfNoValueTF{#5}{\def\linetwopa{\strut}}{\@cov@glossplinetrue\def\linetwopa{\cov@closscomments@fs#5}}%
-  \IfNoValueTF{#7}{\def\linethreepa{\strut}}{\@cov@glossplinetrue\def\linethreepa{\cov@closscomments@fs#7}}%
+  \ifcov@tlr@star%
+     \@cov@glossplinetrue\def\lineonepa{%
+        \glosslinetrans{#8}%
+         \ifx\cov@gl@postamble@text\empty%
+         \else%
+           \glosslinepostamble{\cov@gl@postamble@text}\cov@nopagebreak%
+         \fi%
+     }%
+     \def\linetwopa{\strut}%
+  \else%
+    \IfNoValueTF{#3}{\def\lineonepa{\strut}}{\@cov@glossplinetrue\def\lineonepa{\cov@closscomments@fs#3}}%
+    \IfNoValueTF{#5}{\def\linetwopa{\strut}}{\@cov@glossplinetrue\def\linetwopa{\cov@closscomments@fs#5}}%
+    \IfNoValueTF{#7}{\def\linethreepa{\strut}}{\@cov@glossplinetrue\def\linethreepa{\cov@closscomments@fs#7}}%
+  \fi%
   \if@cov@glosspline%
       \savebox{\pline}{%
            \begin{varwidth}[t]{\cov@glosspwidth@local}
@@ -1507,21 +1565,23 @@
   \xglll #2\xgle
          #4\xgle
          #6\xgle
-  \ifcov@tlr
-    \gln #8%
-  \else
-    \IfBlankF{#8}{%
-       \vspace{\cov@glossline@sepiii@local}%
-    }%
-    \ifx\cov@judge@gloss@text\empty%
-      \glot{#8}%
+  \ifcov@tlr@star\glot{}\else%
+    \ifcov@tlr
+      \gln #8%
+    \else
+      \IfBlankF{#8}{%
+         \vspace{\cov@glossline@sepiii@local}%
+      }%
+      \ifx\cov@judge@gloss@text\empty%
+        \glot{#8}%
+      \else%
+         \glot[\cov@judge@gloss@text]{#8}%
+      \fi%
+    \fi
+    \ifx\cov@gl@postamble@text\empty%
     \else%
-       \glot[\cov@judge@gloss@text]{#8}%
+       \glosslinepostamble{\cov@gl@postamble@text}\cov@nopagebreak%
     \fi%
-  \fi
-  \ifx\cov@gl@postamble@text\empty%
-  \else%
-     \glosslinepostamble{\cov@gl@postamble@text}\cov@nopagebreak%
   \fi%
   \glend
   \ifcov@ex@gloss
