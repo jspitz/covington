@@ -97,8 +97,8 @@
 %
 % Titling
 %
-\def\pversion{Version 2.10}
-\def\pdate{June 2, 2023}
+\def\pversion{Version 2.11}
+\def\pdate{June 17, 2023}
 
 \title{\textbf{The \cvt\ Package\\\Large Macros for Linguistics}}
 \author{Michael A. Covington \and J\"urgen Spitzm\"uller\thanks{Current maintainer.
@@ -432,9 +432,9 @@ sec.~\ref{sec:ex} for details).
 However, there are some notable deviations and exceptions due to the fact that we are dealing with multiple examples
 in a row here:
 \begin{itemize}
-	\item \joption{judge} and its shorthand aliases (\joption{*}, \joption{?}, \joption{*?}, \joption{??}, and
-		  \joption{\#}) set the default judgment marker for all items in the environment. It also sets the appropriate
-		  \joption{judgewith} for the selected marker.
+	\item \joption{judge=\{\jparam{arbitrary text}\}} and its shorthand aliases (\joption{*}, \joption{?}, \joption{*?},
+	      \joption{??}, and \joption{\#}) set the default judgment marker for all items in the environment.
+	      It also sets the appropriate \joption{judgewidth} for the selected marker.
 		  Use the aforementioned angular \jcsmacro{item} option to overwrite the preset marker or to set
 		  one for indivual examples only.
 	\item \joption{preamble} and \joption{postamble[*]} do not have any effect at all, as such text needs to
@@ -584,9 +584,9 @@ sec.~\ref{sec:ex}.
 The \jenv{subexamples}/\jenv{covsubexamples} environment provides the same options than the \jenv{example}
 and \jenv{examples} environment (see sec.~\ref{sec:ex}) with the following deviations and additions:
 \begin{description}
-	\item \joption{judge} and its shorthand aliases (\joption{*}, \joption{?}, \joption{*?}, \joption{??}, and
-		\joption{\#}) set the default judgment marker for all items in the environment. It also sets the appropriate
-		\joption{judgewith} for the selected marker.
+	\item[\joption{judge=\{\jparam{arbitrary text}\}}] and its shorthand aliases (\joption{*}, \joption{?},
+	   \joption{*?}, \joption{??}, and \joption{\#}) set the default judgment marker for all items in the environment.
+	   It also sets the appropriate	\joption{judgewidth} for the selected marker.
 		Use the aforementioned angular \jcsmacro{item} option to overwrite the preset marker or to set
 		one for indivual subexamples only. 
 	\item[\joption{preamble=\{\jparam{arbitrary text}\}}] Arbitrary text is inserted here on the first line
@@ -714,27 +714,27 @@ Ein ungrammatischem Satz.
 or, shorter:
 \begin{lstlisting}[morekeywords={*}, alsoletter={*}]
 \begin{example}[*]
-Ein ungrammatischem Satz.
+Dies ein ungrammatischem Satz ist.
 \end{example}
 \end{lstlisting}
 %
 to get:
 \begin{example}[judge=*]
-	Ein ungrammatischem Satz.
+	Dies ein ungrammatischem Satz ist.
 \end{example}
 %
 With the \jenv{examples} and \jenv{subexamples} environment, we need to pass the marker to the item's
 angular argument instead, as already demonstrated in sec.~\ref{sec:exs}:
 \begin{lstlisting}
 \begin{examples}
-\item<*> Ein ungrammatischem Satz.
-\item Ein grammatischer Satz.
+\item<*> Dies ein ungrammatischem Satz ist.
+\item Dies ist ein grammarisch wohlgeformter Satz.
 \end{examples}
 \end{lstlisting}
 %
 \begin{examples}
-	\item<*> Ein ungrammatischem Satz.
-	\item Ein grammatischer Satz.
+	\item<*> Dies ein ungrammatischem Satz ist.
+	\item Dies ist ein grammarisch wohlgeformter Satz.
 \end{examples}
 %
 With wider markers, we need to adjust the marker width via \joption{judgewidth}, and
@@ -979,15 +979,19 @@ Note that:
 	      (i.\,e., it is numbered). In this case, any example settings done via \jcsmacro{setexampleoptions}
 	      (sec.~\ref{sec:ex}) apply.
 	\item[\joption{tlr=\jparam{true|false}}] Default: \emph{false}. If set to true, the translation line (content
-          of the \jparam{free translation} argument) is set right to the gloss lines, rather than into a new line below.
-          Since the gloss itself is set in a box, this means the \jparam{free translation} will appear lined up with the
+          of the \jparam{free translation} argument) is set right to the gloss lines, rather than into a new line below,
+          and shifted towards the right margin. In contrast to the normal translation line, the content is not enquoted.
+          Since the gloss itself is set in a box, the \jparam{free translation} will appear lined up with the
           first line of the gloss. This can be useful when no translation, but an aligned number or something similar,
           is to be inserted right to the gloss (please refer to sec.~\ref{sec:glossex} for an example).
           
           Note that this option defuncts the optional gloss line comments.
 	\item[\joption{tlr*=\jparam{true|false}}] Default: \emph{false}. A variant of \joption{tlr} which is
-	     suitable for setting real free translations (enquoted) right to the gloss. the place of
-	     gloss line comments and also the widths described below.
+	     suitable for setting real free translations (enquoted) right to the gloss (after a small space).
+	     Both the gloss and the translation line are placed in a box with limited width in this case.
+	     The maximum width of the translation line can be adjusted via the \joption{glosscommentwidth} option
+	     described below, the maximum width of the gloss and the space between gloss and translation line via
+	     \joption{glosswidth} and \joption{glosssep}, respectively.
 	\item[\joption{fsi=\{\jparam{font settings}\}}]. Default: \verb|{\normalfont\itshape}|.
 		 Adjusts the font settings of the first gloss line.
 	     Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
@@ -1047,12 +1051,12 @@ Note that:
 		 Adjusts the font settings of the postamble line.
 		 Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
      \item[\joption{glosswidth=\{\jparam{length}\}}] Default: \verb|{0.6\textwidth}|.
-		 Sets the maximum width the gloss takes if optional comments are used.
+		 Sets the maximum width the gloss takes if optional comments or \joption{tlr*=true} are used.
      \item[\joption{glosssep=\{\jparam{length}\}}] Default: \verb|{1em}|.
-		 Sets space between gloss and optional comments.
-     \item[\joption{glosscommentwith=\{\jparam{length}\}}] 
-		 Sets the maximum width of gloss comments. By default this is automatically calculated from the above
-		 two lengths.
+		 Sets space between gloss and optional comments or free translation in case of \joption{tlr*=true}.
+     \item[\joption{glosscommentwidth=\{\jparam{length}\}}] 
+		 Sets the maximum width of gloss comments or free translation in case of \joption{tlr*=true}.
+		 By default this is automatically calculated from the above two lengths.
 	\item[\joption{fscomments=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
 		Adjusts the font settings of the gloss comments.
 		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
@@ -1214,28 +1218,28 @@ Next, an example with a gloss but no translation, with an example number
 at the right:
 \digloss[tlr]{Hoc habet numerum}
              {This has number}
-             {\hfill (\exampleno)}
+             {(\exampleno)}
 %
 That one was typed using the option \joption{tlr}:
 \begin{lstlisting}[moretexcs={digloss,exampleno},morekeywords=tlr]
 \digloss[tlr]{Hoc habet numerum}
              {This has number}
-             {\hfill (\exampleno)}
+             {(\exampleno)}
 \end{lstlisting}
 %
 Third, we showcase the \joption{tlr*} option which is usable if
 you want the free translation to the right:
 \digloss[tlr*,glosscommentwidth={.6\textwidth}]
-              {Tres facet collegium}
+              {Tres faciunt collegium}
               {Three make society}
 	          {Three persons constitute a group.}
 %
 This has been entered like this:
-\begin{lstlisting}[moretexcs={digloss,exampleno},morekeywords=tlr]
+\begin{lstlisting}[moretexcs={digloss,exampleno},morekeywords={tlr,glosscommentwidth}]
 \digloss[tlr*,glosscommentwidth={.6\textwidth}]
-		{Tres facet collegium}
-		{Three make society}
-		{Three persons constitute a group.}
+        {Tres faciunt collegium}
+        {Three make society}
+        {Three persons constitute a group.}
 \end{lstlisting}
 %
 As you note, we also used the \joption{glosscommentwidth} option to
@@ -1641,7 +1645,7 @@ it.
 
 \section{Release history}
 
-\subsection*{2.11 (forthcoming)}
+\subsection*{2.11 (2023 June 17)}
 \begin{itemize}
 	\item Add support for judgment markers in examples and glosses.
 	\item Add support for customization of spacing between gloss lines.

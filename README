@@ -31,7 +31,7 @@ The package consists of the following files:
 
 == CHANGES ==
 
-* Version 2.11 (forthcoming)
+* Version 2.11 (2023-06-17)
 	- Add support for judgment markers in examples and glosses.
 	- Add support for customization of spacing between gloss lines.
 	- Add support for gloss comment lines via optional arguments.
