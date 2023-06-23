@@ -31,6 +31,9 @@ The package consists of the following files:
 
 == CHANGES ==
 
+* Version 2.12 (forthcoming)
+	- Fix problems with \glosslineone (etc.) redefinitions that could get lost (#13).
+
 * Version 2.11 (2023-06-17)
 	- Add support for judgment markers in examples and glosses.
 	- Add support for customization of spacing between gloss lines.
