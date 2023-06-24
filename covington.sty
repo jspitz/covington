@@ -1027,13 +1027,9 @@
 \newcommand*\glosslinetwo{\cov@normalfont}
 \newcommand*\glosslinethree{\cov@normalfont}
 
-\let\glossline@one\glosslineone
-\let\glossline@two\glosslinetwo
-\let\glossline@three\glosslinethree
-
-\def\eachwordone{\glossline@one}
-\def\eachwordtwo{\glossline@two}
-\def\eachwordthree{\glossline@three}
+\def\eachwordone{\glosslineone}
+\def\eachwordtwo{\glosslinetwo}
+\def\eachwordthree{\glosslinethree}
 
 \def\lastword#1#2#3% #1 = \each, #2 = line box, #3 = word box
    {\setbox#2=\vbox{\unvbox#2%
@@ -1243,9 +1239,9 @@
     % tlr*=<true|false>
     tlr*.if = cov@tlr@star,
     % font settings for gloss line i, ii, iii
-    fsi.store = \lglosslineone,
-    fsii.store = \lglosslinetwo,
-    fsiii.store = \lglosslinethree,
+    fsi.store = \glosslineone@local,
+    fsii.store = \glosslinetwo@local,
+    fsiii.store = \glosslinethree@local,
     % Gloss preamble text
     preamble.code = { \edef\cov@gl@preamble{#1} },
     % Gloss postamble text
@@ -1295,9 +1291,9 @@
     % 2. tlr*=<true|false>
     tlr*.if = cov@tlr@star@global,
     % 3. font settings for gloss line i, ii, iii
-    fsi.code = { \global\def\glosslineone{#1} },
-    fsii.code = { \global\def\glosslinetwo{#1} },
-    fsiii.code = { \global\def\glosslinethree{#1} },
+    fsi.code = { \global\def\glosslineone@global{#1} },
+    fsii.code = { \global\def\glosslinetwo@global{#1} },
+    fsiii.code = { \global\def\glosslinethree@global{#1} },
     % 4. Gloss preamble text
     preamble.code = { \global\def\cov@gl@preamble@global{#1} },
     % 5. Gloss postamble text
@@ -1361,12 +1357,12 @@
   \@ifundefined{cov@judge@gloss@text@global}%
      {\let\cov@judge@gloss@text\relax}%
      {\let\cov@judge@gloss@text\cov@judge@gloss@text@global}%
-  \let\lglosslineone\relax%
-  \let\lglosslinetwo\relax%
-  \let\lglosslinethree\relax%
-  \let\glossline@one\glosslineone%
-  \let\glossline@two\glosslinetwo%
-  \let\glossline@three\glosslinethree%
+  \let\glosslineone@local\relax%
+  \let\glosslinetwo@local\relax%
+  \let\glosslinethree@local\relax%
+  \@ifundefined{glosslineone@global}{}{\def\glosslineone{\glosslineone@global}}%
+  \@ifundefined{glosslinetwo@global}{}{\def\glosslinetwo{\glosslinetwo@global}}%
+  \@ifundefined{glosslinethree@global}{}{\def\glosslinethree{\glosslinethree@global}}%
   \setlength\cov@glossline@sepi@local{\cov@glossline@sepi}%
   \setlength\cov@glossline@sepii@local{\cov@glossline@sepii}%
   \setlength\cov@glossline@sepiii@local{\cov@glossline@sepiii}%
@@ -1401,10 +1397,12 @@
   \IfNoValueF{#1}{\SetKeys[covgloss]{#1}}%
   \ifcov@ex@gloss
     \begin{covexample}
+  \else
+     \begingroup%
   \fi%
-  \@ifundefined{lglosslineone}{}{\def\glosslineone{\lglosslineone}}%
-  \@ifundefined{lglosslinetwo}{}{\def\glosslinetwo{\lglosslinetwo}}%
-  \@ifundefined{lglosslinethree}{}{\def\glosslinethree{\lglosslinethree}}%
+  \@ifundefined{glosslineone@local}{}{\def\glosslineone{\glosslineone@local}}%
+  \@ifundefined{glosslinetwo@local}{}{\def\glosslinetwo{\glosslinetwo@local}}%
+  \@ifundefined{glosslinethree@local}{}{\def\glosslinethree{\glosslinethree@local}}%
   \edef\cov@gl@preamble@text{\cov@gl@preamble}%
   \def\cov@gl@postamble@text{\cov@gl@postamble}%
   \@ifundefined{cov@fsglpreamble@local}%
@@ -1426,8 +1424,10 @@
      }%
      \def\linetwopa{\strut}%
   \else%
-    \IfNoValueTF{#3}{\def\lineonepa{\strut}}{\@cov@glossplinetrue\def\lineonepa{\cov@closscomments@fs#3}}%
-    \IfNoValueTF{#5}{\def\linetwopa{\strut}}{\@cov@glossplinetrue\def\linetwopa{\cov@closscomments@fs#5}}%
+    \IfNoValueTF{#3}{\def\lineonepa{\strut}}%
+                    {\@cov@glossplinetrue\def\lineonepa{\cov@closscomments@fs#3}}%
+    \IfNoValueTF{#5}{\def\linetwopa{\strut}}%
+                    {\@cov@glossplinetrue\def\linetwopa{\cov@closscomments@fs#5}}%
   \fi%
   \if@cov@glosspline%
       \savebox{\pline}{%
@@ -1461,10 +1461,12 @@
   \glend
   \ifcov@ex@gloss
     \end{covexample}
+  \else
+    \endgroup%
   \fi%
-  \let\lglosslineone\relax%
-  \let\lglosslinetwo\relax%
-  \let\lglosslinethree\relax%
+  \let\glosslineone@local\relax%
+  \let\glosslinetwo@local\relax%
+  \let\glosslinethree@local\relax%
   \let\cov@fsglpreamble@local\relax%
   \let\cov@fsglpostamble@local\relax%
   \let\cov@fstl@local\relax%
@@ -1482,12 +1484,12 @@
   \@ifundefined{cov@judge@gloss@text@global}%
      {\let\cov@judge@gloss@text\relax}%
      {\let\cov@judge@gloss@text\cov@judge@gloss@text@global}%
-  \let\lglosslineone\relax%
-  \let\lglosslinetwo\relax%
-  \let\lglosslinethree\relax%
-  \let\glossline@one\glosslineone%
-  \let\glossline@two\glosslinetwo%
-  \let\glossline@three\glosslinethree%
+  \let\glosslineone@local\relax%
+  \let\glosslinetwo@local\relax%
+  \let\glosslinethree@local\relax%
+  \@ifundefined{glosslineone@global}{}{\def\glosslineone{\glosslineone@global}}%
+  \@ifundefined{glosslinetwo@global}{}{\def\glosslinetwo{\glosslinetwo@global}}%
+  \@ifundefined{glosslinethree@global}{}{\def\glosslinethree{\glosslinethree@global}}%
   \setlength\cov@glossline@sepi@local{\cov@glossline@sepi}%
   \setlength\cov@glossline@sepii@local{\cov@glossline@sepii}%
   \setlength\cov@glossline@sepiii@local{\cov@glossline@sepiii}%
@@ -1522,10 +1524,12 @@
   \IfNoValueF{#1}{\SetKeys[covgloss]{#1}}%
   \ifcov@ex@gloss
     \begin{covexample}
+  \else
+     \begingroup%
   \fi%
-  \@ifundefined{lglosslineone}{}{\def\glossline@one{\lglosslineone}}%
-  \@ifundefined{lglosslinetwo}{}{\def\glossline@two{\lglosslinetwo}}%
-  \@ifundefined{lglosslinethree}{}{\def\glossline@three{\lglosslinethree}}%
+  \@ifundefined{glosslineone@local}{}{\def\glosslineone{\glosslineone@local}}%
+  \@ifundefined{glosslinetwo@local}{}{\def\glosslinetwo{\glosslinetwo@local}}%
+  \@ifundefined{glosslinethree@local}{}{\def\glosslinethree{\glosslinethree@local}}%
   \edef\cov@gl@preamble@text{\cov@gl@preamble}%
   \def\cov@gl@postamble@text{\cov@gl@postamble}%
   \@ifundefined{cov@fsglpreamble@local}%
@@ -1586,10 +1590,12 @@
   \glend
   \ifcov@ex@gloss
     \end{covexample}
+  \else
+     \endgroup%
   \fi%
-  \let\lglosslineone\relax%
-  \let\lglosslinetwo\relax%
-  \let\lglosslinethree\relax%
+  \let\glosslineone@local\relax%
+  \let\glosslinetwo@local\relax%
+  \let\glosslinethree@local\relax%
   \let\cov@fsglpreamble@local\relax%
   \let\cov@fsglpostamble@local\relax%
   \let\cov@fstl@local\relax%

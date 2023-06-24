@@ -32,7 +32,8 @@ The package consists of the following files:
 == CHANGES ==
 
 * Version 2.12 (forthcoming)
-	- Fix problems with \glosslineone (etc.) redefinitions that could get lost (#13).
+	- Fix issue with redefinitions of \glosslineone/\glosslinetwo/\glosslinethree,
+	  which could get lost along the text (#13).
 
 * Version 2.11 (2023-06-17)
 	- Add support for judgment markers in examples and glosses.
