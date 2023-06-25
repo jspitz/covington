@@ -1346,6 +1346,9 @@
 %
 % General setting option
 \newcommand*\setglossoptions[1]{\SetKeys[gcovgloss]{#1}}
+
+% Empty environment (to keep changes local)
+\newenvironment{covgloss}{}{}
 %
 % 1. \digloss[<opts>]{<line 1>}[linepostamble1]
 %                    {<line 2>}[linepostamble2]
@@ -1397,8 +1400,8 @@
   \IfNoValueF{#1}{\SetKeys[covgloss]{#1}}%
   \ifcov@ex@gloss
     \begin{covexample}
-  \else
-     \begingroup%
+  \else%
+    \begin{covgloss}
   \fi%
   \@ifundefined{glosslineone@local}{}{\def\glosslineone{\glosslineone@local}}%
   \@ifundefined{glosslinetwo@local}{}{\def\glosslinetwo{\glosslinetwo@local}}%
@@ -1461,8 +1464,8 @@
   \glend
   \ifcov@ex@gloss
     \end{covexample}
-  \else
-    \endgroup%
+  \else%
+    \end{covgloss}
   \fi%
   \let\glosslineone@local\relax%
   \let\glosslinetwo@local\relax%
@@ -1525,7 +1528,7 @@
   \ifcov@ex@gloss
     \begin{covexample}
   \else
-     \begingroup%
+    \begin{covgloss}
   \fi%
   \@ifundefined{glosslineone@local}{}{\def\glosslineone{\glosslineone@local}}%
   \@ifundefined{glosslinetwo@local}{}{\def\glosslinetwo{\glosslinetwo@local}}%
@@ -1590,8 +1593,8 @@
   \glend
   \ifcov@ex@gloss
     \end{covexample}
-  \else
-     \endgroup%
+  \else%
+    \end{covgloss}
   \fi%
   \let\glosslineone@local\relax%
   \let\glosslinetwo@local\relax%
