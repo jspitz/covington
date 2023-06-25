@@ -97,8 +97,8 @@
 %
 % Titling
 %
-\def\pversion{Version 2.11}
-\def\pdate{June 17, 2023}
+\def\pversion{Version 2.12}
+\def\pdate{June 25, 2023}
 
 \title{\textbf{The \cvt\ Package\\\Large Macros for Linguistics}}
 \author{Michael A. Covington \and J\"urgen Spitzm\"uller\thanks{Current maintainer.
@@ -139,10 +139,10 @@ To use \cvt, load the package as usual by adding the command
 to your document preamble. The package has the following options to customize its behavior:
 \begin{description}
 	\item{\joption{force=\jparam{true|false}}} Default: \emph{false}.
-		Force the redefinition of environments that have already been defined by other packages or the class.
+		Enforce the redefinition of environments that have already been defined by other packages or the class.
 		
 		This applies to the \jenv{example}, \jenv{examples}, \jenv{subexamples} and \jenv{exercise} environments,
-		which are by default not touched if they are already defined before \cvt\ is loaded.
+		which are by default not touched if they have already been defined before \cvt\ is loaded.
 		See sec.~\ref{sec:ex}, \ref{sec:exs}, \ref{sec:subexs} and \ref{sec:exercises} for details.
 	\item{\joption{keeplayout=\jparam{true|false}}} Default: \emph{false}. Do not tweak the layout.
 	
@@ -369,8 +369,8 @@ The \jenv{example} environment provides the following options which also allow f
 	    and example is in a footnote. For the template format, see \joption{numberformat}.
 \end{description}
 %
-If you pass these as optional argument to an environment, they will only apply to the current environment.
-If you want to make a global change, you can use the macro
+If you pass them to an environment (as optional argument of the environment), the options will only apply to that
+very environment. If you want to make a global change, you can use the macro
 \begin{lstlisting}[moretexcs={setexampleoptions}]
 \setexampleoptions{<options>}
 \end{lstlisting}
@@ -411,15 +411,15 @@ Besides to the normal optional item argument (see below), the examples environme
 argument which allows you to pass a judgment marker. Consider:
 \begin{lstlisting}
 \begin{examples}
-\item<*> Ein ungrammatischem Satz.
-\item Ein grammatischer Satz.
+\item<*> This sentence not is well-formed.
+\item This is a well-formed sentence.
 \end{examples}
 \end{lstlisting}
 %
 This is printed as:
 \begin{examples}
-	\item<*> Ein ungrammatischem Satz.
-	\item Ein grammatischer Satz.
+	\item<*> This sentence not is well-formed.
+	\item This is a well-formed sentence.
 \end{examples}
 %
 If you use a wider marker such as \jparam{??}, you need to adjust the width of the reserved space for the marker.
@@ -437,9 +437,10 @@ in a row here:
 	      It also sets the appropriate \joption{judgewidth} for the selected marker.
 		  Use the aforementioned angular \jcsmacro{item} option to overwrite the preset marker or to set
 		  one for indivual examples only.
-	\item \joption{preamble} and \joption{postamble[*]} do not have any effect at all, as such text needs to
-	      be set for individual examples in the set; to this end, we provide a specific solution, as documented
-	      in what follows.
+	\item \joption{preamble} and \joption{postamble[*]} do not have any effect at all. Preambles and postambles,
+	      after all, belong to individual examples in the set rather than to the whole set of examples (or their
+	      first and last item, respectively).
+	      Instead of these options, we thus provide per-item solutions, which are documented in what follows.
 \end{itemize}
 %
 For preambles and postambles, we provide specific macros, namely \jcsmacro{expreamble} and \jcsmacro{expostamble},
@@ -448,9 +449,9 @@ via \joption{preamble} or \joption{postamble} option in the \jenv{example} envir
 
 Hence, also here, the advantage over just adding text as is in the example is that an own, globally settable markup is used.
 This is particularly relevant if you globally set examples to be italicized via the \joption{fs} option (as we have done it
-in our examples in sec.~\ref{sec:exex}).  Also, judgment markers are properly set after the preamble.
+in our examples in sec.~\ref{sec:exex}).  Also, judgment markers are properly set after the preamble.\pagebreak[2]
 
-Consider:
+\noindent Consider:
 \begin{lstlisting}[moretexcs={expreamble}]
 \begin{examples}
 \item \expreamble{Here is Jakobson's famous poetic example:}
@@ -606,12 +607,10 @@ Also note that, if you set options globally via \jcsmacro{setexampleoptions}, th
 should be used to distinguish the \jenv{subexample} from the \jenv{example} case.
 \begin{description}
 	\item[\joption{subjudge=\{\jparam{text}\}}] sets the default judge marker for subexamples.
+	\item[\joption{subpreamble=\{\jparam{arbitrary text}\}}] For a global preamble presetting in subexamples.
+	\item[\joption{subpostamble=\{\jparam{arbitrary text}\}}] For a global postamble presetting in subexamples.
 	\item[\joption{fssubpreamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
 		Adjusts the font settings of subexample's preamble text and the \jcsmacro{subexpreamble}
-		macro described below.
-		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
-	\item[\joption{fssubpostamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
-		Tweaks the sub\-example's postamble text font settings and the \jcsmacro{subexpostamble}
 		macro described below.
 		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
 	\item[\joption{fssubpostamble=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
@@ -707,7 +706,7 @@ Let us briefly demonstrate the judgment feature. If we want to mark an example a
 we use the conventional asterisk mark, like this:
 \begin{lstlisting}[morekeywords=judge]
 \begin{example}[judge=*]
-Ein ungrammatischem Satz.
+Dies ein ungrammatischem Satz ist.
 \end{example}
 \end{lstlisting}
 %
@@ -728,13 +727,13 @@ angular argument instead, as already demonstrated in sec.~\ref{sec:exs}:
 \begin{lstlisting}
 \begin{examples}
 \item<*> Dies ein ungrammatischem Satz ist.
-\item Dies ist ein grammarisch wohlgeformter Satz.
+\item Dies ist ein grammatisch wohlgeformter Satz.
 \end{examples}
 \end{lstlisting}
 %
 \begin{examples}
 	\item<*> Dies ein ungrammatischem Satz ist.
-	\item Dies ist ein grammarisch wohlgeformter Satz.
+	\item Dies ist ein grammatisch wohlgeformter Satz.
 \end{examples}
 %
 With wider markers, we need to adjust the marker width via \joption{judgewidth}, and
@@ -758,10 +757,8 @@ to have a good space to the number:
 %
 \begin{lstlisting}[moretexcs={expreamble}]
 \begin{examples}
-\item \expreamble{Compare this:}
-      Oh, I am so well-formed!
-\item<*> \expreamble{with this:}
-      Lucky are you!
+\item \expreamble{Compare this:} Oh, I am so well-formed!
+\item<*> \expreamble{with this:} Lucky are you!
 \end{examples}
 \end{lstlisting}
 %
@@ -1053,10 +1050,11 @@ Note that:
      \item[\joption{glosswidth=\{\jparam{length}\}}] Default: \verb|{0.6\textwidth}|.
 		 Sets the maximum width the gloss takes if optional comments or \joption{tlr*=true} are used.
      \item[\joption{glosssep=\{\jparam{length}\}}] Default: \verb|{1em}|.
-		 Sets space between gloss and optional comments or free translation in case of \joption{tlr*=true}.
+		 Sets space between gloss and optional comments, or between gloss and free translation in
+		 case of \joption{tlr*=true}, respectively.
      \item[\joption{glosscommentwidth=\{\jparam{length}\}}] 
-		 Sets the maximum width of gloss comments or free translation in case of \joption{tlr*=true}.
-		 By default this is automatically calculated from the above two lengths.
+		 Sets the maximum width of gloss comments, or of free translation in case of \joption{tlr*=true},
+		 respectively. By default this is automatically calculated from the above two lengths.
 	\item[\joption{fscomments=\{\jparam{font settings}\}}] Default: \verb|{\normalfont\upshape}|.
 		Adjusts the font settings of the gloss comments.
 		Valid values are \LaTeX\ font switches such as \jfcsmacro{itshape}, \jfcsmacro{bfseries} etc.
@@ -1227,7 +1225,7 @@ That one was typed using the option \joption{tlr}:
              {(\exampleno)}
 \end{lstlisting}
 %
-Third, we showcase the \joption{tlr*} option which is usable if
+Third, we showcase the \joption{tlr*} option which is handy if
 you want the free translation to the right:
 \digloss[tlr*,glosscommentwidth={.6\textwidth}]
               {Tres faciunt collegium}
@@ -1645,7 +1643,7 @@ it.
 
 \section{Release history}
 
-\subsection*{2.12 (forthcoming)}
+\subsection*{2.12 (2023 June 25)}
 \begin{itemize}
 	\item Fix issue with redefinitions of \jcsmacro{glosslineone}\slash\jcsmacro{glosslinetwo}\slash
 	      \jcsmacro{glosslinethree}, which could get lost along the text.

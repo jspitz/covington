@@ -31,7 +31,7 @@ The package consists of the following files:
 
 == CHANGES ==
 
-* Version 2.12 (forthcoming)
+* Version 2.12 (2023-06-25)
 	- Fix issue with redefinitions of \glosslineone/\glosslinetwo/\glosslinethree,
 	  which could get lost along the text (#13).
 
