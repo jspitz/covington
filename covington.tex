@@ -163,7 +163,8 @@ to your document preamble. The package has the following options to customize it
 		By default, \cvt\ uses \LaTeX's equation counter for example numbering, so that if you use equations and numbered examples
 		in the same	paper, you get a single continuous series of numbers. While some people (including the original author of this package)
 		consider this a feature, others might prefer to number equations and linguistic examples separately. If you count to the latter sort,
-		use this option.
+		use this option. Note that the default appearance of the own counter and the equation counter differs if the document has chapters.
+		See sec.~\ref{sec:cbc} for details.
 	\item{\joption{fnexamplecounter=\jparam{main|own|own-reset}}} Default: \emph{main}.
 		Specifics of the counter for numbered examples in footnotes.
 	
@@ -887,6 +888,24 @@ For convenience, though, \cvt\ provides a command \jcsmacro{pxref} that also pri
 as in \pxref{expl} and \pxref{sbex}. It is defined as follows and can be redefined if needed:
 \begin{lstlisting}[moretexcs={providecommand,pxref}]
 \providecommand*\pxref[1]{(\ref{#1})}
+\end{lstlisting}
+
+
+\subsection{Numbering per chapter or continuously}\label{sec:cbc}
+
+With the default (equation) counter which is used for examples, examples automatically get numbered
+per chapter if the document has chapters (e.g., (2.1) for the first example in chapter~2).
+If you want continuously numbered examples instead, use
+\begin{lstlisting}[moretexcs={counterwithout}]
+\counterwithout{equation}{chapter}
+\end{lstlisting}
+which also will change the equation numbering behavior.
+
+With \joption{owncounter}, on the other hand, examples are always continuously numbered by default.
+If you want examples numbered per chapter, do:
+\begin{lstlisting}[moretexcs={counterwithin,ownexcounterprep}]
+\counterwithin*{covex}{chapter}
+\renewcommand\ownexcounterprep{\thechapter.}
 \end{lstlisting}
 
 
@@ -1646,6 +1665,13 @@ software, and the authors make no commitment to do any further work on
 it.
 
 \section{Release history}
+
+\subsection*{2.14 (forthcoming)}
+\begin{itemize}
+	\item Add \jcsmacro{ownexcounterprep} macro to add a prefix (e.g., the chapter)
+	      to the (owncounter) example counter. See sec.~\ref{sec:cbc}.
+	\item Document how to (not) number examples per chapter.
+\end{itemize}
 
 \subsection*{2.13 (2023 December 2)}
 \begin{itemize}
