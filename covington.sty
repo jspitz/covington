@@ -538,7 +538,9 @@
       \setcounter{covfnex}{\arabic{covexsave}}%
     \else
       \ifownexcounter
-        \renewcommand{\thecovex}{\exfmt{covex}}%
+        \ifexfmtchanged%
+           \renewcommand{\thecovex}{\exfmt{covex}}%
+        \fi%
         \setcounter{covexsave}{\arabic{covex}}%
         \usecounter{covex}%                          % sets it to zero, unwantedly
         \setcounter{covex}{\arabic{covexsave}}%   % restores previous value
