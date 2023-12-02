@@ -42,8 +42,8 @@
 %%% Metadata
 %%%
 
-\def\filedate{2023/06/25}
-\def\fileversion{2.12}
+\def\filedate{2023/12/02}
+\def\fileversion{2.13}
 \def\filename{covington.sty}
 
 % Macro to issue warnings
@@ -342,6 +342,10 @@
 % 2023.06.04 (v. 2.11): judge marks
 \newcommand*\cov@judge@fs{\normalfont\upshape}
 
+% Track whether example format was changed via template
+\newif\ifexfmtchanged
+\newif\ifexfmtgchanged
+
 \DeclareKeys[covexpl]
 {
     % font settings
@@ -363,7 +367,10 @@
     % addnumbersep
     addnumbersep.code = { \setlength{\examplenumbersep}{#1} },
     % numberformat={template}
-    numberformat.code = { \cov@parse@number@template{#1}{exfmt}{covexnumber} },
+    numberformat.code = {
+       \cov@parse@number@template{#1}{exfmt}{covexnumber}
+       \exfmtchangedtrue
+    },
     % fnnumberformat={template}
     fnumberformat.code = { \cov@parse@number@template{#1}{fnexfmt}{covexnumberfn} },
     % judge=text
@@ -387,6 +394,11 @@
 \newenvironment{covexample}[1][]{%
     \@cov@insingleextrue%
     \let\cov@judge@ex@text\cov@judge@ex@text@global%
+    \ifexfmtgchanged%
+       \exfmtchangedtrue%
+    \else
+       \exfmtchangedfalse%
+    \fi%
     \SetKeys[covexpl]{#1}%
     \begin{covexamples}
        \@ifundefined{cov@judge@ex@text}{\item}{\item<\cov@judge@ex@text>}%
@@ -469,12 +481,19 @@
 
 \def\cov@judge@marker{}
 
+\def\covchapexsep{.}
+
 \newenvironment{covexamples}[1][]{%         % define "examples" environment
   \if@cov@insubex%
      \let\cov@judge@ex@text\relax%
   \else%
      \if@cov@insingleex\else%
         \let\cov@judge@ex@text\cov@judge@ex@text@global%
+        \ifexfmtgchanged%
+           \exfmtchangedtrue%
+        \else
+           \exfmtchangedfalse%
+        \fi%
       \fi%
   \fi%
   \ifx{#1}{\empty}\else\SetKeys[covexpl]{#1}\fi%
@@ -524,7 +543,9 @@
         \usecounter{covex}%                          % sets it to zero, unwantedly
         \setcounter{covex}{\arabic{covexsave}}%   % restores previous value
       \else
-        \renewcommand{\theequation}{\exfmt{equation}}%
+        \ifexfmtchanged%
+          \renewcommand{\theequation}{\ifnum\c@chapter>\z@\thechapter\covchapexsep\fi\exfmt{equation}}%
+        \fi%
         \setcounter{covexsave}{\arabic{equation}}%
         \usecounter{equation}%                          % sets it to zero, unwantedly
         \setcounter{equation}{\arabic{covexsave}}%   % restores previous value
@@ -612,7 +633,10 @@
     % addnumbersep
     addsubnumbersep.code = { \setlength{\subexamplenumbersep}{#1} },
     % numberformat={template}
-    numberformat.code = { \cov@parse@number@template{#1}{exfmt}{covexnumber} },
+    numberformat.code = {
+      \cov@parse@number@template{#1}{exfmt}{covexnumber}
+      \exfmtchangedtrue
+    },
     % fnnumberformat={template}
     fnumberformat.code = { \cov@parse@number@template{#1}{fnexfmt}{covexnumberfn} },
     % subnumberformat={template}
@@ -690,6 +714,11 @@
     \let\cov@xp\relax%
     \let\cov@xpst\relax%
     \let\cov@judge@ex@text\relax%
+    \ifexfmtgchanged%
+       \exfmtchangedtrue%
+    \else
+       \exfmtchangedfalse%
+    \fi%
     \ifx{#1}{\empty}\else\SetKeys[covsubexpl]{#1}\fi%
     \begin{covexample}%
     \@ifundefined{cov@sxp}{}{\bgroup\subexpreamblefs\cov@sxp\egroup}% insert preamble if given
@@ -755,7 +784,10 @@
     % addsubnumbersep
     addsubnumbersep.code = { \setlength{\subexamplenumbersep}{#1} },
     % numberformat={template}
-    numberformat.code = { \cov@parse@number@template{#1}{exfmt}{covexnumber} },
+    numberformat.code = { 
+       \cov@parse@number@template{#1}{exfmt}{covexnumber}
+       \exfmtgchangedtrue
+    },
     % fnnumberformat={template}
     fnumberformat.code = { \cov@parse@number@template{#1}{fnexfmt}{covexnumberfn} },
     % subnumberformat={template}

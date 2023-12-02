@@ -31,6 +31,9 @@ The package consists of the following files:
 
 == CHANGES ==
 
+* Version 2.13 (2023-12-02)
+	- Fix example numbering with chapters (#16).
+
 * Version 2.12 (2023-06-25)
 	- Fix issue with redefinitions of \glosslineone/\glosslinetwo/\glosslinethree,
 	  which could get lost along the text (#13).
