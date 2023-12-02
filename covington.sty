@@ -189,8 +189,10 @@
 % Counter to generate unique example ID
 \newcounter{explid}
 
+\def\ownexcounterprep{}
 \ifownexcounter
   \newcounter{covex}
+  \renewcommand{\thecovex}{\ownexcounterprep\arabic{covex}}%
   \newcommand{\@exampleno}{\stepcounter{explid}\refstepcounter{covex}\thecovex}
 \else
   \newcommand{\@exampleno}{\stepcounter{explid}\refstepcounter{equation}\theequation}
@@ -539,7 +541,7 @@
     \else
       \ifownexcounter
         \ifexfmtchanged%
-           \renewcommand{\thecovex}{\exfmt{covex}}%
+           \renewcommand{\thecovex}{\ownexcounterprep\exfmt{covex}}%
         \fi%
         \setcounter{covexsave}{\arabic{covex}}%
         \usecounter{covex}%                          % sets it to zero, unwantedly
