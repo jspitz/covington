@@ -31,6 +31,11 @@ The package consists of the following files:
 
 == CHANGES ==
 
+* Version 2.14 (2023 December 11)
+	- Add \ownexcounterprep macro to add a prefix (e.g., the chapter)
+	  to the (owncounter) example counter.
+	- Document how to (not) number examples per chapter.
+
 * Version 2.13 (2023-12-02)
 	- Fix example numbering with chapters (#16).
 
