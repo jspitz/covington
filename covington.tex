@@ -1559,7 +1559,8 @@ environments. In any case, the package will issue a warning if \jenv{exercise} i
 \section{Reference Lists}\label{sec:reflists}
 
 To type a simple \textsc{lsa}-style hanging-indented reference list, you can use the \jenv{reflist}
-environment.  (\emph{Note:} \jenv{reflist} is not integrated with Bib\TeX\ in any way.%
+environment.  (\emph{Note:} \jenv{reflist} is not integrated with Bib\TeX\ or even the \jfenv{bibliography}
+environment in any way, so it is not suitable for citing.%
 \footnote{For Bib\TeX, there are several options: the \textsc{lsa} style, as used in the journal \emph{Language},
 can be obtained by means of the style files \texttt{lsalike.bst}
 (\url{http://www.icsi.berkeley.edu/ftp/pub/speech/jurafsky/lsalike.bst}) or \texttt{language.bst}
@@ -1567,8 +1568,9 @@ can be obtained by means of the style files \texttt{lsalike.bst}
 The so-called \emph{Unified Style Sheet for Linguistics}, as proposed by the \textsc{cel}x\textsc{j}
 (\emph{Committee of Editors of Linguistics Journals}), which slightly differs from the \textsc{lsa} style,
 is followed by the style file \texttt{unified.bst} (available at \url{http://celxj.org/downloads/unified.bst}).
-A \texttt{biblatex} style file for the unified style is available at
-\url{https://github.com/semprag/biblatex-sp-unified} or on \textsc{ctan} as part of the \textsf{univie-ling} bundle.})  For example,
+A \texttt{biblatex} style file for the unified style is available on \textsc{ctan} in form of the
+\textsf{biblatex-unified} package or as part of the \textsf{univie-ling} bundle.})
+For example,
 \begin{lstlisting}
 \begin{reflist}
 Barton, G. Edward; Berwick, Robert C.; and Ristad, Eric Sven.  1987.
@@ -1599,8 +1601,8 @@ be globally changed by altering the length \jcsmacro{reflistindent}.
 Doing \lstinline|\setlength\reflistindent{1.5em}|, for instance,
 will shorten the indentation by half. Likewise, the length \jcsmacro{reflistitemsep}
 (6\,pt by default) and \jcsmacro{reflistparsep} (ca. 4\,pt by default) can be adjusted
-to alter the vertical separation (\jfcsmacro{itemsep} and \jfcsmacro{parsep}, for that
-matter) of reference entries.
+to alter the vertical separation between items (\jfcsmacro{itemsep}) and paragraphs
+(\jfcsmacro{parsep}) of reference entries.
 
 Notice that within the reference list, ``French spacing'' is in effect 
 --- that is, spaces after periods are no wider than normal spaces. Thus 
@@ -1665,6 +1667,12 @@ software, and the authors make no commitment to do any further work on
 it.
 
 \section{Release history}
+
+\subsection*{2.15 (Forthcoming)}
+\begin{itemize}
+	\item Enhance \jenv{reflist} documentation.
+\end{itemize}
+
 
 \subsection*{2.14 (2023 December 11)}
 \begin{itemize}
