@@ -31,7 +31,7 @@ The package consists of the following files:
 
 == CHANGES ==
 
-* Version 2.15 (forthcoming):
+* Version 2.15 (2025 August 13):
 	- Fix definition of covexercise if no chapters exist.
 	- Enhance reflist documentation.
 
