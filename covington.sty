@@ -1839,7 +1839,9 @@
 % a subsection, but also at the start of a section or chapter
 % even if it is not divided into subsections.
 \@addtoreset{covexercise}{section}
-\@addtoreset{covexercise}{chapter}
+\ifcsname c@chapter\endcsname
+  \@addtoreset{covexercise}{chapter}
+\fi
 
 \newcommand{\bx}{\begin{covexercise}}
 \newcommand{\ex}{\end{covexercise}}
