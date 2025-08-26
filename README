@@ -31,6 +31,9 @@ The package consists of the following files:
 
 == CHANGES ==
 
+* Version 2.16 (Forthcoming):
+	- Fix reference to subexample that is nested in an enumeration.
+
 * Version 2.15 (2025 August 13):
 	- Fix definition of covexercise if no chapters exist.
 	- Enhance reflist documentation.

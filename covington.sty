@@ -728,9 +728,10 @@
     \@ifundefined{cov@sxp}{}{\bgroup\subexpreamblefs\cov@sxp\egroup}% insert preamble if given
     \begin{covsubexs}
     \addtolength{\labelsep}{\subexamplenumbersep}%
-    \renewcommand\theenumi{\subexfmt{enumi}}
-    \renewcommand\labelenumi{\covexamplenofs\covsubexnumber{\theenumi}}
-    \renewcommand\p@enumi{\@@exampleno\,}%
+    \edef\@subexctr{enum\romannumeral\the\@enumdepth}%
+    \renewcommand\theenumi{\subexfmt{\@subexctr}}
+    \@namedef{label\@subexctr}{\covexamplenofs\covsubexnumber{\theenumi}}
+    \@namedef{p@\@subexctr}{\@@exampleno\,}%
     \setlength{\listparindent}{0pt}%
     \def\makelabel##1{##1\hfil}%       % put labels flushleft in space available
 }%
